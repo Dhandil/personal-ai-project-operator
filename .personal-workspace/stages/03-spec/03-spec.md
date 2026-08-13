@@ -4,9 +4,9 @@ document_type: development_spec
 project_name: 个人 AI 项目运营工具
 stage: 03-spec
 status: approved
-revision: 1
+revision: 2
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-13T12:29:07Z
+updated_at: 2026-08-13T13:40:49Z
 supersedes_unconfirmed_content: true
 source_documents:
   - ../01-idea/01-idea.md
@@ -689,6 +689,7 @@ Domain 行、函数和语句覆盖率不低于 90%，分支不低于 85%。其�
 - SPECIFY：已批准；
 - PLAN：已批准；
 - TASKS：已批准；
-- IMPLEMENT：尚未批准；
-- 所有 GOAL 和 TASK 初始为 `draft`，必须按短期目标审批门逐个启动；
-- 生成本文档和任务文件不代表自动开始 Coding。
+- IMPLEMENT：已批准在 GOAL-001 范围内实施 TASK-001～TASK-004；
+- GOAL-001 已启动，TASK-001 已就绪；后续任务仍须满足依赖和状态转换规则；
+- GOAL-002～GOAL-009 仍为 `draft`，不得提前实施；
+- 本次授权不允许扩大 GOAL-001 的目标、依赖、技术范围或验收条件。

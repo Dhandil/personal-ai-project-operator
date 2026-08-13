@@ -2,13 +2,15 @@
 schema_version: 1
 id: TASK-001
 title: 建立 npm Workspace 和 TypeScript 根配置
-status: draft
+status: ready
 goal_id: GOAL-001
 role: executor
 dependencies: []
-revision: 1
+revision: 2
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-13T12:29:07Z
+updated_at: 2026-08-13T13:40:49Z
+approval_id: APPROVAL-001
+target_branch: goal/GOAL-001
 ---
 
 # TASK-001：建立 npm Workspace 和 TypeScript 根配置
