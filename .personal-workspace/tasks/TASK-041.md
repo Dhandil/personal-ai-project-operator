@@ -1,0 +1,36 @@
+---
+schema_version: 1
+id: TASK-041
+title: 实现临时会话和官方删除清理
+status: draft
+goal_id: GOAL-008
+role: executor
+dependencies: [TASK-039, TASK-040]
+revision: 1
+created_at: 2026-08-13T12:29:07Z
+updated_at: 2026-08-13T12:29:07Z
+---
+
+# TASK-041：实现临时会话和官方删除清理
+
+## 目的与范围
+
+按任务可恢复性选择 `--ephemeral` 或保存会话，并在完成/取消后调用官方删除命令和清理运行目录。
+
+## 验收条件
+
+- 一次性任务不持久化 rollout；
+- 保存会话只用 `codex delete <UUID> --force` 清理；
+- 清理失败记录 `cleanup_failed`、可重试并显示估算释放量。
+
+## 验证
+
+清理集成测试覆盖成功、失败、重试和路径保护。
+
+## 预计文件
+
+会话策略、Codex 删除 Adapter、运行目录清理器、清理报告契约、测试。
+
+## 边界与交接
+
+禁止读取或删除 Codex 内部会话文件；递归清理前验证绝对路径位于应用运行目录。完成后提交 GOAL-008 检查点。
