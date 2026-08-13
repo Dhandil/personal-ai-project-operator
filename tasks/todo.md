@@ -2,11 +2,11 @@
 
 > 这是由 `.personal-workspace/tasks/` 生成的只读兼容视图。  
 > 禁止在本文件中独立修改状态；正式状态以各 `TASK-xxx.md` 为准。  
-> 生成时间：2026-08-13T12:29:07Z
+> 生成时间：2026-08-13T13:53:33Z
 
 ## GOAL-001：建立可运行工程
 
-- [ ] TASK-001 建立 npm Workspace 和 TypeScript 根配置
+- [x] TASK-001 建立 npm Workspace 和 TypeScript 根配置
 - [ ] TASK-002 建立 Fastify 后端骨架和健康检查
 - [ ] TASK-003 建立 React、Vite 和中文界面骨架
 - [ ] TASK-004 配置格式、Lint、类型检查和测试命令
