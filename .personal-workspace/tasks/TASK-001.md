@@ -6,11 +6,12 @@ status: completed
 goal_id: GOAL-001
 role: executor
 dependencies: []
-revision: 3
+revision: 4
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-13T13:53:33Z
+updated_at: 2026-08-13T13:59:41Z
 approval_id: APPROVAL-001
 target_branch: goal/GOAL-001
+verification_report_id: REPORT-001
 ---
 
 # TASK-001：建立 npm Workspace 和 TypeScript 根配置
@@ -59,3 +60,11 @@ target_branch: goal/GOAL-001
 - 提交：本任务验收提交（commit message 包含 `Tasks: TASK-001`）。
 - 交接：TASK-002 与 TASK-003 可在本目标分支继续创建具体 workspace 子包；TASK-004 可在此根配置上补充质量命令和开发依赖。
 - 遗留问题：无。
+
+## 独立核验
+
+- 核验报告：`REPORT-001`；
+- 核验结论：通过；
+- 核验提交：`5a2b367110735e634e19961b59b9e0097b5e6c44`；
+- 项目负责人独立重跑 `npm ci --ignore-scripts --no-audit --no-fund` 和 Workspace 查询，结果通过；
+- 变更范围、Commit 格式、锁文件、严格 TypeScript 配置及工作区清洁状态均符合任务要求。
