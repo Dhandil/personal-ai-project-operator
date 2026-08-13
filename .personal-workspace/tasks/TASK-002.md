@@ -6,12 +6,13 @@ status: completed
 goal_id: GOAL-001
 role: executor
 dependencies: [TASK-001]
-revision: 3
+revision: 4
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-13T14:10:10Z
+updated_at: 2026-08-13T14:14:02Z
 approval_id: APPROVAL-001
 target_branch: goal/GOAL-001
 unblocked_by: TASK-001
+verification_report_id: REPORT-002
 ---
 
 # TASK-002：建立 Fastify 后端骨架和健康检查
@@ -60,3 +61,12 @@ unblocked_by: TASK-001
 - 提交：本任务验收提交（commit message 包含 `Tasks: TASK-002`）。
 - 交接：TASK-003、TASK-004 可复用 `apps/server` 的后端入口和 workspace 配置；TASK-003 仍不得由本任务提前实现。
 - 遗留问题：无。
+
+## 独立核验
+
+- 核验报告：`REPORT-002`；
+- 核验结论：通过；
+- 核验提交：`554a100791c15b46b4788e953c7d07460e08f586`；
+- 项目负责人独立重跑根级 `npm ci --ignore-scripts --no-audit --no-fund`、后端集成测试和 TypeScript 检查，结果通过；
+- 使用编译产物短暂启动真实进程并请求 `127.0.0.1:4300/health`，返回 HTTP 200 和预期 JSON；
+- 初次直接启动 `tsx` 的 ENOMEM 是当前沙箱的系统环境限制，已通过编译后进程验证绕过，未发现应用缺陷。

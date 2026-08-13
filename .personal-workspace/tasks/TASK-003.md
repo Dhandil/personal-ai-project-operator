@@ -2,13 +2,16 @@
 schema_version: 1
 id: TASK-003
 title: 建立 React Vite 和中文界面骨架
-status: draft
+status: ready
 goal_id: GOAL-001
 role: executor
 dependencies: [TASK-001, TASK-002]
-revision: 1
+revision: 2
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-13T12:29:07Z
+updated_at: 2026-08-13T14:14:02Z
+approval_id: APPROVAL-001
+target_branch: goal/GOAL-001
+unblocked_by: TASK-002
 ---
 
 # TASK-003：建立 React、Vite 和中文界面骨架
