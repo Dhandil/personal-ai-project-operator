@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-040
 title: 实现续接取消中断标记和恢复报告
-status: in_review
+status: completed
 goal_id: GOAL-008
 role: executor
 dependencies: [TASK-036, TASK-039]
-revision: 5
+revision: 6
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-14T19:05:15Z
+updated_at: 2026-08-14T19:10:15Z
 approval_id: APPROVAL-003
 target_branch: goal/GOAL-008
 unblocked_by: TASK-039
@@ -60,6 +60,6 @@ verification_report_id: REPORT-042
 
 ## 交接
 
-- 验证报告为 `REPORT-042`，独立复核发现跨后端重启续接缺陷，状态更新为 `changes_requested`。
+- 验证报告为 `REPORT-042`，修复复核通过，TASK-040 状态更新为 `completed`。
 - 本次未执行 TASK-041 或 GOAL-009；Codex 官方会话删除清理继续留给 TASK-041。
-- 修复要求：新建 Runtime 实例在只提供持久化 `executionId` 与精确 `sessionId` 时必须能够构造 `exec resume`，不能依赖旧进程内存中的 `executions` 或原始会话对象；补充真实“新 Runtime/新 Coordinator”回归测试后再重新复核。
+- 新 Runtime/新 Coordinator 已使用持久化 `executionId`、精确 `sessionId` 和任务事实重建 `exec resume`；TASK-041 依赖已满足并解锁为 `ready`。

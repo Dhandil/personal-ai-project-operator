@@ -2,13 +2,16 @@
 schema_version: 1
 id: TASK-041
 title: 实现临时会话和官方删除清理
-status: draft
+status: ready
 goal_id: GOAL-008
 role: executor
 dependencies: [TASK-039, TASK-040]
-revision: 1
+revision: 2
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-13T12:29:07Z
+updated_at: 2026-08-14T19:10:15Z
+approval_id: APPROVAL-003
+target_branch: goal/GOAL-008
+unblocked_by: TASK-040
 ---
 
 # TASK-041：实现临时会话和官方删除清理

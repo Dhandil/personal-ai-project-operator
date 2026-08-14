@@ -3,16 +3,18 @@ schema_version: 1
 document_type: report
 id: REPORT-042
 title: TASK-040 续接取消中断标记及恢复报告验证报告
-status: in_review
+status: accepted
 report_type: task_verification
-acceptance_state: pending_user_acceptance
+acceptance_state: accepted
 task_id: TASK-040
 goal_id: GOAL-008
-revision: 3
+revision: 4
 created_at: 2026-08-14T18:46:23Z
-updated_at: 2026-08-14T19:05:15Z
+updated_at: 2026-08-14T19:10:15Z
 verified_by: implementation_agent
 verified_commit: 4959885
+accepted_by: project_lead
+accepted_at: 2026-08-14T19:10:15Z
 verification_commands:
   - npx tsx --test apps/server/test/codex-cli-adapter.integration.test.ts apps/server/test/execution-coordinator.integration.test.ts
   - npm run verify
@@ -70,6 +72,17 @@ TASK-040 已完成实现并提交，当前进入独立用户验收。实现仅�
 ## 修复要求
 
 让新 Runtime 实例仅凭持久化 `executionId`、精确 `sessionId` 及可重建的任务上下文构造 resume 命令，不依赖旧内存执行记录；补充新 Runtime 回归测试后重新运行专项和完整验证。TASK-040 当前为 `changes_requested`，TASK-041 不解锁。
+
+## 修复后独立复核结果
+
+- 新增 Codex Adapter 跨 Runtime 回归通过：新建 Runtime 仅凭精确 `sessionId` 和重建的 `AgentStartRequest` 生成 `codex exec resume`，保持原 EXEC ID，且不使用 `--last`。
+- 新增 Coordinator 跨 Runtime/Coordinator 回归通过：从持久化 recovery 事实和当前任务快照重建 Worktree、角色、Prompt、允许/禁止路径及上下文，续接后任务进入 `in_review`。
+- 修复专项 18/18 通过；完整 `npm run verify` 通过：66 个单元测试、93 个集成测试、14 个 Chromium Playwright 测试，以及格式、Lint、类型检查和构建。
+- 原跨后端重启续接缺陷已消除，TASK-040 满足验收条件，REPORT-042 状态更新为 `accepted`。
+
+## 后续状态
+
+TASK-041 的 TASK-039、TASK-040 依赖均已满足，已解锁为 `ready`；TASK-041 尚未执行，GOAL-009 未启动。
 
 ## 用户验收建议
 
