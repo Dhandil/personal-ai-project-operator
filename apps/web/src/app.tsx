@@ -1,9 +1,10 @@
 import type { ReactElement } from "react";
 import { useEffect, useState } from "react";
 
+import { ProjectCreationWizard } from "./project-creation-wizard";
 import { strings } from "./strings";
 
-type AppRoute = "home" | "health";
+type AppRoute = "home" | "health" | "create";
 
 type HealthPayload = Readonly<{
   readonly status: "ok";
@@ -16,6 +17,9 @@ type HealthState =
   | Readonly<{ readonly status: "unavailable" }>;
 
 export function resolveRoute(pathname: string): AppRoute {
+  if (pathname === "/projects/new") {
+    return "create";
+  }
   return pathname === "/health" ? "health" : "home";
 }
 
@@ -40,21 +44,18 @@ export function App(): ReactElement {
         if (!response.ok) {
           throw new Error(`Health request failed: ${response.status}`);
         }
-
         return response.json();
       })
       .then((payload: unknown) => {
         if (!isHealthPayload(payload)) {
           throw new Error("Health response has an unexpected shape");
         }
-
         setHealth({ status: "connected", service: payload.service });
       })
       .catch((error: unknown) => {
         if (error instanceof DOMException && error.name === "AbortError") {
           return;
         }
-
         setHealth({ status: "unavailable" });
       });
 
@@ -77,35 +78,55 @@ export function App(): ReactElement {
           <a className={route === "health" ? "active" : ""} href="/health">
             {strings.navigation.health}
           </a>
+          <a
+            className={route === "create" ? "active" : ""}
+            href="/projects/new"
+          >
+            新建项目
+          </a>
         </nav>
       </header>
 
       <main className="main-content">
-        <section className="hero-card" aria-labelledby="page-title">
-          <p className="eyebrow">{strings.home.eyebrow}</p>
-          <h1 id="page-title">{strings.home.title}</h1>
-          <p className="tagline">{strings.tagline}</p>
-          <p className="description">{strings.home.description}</p>
-        </section>
+        {route === "create" ? (
+          <ProjectCreationWizard
+            onBack={() => {
+              window.location.href = "/";
+            }}
+          />
+        ) : (
+          <>
+            <section className="hero-card" aria-labelledby="page-title">
+              <p className="eyebrow">{strings.home.eyebrow}</p>
+              <h1 id="page-title">{strings.home.title}</h1>
+              <p className="tagline">{strings.tagline}</p>
+              <p className="description">{strings.home.description}</p>
+              <a className="button primary hero-action" href="/projects/new">
+                新建项目 →
+              </a>
+            </section>
 
-        <section className="status-card" aria-labelledby="health-title">
-          <div>
-            <p className="eyebrow">
-              {route === "health" ? "HEALTH" : "SYSTEM"}
-            </p>
-            <h2 id="health-title">{strings.health.title}</h2>
-            <p className="description">{strings.health.endpoint}</p>
-          </div>
-          <div className={`health-state ${health.status}`} role="status">
-            <span className="status-dot" aria-hidden="true" />
-            <span>
-              {health.status === "checking" && strings.health.checking}
-              {health.status === "connected" &&
-                `${strings.health.connected} · ${health.service}`}
-              {health.status === "unavailable" && strings.health.unavailable}
-            </span>
-          </div>
-        </section>
+            <section className="status-card" aria-labelledby="health-title">
+              <div>
+                <p className="eyebrow">
+                  {route === "health" ? "HEALTH" : "SYSTEM"}
+                </p>
+                <h2 id="health-title">{strings.health.title}</h2>
+                <p className="description">{strings.health.endpoint}</p>
+              </div>
+              <div className={`health-state ${health.status}`} role="status">
+                <span className="status-dot" aria-hidden="true" />
+                <span>
+                  {health.status === "checking" && strings.health.checking}
+                  {health.status === "connected" &&
+                    `${strings.health.connected} 路 ${health.service}`}
+                  {health.status === "unavailable" &&
+                    strings.health.unavailable}
+                </span>
+              </div>
+            </section>
+          </>
+        )}
       </main>
 
       <footer className="site-footer">{strings.footer}</footer>

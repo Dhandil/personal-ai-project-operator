@@ -11,4 +11,8 @@ describe("resolveRoute", () => {
   it("recognizes the health route", () => {
     expect(resolveRoute("/health")).toBe("health");
   });
+
+  it("recognizes the project creation route", () => {
+    expect(resolveRoute("/projects/new")).toBe("create");
+  });
 });

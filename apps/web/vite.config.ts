@@ -10,6 +10,9 @@ export default defineConfig({
       "/health": {
         target: "http://127.0.0.1:4300",
       },
+      "/api": {
+        target: "http://127.0.0.1:4300",
+      },
     },
   },
 });

@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-019
 title: 实现项目创建向导界面
-status: ready
+status: completed
 goal_id: GOAL-004
 role: executor
 dependencies: [TASK-018]
-revision: 2
+revision: 3
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-14T06:54:23Z
+updated_at: 2026-08-14T07:10:46Z
 approval_id: APPROVAL-001
 target_branch: goal/GOAL-001
 unblocked_by: TASK-018
@@ -37,3 +37,11 @@ unblocked_by: TASK-018
 ## 边界与交接
 
 不自动批准，不实现已有项目导入。完成后提交 GOAL-004 检查点。
+
+## Completion evidence
+
+- Implemented the `/projects/new` project creation wizard with separate define, read-only review, approval, and result states.
+- Added form validation and API client contracts for preview and approved initialization; preview details include files, conflicts, defaults, and Git commands.
+- Initialization failures preserve the entered form/preview and display recovery details from the server.
+- Added the `/api` Vite proxy and kept actual creation behind an explicit `批准并创建项目` action.
+- Verification: `npm run verify` passed: format check, lint, all workspace type checks, 44 unit tests, 30 integration tests, 2 Playwright Chromium tests, and all builds.
