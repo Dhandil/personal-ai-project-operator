@@ -28,7 +28,7 @@ This file is generated from the formal task cards. Update the corresponding
 | TASK-021 | completed |
 | TASK-022 | completed |
 | TASK-023 | completed |
-| TASK-024 | ready |
+| TASK-024 | completed |
 | TASK-025 | draft |
 | TASK-026 | ready |
 | TASK-027 | draft |

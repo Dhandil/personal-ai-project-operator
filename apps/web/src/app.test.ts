@@ -23,4 +23,8 @@ describe("resolveRoute", () => {
   it("recognizes the goals route", () => {
     expect(resolveRoute("/projects/goals")).toBe("goals");
   });
+
+  it("recognizes the roles route", () => {
+    expect(resolveRoute("/projects/roles")).toBe("roles");
+  });
 });

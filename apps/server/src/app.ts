@@ -11,6 +11,7 @@ import {
 } from "./infrastructure/projects/project-startup.js";
 import { WorkflowService } from "./infrastructure/workflow/workflow-service.js";
 import { GoalService } from "./infrastructure/goals/goal-service.js";
+import { RoleService } from "./infrastructure/roles/role-service.js";
 
 const SERVICE_NAME = "@personal-ai-operator/server";
 
@@ -25,6 +26,7 @@ export type AppOptions = Readonly<{
   readonly projectStartupService?: ProjectStartupService;
   readonly workflowService?: WorkflowService;
   readonly goalService?: GoalService;
+  readonly roleService?: RoleService;
 }>;
 
 export function buildApp(options: AppOptions = {}): FastifyInstance {
@@ -58,6 +60,7 @@ export function buildApp(options: AppOptions = {}): FastifyInstance {
     new ProjectStartupService({ queryService: projectQueryService });
   const workflowService = options.workflowService ?? new WorkflowService();
   const goalService = options.goalService ?? new GoalService();
+  const roleService = options.roleService ?? new RoleService();
 
   app.get("/api/projects", async (_request, reply) => {
     const result = await projectQueryService.list();
@@ -177,6 +180,38 @@ export function buildApp(options: AppOptions = {}): FastifyInstance {
 
   app.post("/api/projects/goals/decision", async (request, reply) => {
     const result = await goalService.decide(request.body);
+    return reply
+      .code(
+        result.ok ? 200 : result.error.code === "registry_failed" ? 500 : 400,
+      )
+      .send(result);
+  });
+
+  app.get<{ Querystring: { readonly projectKey?: unknown } }>(
+    "/api/projects/roles",
+    async (request, reply) => {
+      const projectKey = request.query?.projectKey;
+      if (typeof projectKey !== "string") {
+        return reply.code(400).send({
+          ok: false,
+          error: {
+            code: "invalid_input",
+            message: "A project key is required.",
+            details: [],
+          },
+        });
+      }
+      const result = await roleService.getRoles(projectKey);
+      return reply
+        .code(
+          result.ok ? 200 : result.error.code === "registry_failed" ? 500 : 400,
+        )
+        .send(result);
+    },
+  );
+
+  app.post("/api/projects/roles/update", async (request, reply) => {
+    const result = await roleService.updateRole(request.body);
     return reply
       .code(
         result.ok ? 200 : result.error.code === "registry_failed" ? 500 : 400,

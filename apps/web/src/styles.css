@@ -1104,6 +1104,113 @@ button:disabled {
   font-size: 12px;
 }
 
+.role-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.role-card {
+  display: grid;
+  width: 100%;
+  gap: 7px;
+  padding: 16px;
+  border: 1px solid #2b4564;
+  border-radius: 13px;
+  background: #0f1e32;
+  color: #e7f0f8;
+  text-align: left;
+}
+
+.role-card.selected {
+  border-color: #65d5d2;
+  background: #122b3b;
+}
+
+.role-card span,
+.role-card small,
+.context-item small {
+  color: #7893ac;
+  font-size: 11px;
+}
+
+.role-editor {
+  display: grid;
+  gap: 14px;
+}
+
+.role-field {
+  display: grid;
+  gap: 7px;
+  color: #dce7f3;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.role-field textarea {
+  min-height: 72px;
+  padding: 11px 13px;
+  border: 1px solid #355170;
+  border-radius: 10px;
+  outline: none;
+  background: #0f1e32;
+  color: #edf5fb;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.role-field textarea:focus {
+  border-color: #65d5d2;
+  box-shadow: 0 0 0 3px rgb(101 213 210 / 15%);
+}
+
+.context-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.context-list {
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+  border: 1px solid #2a425d;
+  border-radius: 12px;
+  background: #0f1e32;
+}
+
+.context-list h3 {
+  margin: 0 0 4px;
+  color: #e5f0fa;
+  font-size: 14px;
+}
+
+.context-item {
+  display: grid;
+  gap: 3px;
+  padding: 8px;
+  border-radius: 8px;
+  background: #10243a;
+}
+
+.context-item.available span {
+  color: #9de4c1;
+}
+
+.context-item.missing span {
+  color: #f0b18e;
+}
+
+@media (max-width: 680px) {
+  .context-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .goal-editor {
   display: grid;
   gap: 14px;

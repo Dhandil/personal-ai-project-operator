@@ -6,8 +6,9 @@ import { ProjectOverview } from "./project-overview-page";
 import { strings } from "./strings";
 import { WorkflowPage } from "./workflow-page";
 import { GoalPage } from "./goal-page";
+import { RolePage } from "./role-page";
 
-type AppRoute = "home" | "health" | "create" | "workflow" | "goals";
+type AppRoute = "home" | "health" | "create" | "workflow" | "goals" | "roles";
 
 type HealthPayload = Readonly<{
   readonly status: "ok";
@@ -28,6 +29,9 @@ export function resolveRoute(pathname: string): AppRoute {
   }
   if (pathname === "/projects/goals") {
     return "goals";
+  }
+  if (pathname === "/projects/roles") {
+    return "roles";
   }
   return pathname === "/health" ? "health" : "home";
 }
@@ -113,6 +117,8 @@ export function App(): ReactElement {
           <WorkflowPage />
         ) : route === "goals" ? (
           <GoalPage />
+        ) : route === "roles" ? (
+          <RolePage />
         ) : (
           <>
             <ProjectOverview
