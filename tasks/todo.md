@@ -2,7 +2,7 @@
 
 > 本文件由 `.personal-workspace/tasks/TASK-xxx.md` 正式任务卡生成。
 > 禁止在本文件中独立修改状态；正式状态以任务卡为准。
-> 生成时间：2026-08-14T12:39:12.094Z
+> 生成时间：2026-08-14T13:33:42.399Z
 
 ## GOAL-001：建立可运行工程
 
@@ -51,7 +51,7 @@
 
 - [x] TASK-029 实现重启恢复索引重建和历史查看
 - [x] TASK-030 完成 V0 浏览器端到端测试
-- [x] TASK-031 使用本项目治理本项目
+- [ ] TASK-031 使用本项目治理本项目
 
 ## GOAL-007：建立 Git 执行隔离
 
@@ -61,7 +61,7 @@
 
 ## GOAL-008：接入 Codex CLI
 
-- [x] TASK-035 定义 Agent Runtime 接口和模拟 Adapter
+- [ ] TASK-035 定义 Agent Runtime 接口和模拟 Adapter
 - [ ] TASK-036 实现单执行链协调器
 - [ ] TASK-037 生成角色任务包和结构化输出 Schema
 - [ ] TASK-038 实现 Codex CLI 环境与沙箱能力检查

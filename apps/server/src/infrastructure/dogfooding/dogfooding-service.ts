@@ -48,6 +48,28 @@ export type DogfoodingInventory = Readonly<{
   readonly sourceManifestHash: string;
 }>;
 
+export type DogfoodingHistoricalSnapshot = Readonly<{
+  readonly schema_version: 1;
+  readonly snapshot_kind: "historical_task_snapshot";
+  readonly task_id: "TASK-031";
+  readonly snapshot_boundary: string;
+  readonly snapshot_at: UtcIsoTimestamp;
+  readonly snapshot_label: string;
+  readonly source_manifest_hash: string;
+  readonly current_source_stage: string;
+  readonly current_goal_id: string | null;
+  readonly current_task_id: string | null;
+  readonly source_files: readonly DogfoodingSourceFile[];
+}>;
+
+type DogfoodingSnapshotMetadata = Readonly<{
+  readonly snapshot_kind: "historical_task_snapshot";
+  readonly snapshot_task_id: "TASK-031";
+  readonly snapshot_boundary: string;
+  readonly snapshot_at: UtcIsoTimestamp;
+  readonly snapshot_label: string;
+}>;
+
 export type DogfoodingImport = Readonly<{
   readonly inventory: DogfoodingInventory;
   readonly createdFiles: readonly string[];
@@ -309,6 +331,60 @@ function inventoryFrom(
   };
 }
 
+function inventoryFromHistoricalSnapshot(
+  snapshot: DogfoodingHistoricalSnapshot,
+): DogfoodingResult<DogfoodingInventory> {
+  const sourceFiles = snapshot.source_files.toSorted(sourceSort);
+  const expectedHash = sourceManifestHash(sourceFiles);
+  if (expectedHash !== snapshot.source_manifest_hash) {
+    return failure(
+      "invalid_source",
+      "Historical snapshot source manifest hash does not match its source files.",
+      [
+        `Expected ${expectedHash}.`,
+        `Received ${snapshot.source_manifest_hash}.`,
+      ],
+    );
+  }
+  if (
+    snapshot.current_source_stage !== "03-spec" ||
+    snapshot.current_goal_id !== "GOAL-006" ||
+    snapshot.current_task_id !== "TASK-031"
+  ) {
+    return failure(
+      "invalid_source",
+      "TASK-031 historical snapshot must identify its original active work.",
+    );
+  }
+  const byKind = (kind: SourceKind) =>
+    sourceFiles.filter((source) => source.kind === kind).toSorted(sourceSort);
+  return {
+    ok: true,
+    value: {
+      sourceFiles,
+      stages: byKind("stage"),
+      goals: byKind("goal"),
+      tasks: byKind("task"),
+      approvals: byKind("approval"),
+      reports: byKind("report"),
+      currentSourceStage: snapshot.current_source_stage,
+      currentGoalId: snapshot.current_goal_id,
+      currentTaskId: snapshot.current_task_id,
+      sourceManifestHash: snapshot.source_manifest_hash,
+    },
+  };
+}
+
+function sourceCounts(inventory: DogfoodingInventory) {
+  return {
+    stages: inventory.stages.length,
+    goals: inventory.goals.length,
+    tasks: inventory.tasks.length,
+    approvals: inventory.approvals.length,
+    reports: inventory.reports.length,
+  };
+}
+
 function stageTitle(key: string): string {
   return (
     DEFAULT_STAGE_DEFINITIONS.find((stage) => stage.key === key)?.title ?? key
@@ -538,6 +614,51 @@ function reportDocument(
   };
 }
 
+function historicalView(
+  document: GovernanceDocument,
+  inventory: DogfoodingInventory,
+  metadata: DogfoodingSnapshotMetadata,
+): GovernanceDocument {
+  return {
+    frontMatter: {
+      ...document.frontMatter,
+      current_source_stage: inventory.currentSourceStage,
+      current_goal_id: inventory.currentGoalId,
+      current_task_id: inventory.currentTaskId,
+      source_manifest_hash: inventory.sourceManifestHash,
+      source_counts: sourceCounts(inventory),
+      ...metadata,
+    },
+    body: document.body,
+  };
+}
+
+function historicalReportDocument(
+  inventory: DogfoodingInventory,
+  reportId: string,
+  now: UtcIsoTimestamp,
+  revision: number,
+  createdAt: UtcIsoTimestamp,
+  metadata: DogfoodingSnapshotMetadata,
+): GovernanceDocument {
+  const document = reportDocument(inventory, reportId, now);
+  const body = document.body.trimEnd();
+  return {
+    frontMatter: {
+      ...document.frontMatter,
+      current_source_stage: inventory.currentSourceStage,
+      current_goal_id: inventory.currentGoalId,
+      current_task_id: inventory.currentTaskId,
+      source_counts: sourceCounts(inventory),
+      revision,
+      created_at: createdAt,
+      updated_at: now,
+      ...metadata,
+    },
+    body: `${body}\n\n## 历史快照边界\n- 本报告是 ${metadata.snapshot_task_id} 在 ${metadata.snapshot_at} 执行时的历史事实快照（${metadata.snapshot_label}）。\n- 快照边界：${metadata.snapshot_boundary}。后续 TASK-035 及其后续事实不属于本报告。\n- 当前工作区的 status.md 可能反映后续事实；本报告只与同一快照标记的自举产物对照。\n`,
+  };
+}
+
 export class DogfoodingService {
   private readonly projectRoot: string;
   private readonly now: () => UtcIsoTimestamp;
@@ -736,6 +857,166 @@ export class DogfoodingService {
     };
   }
 
+  public async rebuildHistoricalSnapshot(
+    snapshot: DogfoodingHistoricalSnapshot,
+  ): Promise<DogfoodingResult<DogfoodingImport>> {
+    const inspected = inventoryFromHistoricalSnapshot(snapshot);
+    if (!inspected.ok) return inspected;
+
+    const inventory = inspected.value;
+    const metadata: DogfoodingSnapshotMetadata = {
+      snapshot_kind: snapshot.snapshot_kind,
+      snapshot_task_id: snapshot.task_id,
+      snapshot_boundary: snapshot.snapshot_boundary,
+      snapshot_at: snapshot.snapshot_at,
+      snapshot_label: snapshot.snapshot_label,
+    };
+    const now = this.now();
+    const repository = new GovernanceRepository(this.projectRoot);
+    const createdFiles: string[] = [];
+    const rebuiltFiles: string[] = [];
+
+    for (const [relativePath, document] of [
+      [
+        ".personal-workspace/project.md",
+        historicalView(projectDocument(now), inventory, metadata),
+      ],
+      [
+        ".personal-workspace/workflow.md",
+        historicalView(workflowDocument(inventory, now), inventory, metadata),
+      ],
+    ] as const) {
+      const written = await this.writeHistoricalGenerated(
+        repository,
+        relativePath,
+        document,
+      );
+      if (!written.ok) return written;
+      (written.value === "created" ? createdFiles : rebuiltFiles).push(
+        relativePath,
+      );
+    }
+
+    const statusCurrent = await repository.read(
+      ".personal-workspace/status.md",
+    );
+    if (!statusCurrent.ok && statusCurrent.error.code !== "not_found") {
+      return failure(
+        "write_failed",
+        "Existing status snapshot could not be read.",
+        [statusCurrent.error.message],
+      );
+    }
+    const statusRevision = statusCurrent.ok
+      ? statusCurrent.value.version.revision + 1
+      : 1;
+    const status = await repository.write(
+      ".personal-workspace/status.md",
+      historicalView(
+        statusDocument(inventory, now, statusRevision),
+        inventory,
+        metadata,
+      ),
+      statusCurrent.ok ? statusCurrent.value.version : null,
+    );
+    if (!status.ok)
+      return failure(
+        "write_failed",
+        status.error.message,
+        status.error.details,
+      );
+    (statusCurrent.ok ? rebuiltFiles : createdFiles).push(
+      ".personal-workspace/status.md",
+    );
+
+    const todo = renderTodo(inventory, now);
+    for (const relativePath of [
+      ".personal-workspace/tasks/todo.md",
+      "tasks/todo.md",
+    ]) {
+      const written = await writeFileAtomically(
+        resolve(this.projectRoot, relativePath),
+        todo,
+      );
+      if (!written.ok)
+        return failure(
+          "write_failed",
+          written.error.message,
+          written.error.details,
+        );
+      rebuiltFiles.push(relativePath);
+    }
+
+    const manifest = {
+      schema_version: 1,
+      task_id: "TASK-031",
+      generated_at: now,
+      source_manifest_hash: inventory.sourceManifestHash,
+      current_source_stage: inventory.currentSourceStage,
+      current_goal_id: inventory.currentGoalId,
+      current_task_id: inventory.currentTaskId,
+      source_files: inventory.sourceFiles,
+      ...metadata,
+    };
+    const manifestWritten = await writeFileAtomically(
+      resolve(this.projectRoot, dogfoodingManifestPath),
+      `${JSON.stringify(manifest, null, 2)}\n`,
+    );
+    if (!manifestWritten.ok)
+      return failure(
+        "write_failed",
+        manifestWritten.error.message,
+        manifestWritten.error.details,
+      );
+    rebuiltFiles.push(dogfoodingManifestPath);
+
+    const reportRelativePath = `${dogfoodingReportDirectory}/REPORT-032.md`;
+    const reportCurrent = await repository.read(reportRelativePath);
+    if (!reportCurrent.ok && reportCurrent.error.code !== "not_found") {
+      return failure("write_failed", reportCurrent.error.message);
+    }
+    const reportId = "REPORT-032";
+    const reportCreatedAt = reportCurrent.ok
+      ? ((frontMatterString(
+          reportCurrent.value.document,
+          "created_at",
+        ) as UtcIsoTimestamp | null) ?? snapshot.snapshot_at)
+      : snapshot.snapshot_at;
+    const reportRevision = reportCurrent.ok
+      ? reportCurrent.value.version.revision + 1
+      : 1;
+    const report = await repository.write(
+      reportRelativePath,
+      historicalReportDocument(
+        inventory,
+        reportId,
+        now,
+        reportRevision,
+        reportCreatedAt,
+        metadata,
+      ),
+      reportCurrent.ok ? reportCurrent.value.version : null,
+    );
+    if (!report.ok)
+      return failure(
+        "write_failed",
+        report.error.message,
+        report.error.details,
+      );
+    (reportCurrent.ok ? rebuiltFiles : createdFiles).push(reportRelativePath);
+
+    return {
+      ok: true,
+      value: {
+        inventory,
+        createdFiles,
+        rebuiltFiles,
+        reportRelativePath,
+        manifestRelativePath: dogfoodingManifestPath,
+      },
+    };
+  }
+
   private async writeIfMissing(
     repository: GovernanceRepository,
     relativePath: string,
@@ -757,6 +1038,44 @@ export class DogfoodingService {
         written.error.details,
       );
     return { ok: true, value: true };
+  }
+
+  private async writeHistoricalGenerated(
+    repository: GovernanceRepository,
+    relativePath: string,
+    document: GovernanceDocument,
+  ): Promise<DogfoodingResult<"created" | "rebuilt">> {
+    const current = await repository.read(relativePath);
+    if (!current.ok && current.error.code !== "not_found")
+      return failure(
+        "write_failed",
+        current.error.message,
+        current.error.details,
+      );
+    if (!current.ok) {
+      const written = await repository.write(relativePath, document, null);
+      if (!written.ok)
+        return failure(
+          "write_failed",
+          written.error.message,
+          written.error.details,
+        );
+      return { ok: true, value: "created" };
+    }
+    const next = await repository.write(
+      relativePath,
+      {
+        frontMatter: {
+          ...document.frontMatter,
+          revision: current.value.version.revision + 1,
+        },
+        body: document.body,
+      },
+      current.value.version,
+    );
+    if (!next.ok)
+      return failure("write_failed", next.error.message, next.error.details);
+    return { ok: true, value: "rebuilt" };
   }
 }
 

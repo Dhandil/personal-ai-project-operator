@@ -9,6 +9,7 @@ import { parseUtcIsoTimestamp } from "@personal-ai-operator/contracts";
 import {
   DogfoodingService,
   dogfoodingManifestPath,
+  type DogfoodingHistoricalSnapshot,
 } from "../src/infrastructure/dogfooding/dogfooding-service.js";
 import {
   type GovernanceDocument,
@@ -295,6 +296,91 @@ test("status can be deleted and rebuilt from the unchanged formal inventory", as
     assert.equal(status.ok, true);
     if (!status.ok) throw new Error(status.error.message);
     assert.equal(status.value.revision, 1);
+  } finally {
+    await rm(fixture.root, { recursive: true, force: true });
+  }
+});
+
+test("historical TASK-031 snapshot keeps report and generated views aligned", async () => {
+  const fixture = await createFixture();
+  try {
+    const service = new DogfoodingService(fixture.root, {
+      now: () => fixedTimestamp,
+    });
+    const inspected = await service.inspect();
+    assert.equal(inspected.ok, true);
+    if (!inspected.ok) throw new Error(inspected.error.message);
+
+    const snapshot: DogfoodingHistoricalSnapshot = {
+      schema_version: 1,
+      snapshot_kind: "historical_task_snapshot",
+      task_id: "TASK-031",
+      snapshot_boundary: "TASK-031 execution before TASK-035",
+      snapshot_at: fixedTimestamp,
+      snapshot_label: "TASK-031 test snapshot",
+      source_manifest_hash: inspected.value.sourceManifestHash,
+      current_source_stage: inspected.value.currentSourceStage,
+      current_goal_id: inspected.value.currentGoalId,
+      current_task_id: inspected.value.currentTaskId,
+      source_files: inspected.value.sourceFiles,
+    };
+    const rebuilt = await service.rebuildHistoricalSnapshot(snapshot);
+    assert.equal(rebuilt.ok, true);
+    if (!rebuilt.ok) throw new Error(rebuilt.error.message);
+
+    const repository = new GovernanceRepository(fixture.root);
+    const paths = [
+      ".personal-workspace/reports/REPORT-032.md",
+      ".personal-workspace/project.md",
+      ".personal-workspace/workflow.md",
+      ".personal-workspace/status.md",
+    ] as const;
+    const documents = await Promise.all(
+      paths.map((path) => repository.read(path)),
+    );
+    for (const document of documents) assert.equal(document.ok, true);
+    if (documents.some((document) => !document.ok))
+      throw new Error("historical generated documents missing");
+    const [report, project, workflow, status] = documents.map(
+      (document) =>
+        (document as { ok: true; value: { document: GovernanceDocument } })
+          .value.document,
+    );
+    const expectedCounts = {
+      stages: 2,
+      goals: 2,
+      tasks: 3,
+      approvals: 1,
+      reports: 1,
+    };
+    for (const document of [report, project, workflow, status]) {
+      assert.equal(document.frontMatter.current_source_stage, "03-spec");
+      assert.equal(document.frontMatter.current_goal_id, "GOAL-006");
+      assert.equal(document.frontMatter.current_task_id, "TASK-031");
+      assert.equal(
+        document.frontMatter.source_manifest_hash,
+        inspected.value.sourceManifestHash,
+      );
+      assert.deepEqual(document.frontMatter.source_counts, expectedCounts);
+      assert.equal(
+        document.frontMatter.snapshot_kind,
+        "historical_task_snapshot",
+      );
+    }
+
+    const manifest = JSON.parse(
+      await readFile(join(fixture.root, dogfoodingManifestPath), "utf8"),
+    ) as DogfoodingHistoricalSnapshot;
+    assert.equal(
+      manifest.source_manifest_hash,
+      report.frontMatter.source_manifest_hash,
+    );
+    assert.equal(manifest.current_goal_id, report.frontMatter.current_goal_id);
+    assert.equal(manifest.current_task_id, report.frontMatter.current_task_id);
+    assert.equal(
+      manifest.source_files.length,
+      inspected.value.sourceFiles.length,
+    );
   } finally {
     await rm(fixture.root, { recursive: true, force: true });
   }

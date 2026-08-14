@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "task_id": "TASK-031",
-  "generated_at": "2026-08-14T12:39:12.094Z",
-  "source_manifest_hash": "a034bf295f4ebc7bfa827d5b2b3df39dbe2cf699d75481c7bcb366ed2fc41043",
+  "generated_at": "2026-08-14T13:33:42.399Z",
+  "source_manifest_hash": "495f7982cfe5e678d79274965cf09e13f15c4aa9ea145d0a51f6a32de520da35",
   "current_source_stage": "03-spec",
-  "current_goal_id": "GOAL-008",
-  "current_task_id": "TASK-035",
+  "current_goal_id": "GOAL-006",
+  "current_task_id": "TASK-031",
   "source_files": [
     {
       "relativePath": ".personal-workspace/approvals/APPROVAL-001.md",
@@ -500,18 +500,6 @@
       "revision": 1
     },
     {
-      "relativePath": ".personal-workspace/reports/REPORT-032.md",
-      "kind": "report",
-      "hash": "2fc09bf748f90ed9bf98abb9ffc3131c1ae6d8615d33c33fbf7e72103876c375",
-      "id": "REPORT-032",
-      "title": "TASK-031 Dogfooding 导入与自举报告",
-      "status": "draft",
-      "stage": null,
-      "goalId": "GOAL-006",
-      "generated": true,
-      "revision": 1
-    },
-    {
       "relativePath": ".personal-workspace/stages/01-idea/01-idea.md",
       "kind": "stage",
       "hash": "b5fcb8638dc61127da5f228a1e2a41cf36417fd9f764dafb6dfbb0c172c157e4",
@@ -910,14 +898,14 @@
     {
       "relativePath": ".personal-workspace/tasks/TASK-031.md",
       "kind": "task",
-      "hash": "a089249467b73a20a748033a6ab938b68dc23252b7392627c3a17403e04acfea",
+      "hash": "5c898f01a76f3bbe8be25e088ce6614bbd715ff33815d67aed11204bd77e8986",
       "id": "TASK-031",
       "title": "使用本项目治理本项目",
-      "status": "completed",
+      "status": "ready",
       "stage": null,
       "goalId": "GOAL-006",
       "generated": false,
-      "revision": 3
+      "revision": 2
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-032.md",
@@ -1111,5 +1099,10 @@
       "generated": false,
       "revision": 1
     }
-  ]
+  ],
+  "snapshot_kind": "historical_task_snapshot",
+  "snapshot_task_id": "TASK-031",
+  "snapshot_boundary": "TASK-031 dogfooding 执行前、TASK-031 完成状态写回前；不包含 TASK-035 及其后续事实",
+  "snapshot_at": "2026-08-14T12:35:37.289Z",
+  "snapshot_label": "TASK-031 首次自举导入"
 }

@@ -1,26 +1,40 @@
 ---
 schema_version: 1
 document_type: status_snapshot
-revision: 2
-generated_at: 2026-08-14T12:39:12.094Z
-updated_at: 2026-08-14T12:39:12.094Z
+revision: 5
+generated_at: 2026-08-14T13:33:42.399Z
+updated_at: 2026-08-14T13:33:42.399Z
 source: formal_project_facts
 status: in_progress
 current_stage: 03-spec
-current_goal: GOAL-008
-current_task: TASK-035
-source_manifest_hash: a034bf295f4ebc7bfa827d5b2b3df39dbe2cf699d75481c7bcb366ed2fc41043
+current_goal: GOAL-006
+current_task: TASK-031
+source_manifest_hash: 495f7982cfe5e678d79274965cf09e13f15c4aa9ea145d0a51f6a32de520da35
+current_source_stage: 03-spec
+current_goal_id: GOAL-006
+current_task_id: TASK-031
+source_counts:
+  stages: 3
+  goals: 9
+  tasks: 47
+  approvals: 1
+  reports: 31
+snapshot_kind: historical_task_snapshot
+snapshot_task_id: TASK-031
+snapshot_boundary: TASK-031 dogfooding 执行前、TASK-031 完成状态写回前；不包含 TASK-035 及其后续事实
+snapshot_at: 2026-08-14T12:35:37.289Z
+snapshot_label: TASK-031 首次自举导入
 ---
 # 项目状态
 
 - 项目：个人 AI 项目运营工具
 - 当前正式源阶段：03-spec
-- 当前目标：GOAL-008
-- 当前任务：TASK-035
+- 当前目标：GOAL-006
+- 当前任务：TASK-031
 - 本文件由正式项目事实自动生成，不是独立事实源。
 
 ## 当前获批短期目标
-- GOAL-008
+- GOAL-006
 
 ## 已完成成果
 - TASK-001 建立 npm Workspace 和 TypeScript 根配置
@@ -53,19 +67,19 @@ source_manifest_hash: a034bf295f4ebc7bfa827d5b2b3df39dbe2cf699d75481c7bcb366ed2f
 - TASK-028 Implement real-time events, execution reports, and summary interval settings
 - TASK-029 实现重启恢复索引重建和历史查看
 - TASK-030 完成 V0 浏览器端到端测试
-- TASK-031 使用本项目治理本项目
 
 ## 当前任务
+- TASK-031 使用本项目治理本项目 — ready
 - TASK-035 定义 Agent Runtime 接口和模拟 Adapter — ready
 
 ## Blocker、风险和待决策事项
 - 以正式问题、审批和决策记录为准。
 
 ## 上一步
-- 已从 92 个正式文件重建导入清单。
+- 已从 91 个正式文件重建导入清单。
 
 ## 推荐下一步
-- 由项目负责人继续处理 TASK-035。
+- 由项目负责人继续处理 TASK-031。
 
 ## 用户待办
 - 验收 TASK-031 的 Dogfooding 报告后，再决定是否进入后续目标。
