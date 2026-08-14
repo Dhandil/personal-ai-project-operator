@@ -3,14 +3,17 @@ schema_version: 1
 document_type: report
 id: REPORT-035
 title: TASK-033 差异、允许路径和禁止动作验证报告
-status: draft
+status: accepted
 report_type: task_verification
-acceptance_state: pending_independent_acceptance
+acceptance_state: accepted
 task_id: TASK-033
 goal_id: GOAL-007
-revision: 1
+revision: 2
 created_at: 2026-08-14T14:24:47Z
-updated_at: 2026-08-14T14:33:58Z
+updated_at: 2026-08-14T14:43:26Z
+verified_commit: 453c4fe
+accepted_by: project_lead
+accepted_at: 2026-08-14T14:43:26Z
 verification_commands:
   - npx tsx --test apps/server/test/git-change-boundary.integration.test.ts
   - npm run test:integration --workspace apps/server
@@ -20,7 +23,7 @@ verification_commands:
 
 ## 结论
 
-TASK-033 已实现，等待独立验收。实现只覆盖 Git 差异采集、允许/禁止路径校验和禁止动作校验；不执行 TASK-034 的规范提交、目标分支合并或 main 审批门。
+独立验收通过。TASK-033 已满足 Git 差异采集、允许/禁止路径校验和禁止动作校验的任务边界；不执行 TASK-034 的规范提交、目标分支合并或 main 审批门。
 
 ## 实现范围
 
@@ -41,3 +44,9 @@ TASK-033 已实现，等待独立验收。实现只覆盖 Git 差异采集、允
 
 - 未执行 TASK-034 的规范 Commit、目标分支 Merge 或 `main` 审批门。
 - 未执行 force、历史重写、远程操作或自动删除未知/越界文件。
+
+## 独立验收
+
+已复核已跟踪、未跟踪、删除、重命名/复制变化，基线差异排除，Windows 大小写与路径穿越处理，允许/禁止路径和禁止动作判定，以及越界审计写入。越界结果会阻止通过但不会自动删除文件；审计写入失败也会阻止成功返回。专项测试和完整验证全部通过，因此本报告状态更新为 `accepted`。
+
+TASK-034 的依赖已满足并解锁；TASK-042 仍按后续目标流程推进。

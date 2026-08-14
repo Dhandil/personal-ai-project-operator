@@ -2,13 +2,16 @@
 schema_version: 1
 id: TASK-034
 title: 实现规范提交目标分支合并和主分支审批门
-status: draft
+status: ready
 goal_id: GOAL-007
 role: executor
 dependencies: [TASK-027, TASK-032, TASK-033]
-revision: 1
+revision: 2
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-13T12:29:07Z
+updated_at: 2026-08-14T14:43:26Z
+approval_id: APPROVAL-002
+target_branch: goal/GOAL-007
+unblocked_by: TASK-033
 ---
 
 # TASK-034：实现规范提交、目标分支合并和主分支审批门
