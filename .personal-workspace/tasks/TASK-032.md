@@ -6,9 +6,9 @@ status: completed
 goal_id: GOAL-007
 role: executor
 dependencies: [TASK-016, TASK-031]
-revision: 3
+revision: 4
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-14T13:56:49Z
+updated_at: 2026-08-14T14:05:08Z
 approval_id: APPROVAL-002
 target_branch: goal/GOAL-007
 unblocked_by: TASK-031
@@ -49,5 +49,5 @@ Worktree 端口、Git Worktree Adapter、命名策略、生命周期服务、集
 
 ## 交接
 
-- 请独立验收 [REPORT-034](../reports/REPORT-034.md)。
-- TASK-033、TASK-034 尚未执行；差异校验、规范提交和 Merge 仍留给后续任务。
+- [REPORT-034](../reports/REPORT-034.md) 独立验收已通过，报告状态为 `accepted`。
+- TASK-033 已按依赖解锁为 `ready`；TASK-034 尚未执行，规范提交和 Merge 仍留给后续任务。

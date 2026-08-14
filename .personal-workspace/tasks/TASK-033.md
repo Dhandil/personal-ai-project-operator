@@ -2,13 +2,16 @@
 schema_version: 1
 id: TASK-033
 title: 实现差异允许路径和禁止动作校验
-status: draft
+status: ready
 goal_id: GOAL-007
 role: executor
 dependencies: [TASK-032]
-revision: 1
+revision: 2
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-13T12:29:07Z
+updated_at: 2026-08-14T14:05:08Z
+approval_id: APPROVAL-002
+target_branch: goal/GOAL-007
+unblocked_by: TASK-032
 ---
 
 # TASK-033：实现差异、允许路径和禁止动作校验

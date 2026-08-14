@@ -3,14 +3,17 @@ schema_version: 1
 document_type: report
 id: REPORT-034
 title: TASK-032 目标分支、任务分支和 Worktree 生命周期验证报告
-status: draft
+status: accepted
 report_type: task_verification
-acceptance_state: pending_independent_acceptance
+acceptance_state: accepted
 task_id: TASK-032
 goal_id: GOAL-007
-revision: 1
+revision: 2
 created_at: 2026-08-14T13:56:49Z
-updated_at: 2026-08-14T13:56:49Z
+updated_at: 2026-08-14T14:05:08Z
+verified_commit: dec4a69
+accepted_by: project_lead
+accepted_at: 2026-08-14T14:05:08Z
 verification_commands:
   - npx tsx --test apps/server/test/git-worktree.integration.test.ts
   - npm run test:integration --workspace apps/server
@@ -20,7 +23,7 @@ verification_commands:
 
 ## 结论
 
-TASK-032 已实现，等待独立验收。实现只覆盖目标分支、任务分支、Worktree 路径和生命周期，不执行 Commit、Merge 或差异边界校验。
+独立验收通过。TASK-032 已满足目标分支、任务分支、Worktree 路径和生命周期的任务边界，不执行 Commit、Merge 或差异边界校验。
 
 ## 实现范围
 
@@ -45,4 +48,6 @@ TASK-032 已实现，等待独立验收。实现只覆盖目标分支、任务�
 
 ## 独立验收
 
-请复核分支命名、确定性路径、服务重启后的查询恢复、并发占用保护、保留行为、脏 Worktree 拒绝清理及干净 Worktree 安全清理；通过后将本报告状态更新为 `accepted`，再解锁后续任务。
+已复核分支命名、确定性路径、服务重启后的查询恢复、并发占用保护、保留行为、脏 Worktree 拒绝清理及干净 Worktree 安全清理。专项测试和完整验证全部通过，因此本报告状态更新为 `accepted`。
+
+TASK-033 的依赖已满足并解锁；TASK-034 仍需等待 TASK-033。GOAL-008 及其任务不受本次验收影响。
