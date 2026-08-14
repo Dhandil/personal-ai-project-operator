@@ -34,12 +34,12 @@ This file is generated from the formal task cards. Update the corresponding
 | TASK-027 | completed |
 | TASK-028 | completed |
 | TASK-029 | completed |
-| TASK-030 | draft |
+| TASK-030 | ready |
 | TASK-031 | draft |
 | TASK-032 | draft |
 | TASK-033 | draft |
 | TASK-034 | draft |
-| TASK-035 | draft |
+| TASK-035 | ready |
 | TASK-036 | draft |
 | TASK-037 | draft |
 | TASK-038 | draft |

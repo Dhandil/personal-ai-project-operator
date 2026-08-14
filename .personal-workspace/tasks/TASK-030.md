@@ -2,13 +2,16 @@
 schema_version: 1
 id: TASK-030
 title: 完成 V0 浏览器端到端测试
-status: draft
+status: ready
 goal_id: GOAL-006
 role: reviewer
 dependencies: [TASK-019, TASK-020, TASK-021, TASK-022, TASK-023, TASK-024, TASK-025, TASK-026, TASK-027, TASK-028, TASK-029]
-revision: 1
+revision: 2
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-13T12:29:07Z
+updated_at: 2026-08-14T12:05:00Z
+approval_id: APPROVAL-001
+target_branch: goal/GOAL-001
+unblocked_by: TASK-029
 ---
 
 # TASK-030：完成 V0 浏览器端到端测试

@@ -2,13 +2,16 @@
 schema_version: 1
 id: TASK-035
 title: 定义 Agent Runtime 接口和模拟 Adapter
-status: draft
+status: ready
 goal_id: GOAL-008
 role: architect
 dependencies: [TASK-009, TASK-028]
-revision: 1
+revision: 2
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-13T12:29:07Z
+updated_at: 2026-08-14T12:05:00Z
+approval_id: APPROVAL-001
+target_branch: goal/GOAL-001
+unblocked_by: TASK-028
 ---
 
 # TASK-035：定义 Agent Runtime 接口和模拟 Adapter
