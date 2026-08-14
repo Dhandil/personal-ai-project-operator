@@ -2,13 +2,16 @@
 schema_version: 1
 id: TASK-025
 title: 实现任务卡依赖及轻量自定义字段
-status: draft
+status: ready
 goal_id: GOAL-005
 role: executor
 dependencies: [TASK-007, TASK-020, TASK-023]
-revision: 1
+revision: 2
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-13T12:29:07Z
+updated_at: 2026-08-14T10:42:10Z
+approval_id: APPROVAL-001
+target_branch: goal/GOAL-001
+unblocked_by: TASK-023
 ---
 
 # TASK-025：实现任务卡、依赖及轻量自定义字段

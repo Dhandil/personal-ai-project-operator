@@ -2,13 +2,16 @@
 schema_version: 1
 id: TASK-029
 title: 实现重启恢复索引重建和历史查看
-status: draft
+status: ready
 goal_id: GOAL-006
 role: executor
 dependencies: [TASK-013, TASK-014, TASK-015, TASK-020]
-revision: 1
+revision: 2
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-13T12:29:07Z
+updated_at: 2026-08-14T10:42:10Z
+approval_id: APPROVAL-001
+target_branch: goal/GOAL-001
+unblocked_by: TASK-020
 ---
 
 # TASK-029：实现重启恢复、索引重建和历史查看

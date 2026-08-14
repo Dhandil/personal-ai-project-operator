@@ -29,11 +29,11 @@ This file is generated from the formal task cards. Update the corresponding
 | TASK-022 | completed |
 | TASK-023 | completed |
 | TASK-024 | completed |
-| TASK-025 | draft |
+| TASK-025 | ready |
 | TASK-026 | completed |
-| TASK-027 | draft |
-| TASK-028 | completed |
-| TASK-029 | draft |
+| TASK-027 | ready |
+| TASK-028 | changes_requested |
+| TASK-029 | ready |
 | TASK-030 | draft |
 | TASK-031 | draft |
 | TASK-032 | draft |
