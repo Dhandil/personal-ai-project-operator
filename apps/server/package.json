@@ -8,9 +8,10 @@
     "build": "tsc -p tsconfig.json",
     "start": "node dist/main.js",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "test:integration": "tsx --test test/app.test.ts test/governance-codec.integration.test.ts test/governance-repository.integration.test.ts"
+    "test:integration": "tsx --test test/app.test.ts test/governance-codec.integration.test.ts test/governance-repository.integration.test.ts test/audit-log.integration.test.ts"
   },
   "dependencies": {
+    "@personal-ai-operator/contracts": "0.0.0",
     "fastify": "^5.0.0",
     "yaml": "^2.9.0"
   },
