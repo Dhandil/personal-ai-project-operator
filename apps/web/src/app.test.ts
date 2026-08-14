@@ -35,4 +35,8 @@ describe("resolveRoute", () => {
   it("recognizes the reports route", () => {
     expect(resolveRoute("/projects/reports")).toBe("reports");
   });
+
+  it("recognizes the tasks route", () => {
+    expect(resolveRoute("/projects/tasks")).toBe("tasks");
+  });
 });

@@ -1388,6 +1388,58 @@ button:disabled {
   line-height: 1.5;
 }
 
+.task-list {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.task-card {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+  border: 1px solid #2b4564;
+  border-radius: 14px;
+  background: #0f1e32;
+}
+
+.task-card p {
+  margin: 0;
+  color: #aabbd0;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.task-editor {
+  display: grid;
+  gap: 12px;
+}
+
+.task-editor label {
+  display: grid;
+  gap: 6px;
+  color: #dce7f3;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.task-editor textarea,
+.task-editor select {
+  width: 100%;
+  padding: 11px 13px;
+  border: 1px solid #355170;
+  border-radius: 10px;
+  background: #0f1e32;
+  color: #edf5fb;
+}
+
+.task-editor textarea {
+  min-height: 64px;
+  resize: vertical;
+}
+
 .summary-status-row {
   justify-content: flex-start;
   margin: 22px 0;

@@ -9,6 +9,7 @@ import { GoalPage } from "./goal-page";
 import { RolePage } from "./role-page";
 import { IssuePage } from "./issue-page";
 import { ReportPage } from "./report-page";
+import { TaskPage } from "./task-page";
 
 type AppRoute =
   | "home"
@@ -18,7 +19,8 @@ type AppRoute =
   | "goals"
   | "roles"
   | "issues"
-  | "reports";
+  | "reports"
+  | "tasks";
 
 type HealthPayload = Readonly<{
   readonly status: "ok";
@@ -48,6 +50,9 @@ export function resolveRoute(pathname: string): AppRoute {
   }
   if (pathname === "/projects/reports") {
     return "reports";
+  }
+  if (pathname === "/projects/tasks") {
+    return "tasks";
   }
   return pathname === "/health" ? "health" : "home";
 }
@@ -139,6 +144,8 @@ export function App(): ReactElement {
           <IssuePage />
         ) : route === "reports" ? (
           <ReportPage />
+        ) : route === "tasks" ? (
+          <TaskPage />
         ) : (
           <>
             <ProjectOverview
