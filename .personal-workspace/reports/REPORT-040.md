@@ -11,7 +11,7 @@ goal_id: GOAL-008
 revision: 1
 created_at: 2026-08-14T17:27:23Z
 updated_at: 2026-08-14T17:27:23Z
-verified_commit: pending
+verified_commit: 3aa0006
 verification_commands:
   - npx tsx --test apps/server/test/codex-cli-preflight.integration.test.ts
   - npm run test:codex-cli -- preflight
