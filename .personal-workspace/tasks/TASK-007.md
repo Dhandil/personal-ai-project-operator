@@ -2,16 +2,17 @@
 schema_version: 1
 id: TASK-007
 title: 实现短期目标角色和任务卡模型
-status: completed
+status: changes_requested
 goal_id: GOAL-002
 role: executor
 dependencies: [TASK-005, TASK-006]
-revision: 3
+revision: 4
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-14T01:55:40Z
+updated_at: 2026-08-14T02:00:36Z
 approval_id: APPROVAL-001
 target_branch: goal/GOAL-001
 unblocked_by: TASK-006
+verification_report_id: REPORT-007
 ---
 
 # TASK-007：实现短期目标、角色和任务卡模型
