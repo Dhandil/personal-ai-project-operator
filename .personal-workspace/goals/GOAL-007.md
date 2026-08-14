@@ -2,10 +2,10 @@
 schema_version: 1
 id: GOAL-007
 title: 建立 Git 执行隔离
-status: in_review
-revision: 3
+status: completed
+revision: 4
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-14T15:30:06Z
+updated_at: 2026-08-14T15:52:02Z
 tasks: [TASK-032, TASK-033, TASK-034]
 approval_ids: [APPROVAL-002]
 target_branch: goal/GOAL-007
@@ -34,5 +34,5 @@ verification_report_id: REPORT-037
 ## 检查点
 
 - TASK-032、TASK-033、TASK-034 均已完成并通过独立验收；
-- GOAL-007 检查点报告为 REPORT-037，等待用户验收；
-- 用户验收前不得启动 GOAL-008。
+- GOAL-007 检查点报告 REPORT-037 已通过验收；
+- GOAL-008 未启动，仍保持 `draft`。

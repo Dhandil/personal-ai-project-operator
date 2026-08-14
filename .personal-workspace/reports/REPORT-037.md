@@ -3,15 +3,17 @@ schema_version: 1
 document_type: report
 id: REPORT-037
 title: GOAL-007 Git 执行隔离检查点报告
-status: draft
+status: accepted
 report_type: goal_verification
-acceptance_state: pending_user_acceptance
+acceptance_state: accepted
 goal_id: GOAL-007
-revision: 1
+revision: 2
 created_at: 2026-08-14T15:30:06Z
-updated_at: 2026-08-14T15:30:06Z
+updated_at: 2026-08-14T15:52:02Z
 verified_by: project_lead
 verified_commit: 9790833
+accepted_by: project_lead
+accepted_at: 2026-08-14T15:52:02Z
 verification_commands:
   - npx tsx --test apps/server/test/git-worktree.integration.test.ts
   - npx tsx --test apps/server/test/git-change-boundary.integration.test.ts
@@ -22,7 +24,7 @@ verification_commands:
 
 ## 结论
 
-GOAL-007 的三个任务已完成并通过独立验收，目标范围内的 Git 分支、Worktree、差异边界、规范提交和审批合并能力均已形成。现等待用户完成目标检查点验收。
+GOAL-007 的三个任务已完成并通过独立验收，目标范围内的 Git 分支、Worktree、差异边界、规范提交和审批合并能力均已形成。检查点验收通过。
 
 ## 完成范围
 
@@ -46,4 +48,4 @@ GOAL-007 的三个任务已完成并通过独立验收，目标范围内的 Git 
 
 ## 用户验收
 
-请用户确认 GOAL-007 的 Git 执行隔离检查点符合预期。用户验收通过后，才可决定是否启动 GOAL-008；本报告不自动启动后续目标。
+GOAL-007 的 Git 执行隔离检查点已验收通过。GOAL-008 不因本报告自动启动，是否启动仍需后续明确决定。
