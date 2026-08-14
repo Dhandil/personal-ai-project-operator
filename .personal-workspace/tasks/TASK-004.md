@@ -2,13 +2,16 @@
 schema_version: 1
 id: TASK-004
 title: 配置格式 Lint 类型检查和测试命令
-status: draft
+status: ready
 goal_id: GOAL-001
 role: executor
 dependencies: [TASK-001, TASK-002, TASK-003]
-revision: 1
+revision: 2
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-13T12:29:07Z
+updated_at: 2026-08-14T00:39:25Z
+approval_id: APPROVAL-001
+target_branch: goal/GOAL-001
+unblocked_by: TASK-003
 ---
 
 # TASK-004：配置格式、Lint、类型检查和测试命令
