@@ -62,9 +62,9 @@
 ## GOAL-008：接入 Codex CLI
 
 - [x] TASK-035 定义 Agent Runtime 接口和模拟 Adapter
-- [ ] TASK-036 实现单执行链协调器
-- [ ] TASK-037 生成角色任务包和结构化输出 Schema
-- [ ] TASK-038 实现 Codex CLI 环境与沙箱能力检查
+- [ ] TASK-036 实现单执行链协调器（ready）
+- [ ] TASK-037 生成角色任务包和结构化输出 Schema（ready）
+- [ ] TASK-038 实现 Codex CLI 环境与沙箱能力检查（ready）
 - [ ] TASK-039 实现 codex exec 启动及 JSONL 事件解析
 - [ ] TASK-040 实现续接取消中断标记和恢复报告
 - [ ] TASK-041 实现临时会话和官方删除清理

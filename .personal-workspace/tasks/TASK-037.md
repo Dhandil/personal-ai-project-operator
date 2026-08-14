@@ -2,13 +2,16 @@
 schema_version: 1
 id: TASK-037
 title: 生成角色任务包和结构化输出 Schema
-status: draft
+status: ready
 goal_id: GOAL-008
 role: executor
 dependencies: [TASK-024, TASK-025, TASK-035]
-revision: 1
+revision: 2
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-13T12:29:07Z
+updated_at: 2026-08-14T13:13:29Z
+approval_id: APPROVAL-001
+target_branch: goal/GOAL-001
+unblocked_by: TASK-035
 ---
 
 # TASK-037：生成角色任务包和结构化输出 Schema

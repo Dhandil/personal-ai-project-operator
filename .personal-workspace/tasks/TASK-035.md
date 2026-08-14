@@ -6,9 +6,9 @@ status: completed
 goal_id: GOAL-008
 role: architect
 dependencies: [TASK-009, TASK-028]
-revision: 3
+revision: 4
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-14T13:05:00Z
+updated_at: 2026-08-14T13:13:29Z
 approval_id: APPROVAL-001
 target_branch: goal/GOAL-001
 unblocked_by: TASK-028
@@ -48,5 +48,5 @@ Agent Runtime 端口、事件契约、结果契约、Fake Adapter、测试。
 
 ## 交接
 
-- 请独立验收 [REPORT-033](../reports/REPORT-033.md)。
+- [REPORT-033](../reports/REPORT-033.md) 独立验收已通过，报告状态为 `accepted`。
 - TASK-031 的 REPORT-032 仍待用户验收；GOAL-007、TASK-032、TASK-033 未启动。

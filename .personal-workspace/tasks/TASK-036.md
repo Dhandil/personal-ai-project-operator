@@ -2,13 +2,16 @@
 schema_version: 1
 id: TASK-036
 title: 实现单执行链协调器
-status: draft
+status: ready
 goal_id: GOAL-008
 role: executor
 dependencies: [TASK-023, TASK-025, TASK-026, TASK-035]
-revision: 1
+revision: 2
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-13T12:29:07Z
+updated_at: 2026-08-14T13:13:29Z
+approval_id: APPROVAL-001
+target_branch: goal/GOAL-001
+unblocked_by: TASK-035
 ---
 
 # TASK-036：实现单执行链协调器

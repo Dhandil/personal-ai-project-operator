@@ -2,13 +2,16 @@
 schema_version: 1
 id: TASK-038
 title: 实现 Codex CLI 环境与沙箱能力检查
-status: draft
+status: ready
 goal_id: GOAL-008
 role: executor
 dependencies: [TASK-035]
-revision: 1
+revision: 2
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-13T12:29:07Z
+updated_at: 2026-08-14T13:13:29Z
+approval_id: APPROVAL-001
+target_branch: goal/GOAL-001
+unblocked_by: TASK-035
 ---
 
 # TASK-038：实现 Codex CLI 环境与沙箱能力检查

@@ -3,14 +3,15 @@ schema_version: 1
 document_type: report
 id: REPORT-033
 title: TASK-035 Agent Runtime 接口和模拟 Adapter 验证报告
-status: draft
+status: accepted
 report_type: task_verification
-acceptance_state: pending_independent_acceptance
+acceptance_state: accepted
 task_id: TASK-035
 goal_id: GOAL-008
-revision: 1
+revision: 2
 created_at: 2026-08-14T13:05:00Z
-updated_at: 2026-08-14T13:05:00Z
+updated_at: 2026-08-14T13:13:29Z
+verified_commit: 8b06b07
 verification_commands:
   - npm run test:unit -- agent-runtime
   - npm run test:integration -- fake-agent
@@ -20,7 +21,7 @@ verification_commands:
 
 ## 结论
 
-TASK-035 已实现，等待独立验收。
+独立验收通过。TASK-035 的 Runtime contracts、端口和确定性 Fake Adapter 满足任务边界与验收条件，可以作为后续协调器和真实适配器的基础。
 
 ## 实现范围
 
@@ -43,4 +44,6 @@ TASK-035 已实现，等待独立验收。
 
 ## 独立验收
 
-请复核 contracts、Fake Adapter 事件序列和专项测试；通过后将本报告状态更新为 `accepted`，再继续后续任务。
+已复核 contracts、Fake Adapter 实现、事件序列和专项测试：核心契约未包含 Codex/CLI/线程/供应商专有字段；成功、失败、中断、越权、审核失败、非法输出、错误输出、取消/续接和清理失败均有确定性覆盖；取消/续接保持同一 EXEC ID 且事件序列连续。专项测试与完整验证全部通过，因此本报告状态更新为 `accepted`。
+
+TASK-036、TASK-037、TASK-038 的依赖已满足并解锁；TASK-039 仍需等待 TASK-037 与 TASK-038。REPORT-032 仍待用户验收，GOAL-007、TASK-032、TASK-033 未启动。
