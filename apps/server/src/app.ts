@@ -98,6 +98,10 @@ export function buildApp(options: AppOptions = {}): FastifyInstance {
   const codexCliPreflightService =
     options.codexCliPreflightService ?? new CodexCliPreflightService();
 
+  app.addHook("onClose", async () => {
+    await executionCoordinatorService.shutdown();
+  });
+
   app.get("/api/projects", async (_request, reply) => {
     const result = await projectQueryService.list();
     return reply.code(result.ok ? 200 : 500).send(result);
@@ -404,6 +408,10 @@ export function buildApp(options: AppOptions = {}): FastifyInstance {
   });
   app.post("/api/projects/execution/cancel", async (request, reply) => {
     const result = await executionCoordinatorService.cancel(request.body);
+    return reply.code(result.ok ? 200 : 400).send(result);
+  });
+  app.post("/api/projects/execution/retry", async (request, reply) => {
+    const result = await executionCoordinatorService.retry(request.body);
     return reply.code(result.ok ? 200 : 400).send(result);
   });
   app.get<{ Querystring: { readonly projectKey?: unknown } }>(

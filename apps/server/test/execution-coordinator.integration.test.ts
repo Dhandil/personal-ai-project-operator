@@ -260,6 +260,54 @@ test("pauses an interrupted execution and resumes the same execution", async () 
   }
 });
 
+test("restart exposes recovery choices and blocks the next task until resume", async () => {
+  const value = await fixture();
+  try {
+    const runtime = new FakeAgentAdapter({
+      now: () => timestamp,
+      defaultScenario: { outcome: "interrupted", resumeOutcome: "success" },
+    });
+    const firstService = coordinator(value, runtime);
+    const interrupted = await firstService.start({
+      projectKey: value.projectKey,
+      taskId: (await createReadyTask(value)).id,
+    });
+    assert.equal(interrupted.ok, true);
+    if (!interrupted.ok) throw new Error(interrupted.error.message);
+    const nextTask = await createReadyTask(value, { title: "Next task" });
+
+    const restarted = coordinator(value, runtime);
+    const blocked = await restarted.start({ projectKey: value.projectKey });
+    assert.equal(blocked.ok, false);
+    if (!blocked.ok) assert.equal(blocked.error.code, "recovery_required");
+    const state = await restarted.getState(value.projectKey);
+    assert.equal(state.ok, true);
+    if (state.ok) {
+      assert.equal(
+        state.value.recovery?.executionId,
+        interrupted.value.run.executionId,
+      );
+      assert.deepEqual(state.value.recovery?.choices, [
+        "resume",
+        "retry",
+        "cancel",
+      ]);
+    }
+
+    const resumed = await restarted.resume({
+      projectKey: value.projectKey,
+      executionId: interrupted.value.run.executionId,
+    });
+    assert.equal(resumed.ok, true);
+    if (!resumed.ok) throw new Error(resumed.error.message);
+    assert.equal(resumed.value.run.status, "completed");
+    assert.equal(resumed.value.run.taskStatus, "in_review");
+    assert.equal(nextTask.id !== resumed.value.run.taskId, true);
+  } finally {
+    await rm(value.root, { recursive: true, force: true });
+  }
+});
+
 test("an open blocker pauses the task before an agent can start", async () => {
   const value = await fixture();
   try {

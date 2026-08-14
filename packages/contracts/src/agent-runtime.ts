@@ -59,6 +59,7 @@ export type AgentStartRequest = Readonly<{
 
 export type AgentResumeRequest = Readonly<{
   readonly executionId: ExecutionId;
+  readonly sessionId?: string | null;
 }>;
 
 export type AgentControlRequest = Readonly<{
@@ -89,6 +90,7 @@ export type AgentResult = Readonly<{
 
 export type AgentSession = Readonly<{
   readonly executionId: ExecutionId;
+  readonly sessionId: string | null;
   readonly events: AsyncIterable<AgentEvent>;
   readonly result: Promise<AgentResult>;
 }>;

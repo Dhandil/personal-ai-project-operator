@@ -14,6 +14,7 @@ export type CodexProcess = Readonly<{
   readonly stdout: Readable;
   readonly stderr: Readable;
   readonly exit: Promise<CodexProcessExit>;
+  readonly kill: (signal?: NodeJS.Signals | number) => boolean;
 }>;
 
 export type CodexProcessFactory = (
@@ -54,5 +55,6 @@ export function spawnCodexProcess(command: CodexExecCommand): CodexProcess {
     stdout: child.stdout,
     stderr: child.stderr,
     exit,
+    kill: (signal = "SIGTERM") => child.kill(signal),
   };
 }

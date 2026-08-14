@@ -23,6 +23,7 @@ import { isFormalId } from "@personal-ai-operator/contracts";
 import { AgentRuntimeValidationError } from "./agent-runtime-port.js";
 import {
   buildCodexExecArgs,
+  buildCodexExecResumeArgs,
   type CodexExecArgsOptions,
   type CodexExecCommand,
 } from "./codex-exec-args.js";
@@ -84,6 +85,16 @@ type ExecutionState = {
   readonly executionId: ExecutionId;
   readonly events: AsyncEventQueue<AgentEvent>;
   sequence: number;
+  sessionId: string | null;
+};
+
+type CodexExecution = {
+  readonly executionId: ExecutionId;
+  readonly request: AgentStartRequest;
+  process: CodexProcess;
+  state: ExecutionState;
+  status: "running" | AgentResult["status"];
+  cancelRequested: boolean;
 };
 
 function timestamp(): UtcIsoTimestamp {
@@ -170,6 +181,7 @@ export class CodexCliAdapter implements AgentRuntime {
   private readonly now: () => UtcIsoTimestamp;
   private readonly processFactory: CodexProcessFactory;
   private readonly outputSchemaPath: string | undefined;
+  private readonly executions = new Map<ExecutionId, CodexExecution>();
   private nextExecutionNumber = 1;
 
   public constructor(options: CodexCliAdapterOptions = {}) {
@@ -196,26 +208,117 @@ export class CodexCliAdapter implements AgentRuntime {
       executionId,
       events: new AsyncEventQueue<AgentEvent>(),
       sequence: 0,
+      sessionId: null,
     };
-    const result = this.run(request, command, process, state);
-    return { executionId, events: state.events, result };
+    const execution: CodexExecution = {
+      executionId,
+      request,
+      process,
+      state,
+      status: "running",
+      cancelRequested: false,
+    };
+    this.executions.set(executionId, execution);
+    const result = this.run(execution, command);
+    return this.session(execution, result);
   }
 
   public async resume(request: AgentResumeRequest): Promise<AgentSession> {
-    throw new AgentRuntimeValidationError(
-      `Codex exec resume for ${request.executionId} is reserved for TASK-040.`,
+    const execution = this.executions.get(request.executionId);
+    if (execution === undefined) {
+      throw new AgentRuntimeValidationError(
+        `Execution ${request.executionId} does not exist.`,
+      );
+    }
+    if (execution.status !== "interrupted") {
+      throw new AgentRuntimeValidationError(
+        `Execution ${request.executionId} is not resumable.`,
+      );
+    }
+    const sessionId = request.sessionId ?? execution.state.sessionId;
+    if (sessionId === null || sessionId.trim().length === 0) {
+      throw new AgentRuntimeValidationError(
+        `Execution ${request.executionId} has no precise session ID.`,
+      );
+    }
+    if (
+      request.sessionId !== undefined &&
+      request.sessionId !== execution.state.sessionId
+    ) {
+      throw new AgentRuntimeValidationError(
+        `Execution ${request.executionId} session does not match the stored session.`,
+      );
+    }
+    const argsOptions: CodexExecArgsOptions =
+      this.outputSchemaPath === undefined
+        ? {}
+        : { outputSchemaPath: this.outputSchemaPath };
+    const built = buildCodexExecResumeArgs(
+      execution.request,
+      sessionId,
+      argsOptions,
     );
+    const command: CodexExecCommand = {
+      ...built,
+      executable: this.executable,
+    };
+    const process = await this.processFactory(command);
+    const state: ExecutionState = {
+      executionId: execution.executionId,
+      events: new AsyncEventQueue<AgentEvent>(),
+      sequence: execution.state.sequence,
+      sessionId,
+    };
+    execution.process = process;
+    execution.state = state;
+    execution.status = "running";
+    execution.cancelRequested = false;
+    const result = this.run(execution, command);
+    return this.session(execution, result);
   }
 
   public async cancel(
     request: AgentControlRequest,
   ): Promise<AgentControlResult> {
+    const execution = this.executions.get(request.executionId);
+    if (execution === undefined) {
+      return {
+        ok: false,
+        code: "not_found",
+        executionId: request.executionId,
+        message: "Execution does not exist.",
+      };
+    }
+    if (execution.status !== "running") {
+      return {
+        ok: false,
+        code: "not_running",
+        executionId: request.executionId,
+        message: "Execution is not running.",
+      };
+    }
+    execution.cancelRequested = true;
+    if (!execution.process.kill("SIGTERM")) {
+      return {
+        ok: false,
+        code: "not_running",
+        executionId: request.executionId,
+        message: "Codex process could not be terminated.",
+      };
+    }
     return {
-      ok: false,
-      code: "not_running",
+      ok: true,
       executionId: request.executionId,
-      message: "Codex exec cancellation is reserved for TASK-040.",
+      status: "interrupted",
     };
+  }
+
+  public async shutdown(): Promise<void> {
+    for (const execution of this.executions.values()) {
+      if (execution.status !== "running") continue;
+      execution.cancelRequested = true;
+      execution.process.kill("SIGTERM");
+    }
   }
 
   public async cleanup(
@@ -226,6 +329,20 @@ export class CodexCliAdapter implements AgentRuntime {
       code: "not_terminal",
       executionId: request.executionId,
       message: "Codex exec cleanup is reserved for TASK-041.",
+    };
+  }
+
+  private session(
+    execution: CodexExecution,
+    result: Promise<AgentResult>,
+  ): AgentSession {
+    return {
+      executionId: execution.executionId,
+      get sessionId() {
+        return execution.state.sessionId;
+      },
+      events: execution.state.events,
+      result,
     };
   }
 
@@ -263,11 +380,10 @@ export class CodexCliAdapter implements AgentRuntime {
   }
 
   private async run(
-    request: AgentStartRequest,
+    execution: CodexExecution,
     command: CodexExecCommand,
-    process: CodexProcess,
-    state: ExecutionState,
   ): Promise<AgentResult> {
+    const { request, process, state } = execution;
     const description = commandDescription(command);
     const pid = process.pid ?? null;
     this.append(state, "started", "Codex exec process started.", {
@@ -281,7 +397,7 @@ export class CodexCliAdapter implements AgentRuntime {
     const stderrDecoder = new StringDecoder("utf8");
     const stderrChunks: string[] = [];
     const changedFiles = new Set<string>();
-    let threadId: string | null = null;
+    let threadId: string | null = state.sessionId;
     let finalOutput: AgentOutput | null = null;
     let recordCount = 0;
     let parseFailure: CodexJsonlParseError | null = null;
@@ -293,7 +409,10 @@ export class CodexCliAdapter implements AgentRuntime {
           for (const record of parser.push(chunk as Uint8Array)) {
             recordCount += 1;
             const projection = projectCodexRecord(record);
-            if (projection.threadId !== null) threadId = projection.threadId;
+            if (projection.threadId !== null) {
+              threadId = projection.threadId;
+              state.sessionId = projection.threadId;
+            }
             for (const path of projection.changedFiles) changedFiles.add(path);
             if (projection.output !== null) finalOutput = projection.output;
             if (projection.error !== null) codexError = projection.error;
@@ -310,7 +429,10 @@ export class CodexCliAdapter implements AgentRuntime {
         for (const record of parser.finish()) {
           recordCount += 1;
           const projection = projectCodexRecord(record);
-          if (projection.threadId !== null) threadId = projection.threadId;
+          if (projection.threadId !== null) {
+            threadId = projection.threadId;
+            state.sessionId = projection.threadId;
+          }
           for (const path of projection.changedFiles) changedFiles.add(path);
           if (projection.output !== null) finalOutput = projection.output;
           if (projection.error !== null) codexError = projection.error;
@@ -361,7 +483,14 @@ export class CodexCliAdapter implements AgentRuntime {
     let status: AgentResult["status"] = "completed";
     let error: AgentFailure | null = null;
     let message = "Codex exec completed.";
-    if (parseFailure !== null) {
+    if (execution.cancelRequested || exit.signal !== null) {
+      status = "interrupted";
+      message = execution.cancelRequested
+        ? "Codex exec was cancelled."
+        : `Codex exec terminated by ${exit.signal}.`;
+      error = failure("interrupted", message);
+      diagnostics.push(message);
+    } else if (parseFailure !== null) {
       status = "invalid_output";
       message = parseFailure.message;
       error = failure("malformed_output", message);
@@ -371,11 +500,6 @@ export class CodexCliAdapter implements AgentRuntime {
       message = exit.error;
       error = failure("execution_failed", message);
       diagnostics.push(`processError=${exit.error}`);
-    } else if (exit.signal !== null) {
-      status = "interrupted";
-      message = `Codex exec terminated by ${exit.signal}.`;
-      error = failure("interrupted", message);
-      diagnostics.push(message);
     } else if (exit.code !== 0) {
       status = "failed";
       message = `Codex exec exited with code ${String(exit.code)}.`;
@@ -391,6 +515,7 @@ export class CodexCliAdapter implements AgentRuntime {
       diagnostics.push(message);
     }
 
+    execution.status = status;
     this.append(
       state,
       status === "completed"

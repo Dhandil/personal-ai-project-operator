@@ -47,3 +47,36 @@ export function buildCodexExecArgs(
     sandbox,
   };
 }
+
+export function buildCodexExecResumeArgs(
+  request: AgentStartRequest,
+  sessionId: string,
+  options: CodexExecArgsOptions = {},
+): CodexExecCommand {
+  if (sessionId.trim().length === 0) {
+    throw new AgentRuntimeValidationError(
+      "A precise Codex session ID is required for resume.",
+    );
+  }
+  const sandbox = sandboxForRole(request.role);
+  const args = [
+    "exec",
+    "resume",
+    sessionId,
+    "--json",
+    "--cd",
+    request.workingDirectory,
+    "--sandbox",
+    sandbox,
+  ];
+  if (options.outputSchemaPath !== undefined) {
+    args.push("--output-schema", options.outputSchemaPath);
+  }
+  args.push(request.prompt);
+  return {
+    executable: "codex",
+    args,
+    workingDirectory: request.workingDirectory,
+    sandbox,
+  };
+}

@@ -39,6 +39,7 @@ class FakeProcess implements CodexProcess {
   public readonly stderr = new PassThrough();
   public readonly pid = 4321;
   public readonly exit: Promise<CodexProcessExit>;
+  public killedWith: NodeJS.Signals | number | null = null;
   private resolveExit!: (value: CodexProcessExit) => void;
 
   public constructor() {
@@ -47,10 +48,19 @@ class FakeProcess implements CodexProcess {
     });
   }
 
-  public finish(code = 0, signal: NodeJS.Signals | null = null): void {
+  public finish(
+    code: number | null = 0,
+    signal: NodeJS.Signals | null = null,
+  ): void {
     this.stdout.end();
     this.stderr.end();
     this.resolveExit({ code, signal, error: null });
+  }
+
+  public kill(signal: NodeJS.Signals | number = "SIGTERM"): boolean {
+    this.killedWith = signal;
+    this.finish(null, typeof signal === "string" ? signal : null);
+    return true;
   }
 }
 
@@ -178,4 +188,61 @@ test("nonzero process exit captures stderr and fails execution", async () => {
   assert.equal(collected.result.error?.code, "error_output");
   assert.match(collected.result.diagnostics.join("\n"), /permission denied/);
   assert.equal(collected.result.output?.stderr, "permission denied\n");
+});
+
+test("resume uses the exact thread session ID and keeps the execution ID", async () => {
+  const first = new FakeProcess();
+  const second = new FakeProcess();
+  const commands: CodexExecCommand[] = [];
+  const adapter = new CodexCliAdapter({
+    now: () => timestamp as UtcIsoTimestamp,
+    processFactory: (command) => {
+      commands.push(command);
+      return commands.length === 1 ? first : second;
+    },
+  });
+  const interrupted = await adapter.start(request);
+  first.stdout.write('{"type":"thread.started","thread_id":"thread-resume"}\n');
+  first.finish(null, "SIGINT");
+  const interruptedResult = await interrupted.result;
+  assert.equal(interruptedResult.status, "interrupted");
+  assert.equal(interrupted.sessionId, "thread-resume");
+
+  const resumed = await adapter.resume({
+    executionId: interrupted.executionId,
+    sessionId: interrupted.sessionId,
+  });
+  second.stdout.write('{"type":"result","result":{"summary":"resumed"}}\n');
+  second.finish();
+  const resumedResult = await resumed.result;
+  assert.equal(resumedResult.status, "completed");
+  assert.equal(resumed.executionId, interrupted.executionId);
+  assert.deepEqual(commands[1]?.args, [
+    "exec",
+    "resume",
+    "thread-resume",
+    "--json",
+    "--cd",
+    request.workingDirectory,
+    "--sandbox",
+    "workspace-write",
+    request.prompt,
+  ]);
+  assert.ok(!commands[1]?.args.includes("--last"));
+});
+
+test("cancel terminates the child process and reports interrupted", async () => {
+  const fake = new FakeProcess();
+  const captured: { command: CodexExecCommand | null } = { command: null };
+  const adapter = adapterWithProcess(fake, captured);
+  const session = await adapter.start(request);
+  fake.stdout.write('{"type":"thread.started","thread_id":"thread-cancel"}\n');
+  const cancelled = await adapter.cancel({ executionId: session.executionId });
+  assert.deepEqual(cancelled, {
+    ok: true,
+    executionId: session.executionId,
+    status: "interrupted",
+  });
+  assert.equal(fake.killedWith, "SIGTERM");
+  assert.equal((await session.result).status, "interrupted");
 });

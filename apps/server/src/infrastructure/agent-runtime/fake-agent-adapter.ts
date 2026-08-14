@@ -54,6 +54,7 @@ type Deferred<Value> = Readonly<{
 
 type FakeExecution = {
   readonly executionId: ExecutionId;
+  readonly sessionId: string;
   readonly scenario: FakeAgentScenario;
   readonly events: AgentEvent[];
   status: FakeRunStatus;
@@ -168,6 +169,7 @@ export class FakeAgentAdapter implements AgentRuntime {
     const executionId = this.nextExecutionId();
     const state: FakeExecution = {
       executionId,
+      sessionId: `fake-session-${executionId}`,
       scenario: selected,
       events: [],
       status: "running",
@@ -192,6 +194,14 @@ export class FakeAgentAdapter implements AgentRuntime {
     if (state.cleaned || state.status !== "interrupted") {
       throw new AgentRuntimeValidationError(
         `Execution ${request.executionId} is not resumable.`,
+      );
+    }
+    if (
+      request.sessionId !== undefined &&
+      request.sessionId !== state.sessionId
+    ) {
+      throw new AgentRuntimeValidationError(
+        `Execution ${request.executionId} session does not match the stored session.`,
       );
     }
     state.status = "running";
@@ -293,7 +303,12 @@ export class FakeAgentAdapter implements AgentRuntime {
       const end = state.eventEnd ?? state.events.length;
       yield* state.events.slice(start, end);
     })();
-    return { executionId: state.executionId, events, result };
+    return {
+      executionId: state.executionId,
+      sessionId: state.sessionId,
+      events,
+      result,
+    };
   }
 
   private schedule(state: FakeExecution, outcome: FakeAgentOutcome): void {
