@@ -3,14 +3,17 @@ schema_version: 1
 document_type: report
 id: REPORT-036
 title: TASK-034 规范提交、目标分支合并和主分支审批门验证报告
-status: draft
+status: accepted
 report_type: task_verification
-acceptance_state: pending_independent_acceptance
+acceptance_state: accepted
 task_id: TASK-034
 goal_id: GOAL-007
-revision: 3
+revision: 4
 created_at: 2026-08-14T15:03:33Z
-updated_at: 2026-08-14T15:19:39Z
+updated_at: 2026-08-14T15:30:06Z
+verified_commit: 9790833
+accepted_by: project_lead
+accepted_at: 2026-08-14T15:30:06Z
 verification_commands:
   - npx tsx --test apps/server/test/git-delivery.integration.test.ts
   - npm run test:integration --workspace apps/server
@@ -20,7 +23,7 @@ verification_commands:
 
 ## 结论
 
-硬编码任务关联问题已修复，等待独立复核。实现覆盖规范 Commit、已验收任务的 task→goal 交付和用户审批保护的 goal→main 合并；不执行 TASK-035 或其他后续任务。
+独立复核通过。硬编码任务关联问题已修复，TASK-034 满足规范 Commit、已验收任务的 task→goal 交付和用户审批保护的 goal→main 合并边界；不执行 TASK-035 或其他后续任务。
 
 ## 实现范围
 
@@ -44,9 +47,9 @@ verification_commands:
 ## 独立复核结果
 
 - 专项测试 4/4、完整集成测试 69/69、单元测试 64/64、Chromium Playwright 14/14，以及格式、Lint、类型检查和构建全部通过。
-- 发现阻塞问题：`GitTaskDeliveryService.deliverTask` 与 `GitGoalMergeService.mergeGoal` 的合并提交正文硬编码为 `Tasks: TASK-034`。当服务处理其他任务或目标时，提交会错误关联到 TASK-034，破坏任务交接、审计和提交追踪。
-- 修复要求：提交正文必须根据实际请求动态生成，不能硬编码 TASK-034；增加至少一个非 TASK-034 的回归测试，覆盖 task→goal 和/或 goal→main 提交关联。
-- 在修复并重新验证前，本报告保持 `changes_requested`，TASK-034 不得解锁后续任务。
+- 初次复核发现的硬编码问题已修复：合并正文现在根据实际请求的 `taskId` 动态生成。
+- 修复回归覆盖 `TASK-099/GOAL-099` 的 task→goal 和 goal→main 关联，确认生成 `Tasks: TASK-099`。
+- 修复后的专项测试和完整验证全部通过，因此本报告状态更新为 `accepted`。
 
 ## 修复复核
 
