@@ -2,13 +2,16 @@
 schema_version: 1
 id: TASK-012
 title: 实现追加式审计事件记录
-status: draft
+status: ready
 goal_id: GOAL-003
 role: executor
 dependencies: [TASK-011]
-revision: 1
+revision: 2
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-13T12:29:07Z
+updated_at: 2026-08-14T03:08:09Z
+approval_id: APPROVAL-001
+target_branch: goal/GOAL-001
+unblocked_by: TASK-011
 ---
 
 # TASK-012：实现追加式审计事件记录
