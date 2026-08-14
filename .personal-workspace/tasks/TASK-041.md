@@ -2,17 +2,29 @@
 schema_version: 1
 id: TASK-041
 title: 实现临时会话和官方删除清理
-status: ready
+status: in_review
 goal_id: GOAL-008
 role: executor
 dependencies: [TASK-039, TASK-040]
-revision: 2
+revision: 3
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-14T19:10:15Z
+updated_at: 2026-08-14T19:31:21Z
 approval_id: APPROVAL-003
 target_branch: goal/GOAL-008
 unblocked_by: TASK-040
 ---
+
+## TASK-041 verification evidence
+
+- Added `sessionPolicy: ephemeral|persistent`; ephemeral starts include `codex exec --ephemeral` and never invoke official deletion.
+- Persistent terminal executions invoke only `codex delete <SESSION_ID> --force`; the exact session ID is captured from the structured thread event.
+- Cleanup failures return `cleanup_failed`, remain retryable, and preserve the execution record until cleanup succeeds.
+- Added application-owned `RuntimeDirectoryCleaner` with absolute-path and runtime-root containment checks; it never reads or deletes Codex internal session files.
+- Coordinator cleanup runs after normal terminal execution and after user cancellation; interrupted executions retain their saved session for TASK-040 recovery.
+- TASK-041 specialized regression tests: 22/22 passed.
+- Full `npm run verify`: 66 unit tests, 97 integration tests, 14 Playwright tests, formatting, lint, typecheck, and builds all passed.
+- Implementation commit: `fafd1fd` (`feat(agent-runtime): 实现临时会话和官方清理`, `Tasks: TASK-041`).
+- GOAL-009 was not executed or modified.
 
 # TASK-041：实现临时会话和官方删除清理
 
