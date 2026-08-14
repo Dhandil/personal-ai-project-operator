@@ -14,6 +14,7 @@
     "format": "prettier --write package.json tsconfig.base.json eslint.config.js playwright.config.ts vitest.config.ts apps/**/*.{ts,tsx,json,css,html} packages/**/*.{ts,tsx,json,css,html} e2e/**/*.{ts,tsx}",
     "test:unit": "vitest run --config vitest.config.ts",
     "test:integration": "npm run test:integration --workspace apps/server",
+    "db:migrate": "npm run db:migrate --workspace apps/server",
     "test:coverage": "vitest run --config vitest.config.ts --coverage",
     "test:e2e": "playwright test --config=playwright.config.ts",
     "verify": "npm run format:check && npm run lint && npm run typecheck && npm run test:unit && npm run test:integration && npm run test:e2e && npm run build"

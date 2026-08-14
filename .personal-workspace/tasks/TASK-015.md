@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-015
 title: 实现 SQLite 项目索引和迁移
-status: ready
+status: completed
 goal_id: GOAL-003
 role: executor
 dependencies: [TASK-004]
-revision: 2
+revision: 3
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-14T05:32:11Z
+updated_at: 2026-08-14T05:47:04Z
 approval_id: APPROVAL-001
 target_branch: goal/GOAL-001
 unblocked_by: TASK-014
@@ -37,3 +37,23 @@ SQLite 连接、迁移执行器、首个 SQL 迁移、项目索引 Repository、
 ## 边界与交接
 
 不引入 ORM。完成后提交 GOAL-003 检查点并解锁 TASK-017、020。
+
+## Completion
+
+- Status: `completed`.
+- Output: added a direct-SQL SQLite migration, database wrapper, project registry repository, settings/cache storage, and `npm run db:migrate`.
+- Storage boundary: the database contains only `projects`, `settings`, `project_cache`, and `schema_migrations`; dynamic task, progress, decision, and other project facts remain in project files.
+- Rebuildability: registration markers in the separate registry directory are the source for rebuilding the project index after deleting `app.db`.
+- Startup safety: database construction runs the idempotent migration automatically; explicit migration is also available through the required command.
+- Scope: no ORM or new runtime dependency was introduced; SQLite uses Node 24's built-in `node:sqlite` API.
+
+## Verification evidence
+
+- `npm run db:migrate`: SQLite migration completed successfully.
+- `npm run test:integration -- registry-db`: 20 integration tests passed, including 3 registry-db tests.
+- `npm run verify`: format check, lint, all workspace type checks, 40 unit tests, 20 integration tests, 1 Playwright Chromium test, and all workspace builds passed.
+- `git diff --check`: passed.
+
+## Handoff
+
+- TASK-016 was not implemented in this task; TASK-017 remains blocked until TASK-016 is accepted.
