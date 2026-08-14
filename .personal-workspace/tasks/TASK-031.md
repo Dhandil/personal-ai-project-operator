@@ -2,13 +2,16 @@
 schema_version: 1
 id: TASK-031
 title: 使用本项目治理本项目
-status: draft
+status: ready
 goal_id: GOAL-006
 role: project-lead
 dependencies: [TASK-030]
-revision: 1
+revision: 2
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-13T12:29:07Z
+updated_at: 2026-08-14T12:25:00Z
+approval_id: APPROVAL-001
+target_branch: goal/GOAL-001
+unblocked_by: TASK-030
 ---
 
 # TASK-031：使用本项目治理本项目
