@@ -28,9 +28,10 @@ async function runGit(
   return result.stdout.trim();
 }
 
-async function createRepository(): Promise<
-  Readonly<{ root: string; main: string }>
-> {
+async function createRepository(
+  goalId = "GOAL-007",
+  taskId = "TASK-034",
+): Promise<Readonly<{ root: string; main: string }>> {
   const root = await mkdtemp(join(tmpdir(), "personal-ai-git-delivery-"));
   const git = new GitProcess();
   await runGit(git, root, ["init", "--initial-branch=main"]);
@@ -40,22 +41,24 @@ async function createRepository(): Promise<
   await runGit(git, root, ["add", "--", "README.md"]);
   await runGit(git, root, ["commit", "-m", "chore(test): initialize fixture"]);
   const main = await runGit(git, root, ["rev-parse", "HEAD"]);
-  await runGit(git, root, ["branch", "goal/GOAL-007"]);
-  await runGit(git, root, ["switch", "-c", "task/TASK-034", "goal/GOAL-007"]);
+  await runGit(git, root, ["branch", `goal/${goalId}`]);
+  await runGit(git, root, ["switch", "-c", `task/${taskId}`, `goal/${goalId}`]);
   return { root, main };
 }
 
-async function acceptedApproval(): Promise<MainMergeApproval> {
+async function acceptedApproval(
+  goalId = "GOAL-007",
+): Promise<MainMergeApproval> {
   const created = createApproval({
     id: "TASK-034",
     revision: 1,
     createdAt: "2026-08-14T14:00:00Z",
     updatedAt: "2026-08-14T14:00:00Z",
-    relatedObjectIds: ["GOAL-007"],
+    relatedObjectIds: [goalId],
     approvalType: "short_term_goal_acceptance_and_main_merge",
-    subjectId: "GOAL-007",
+    subjectId: goalId,
     requestedBy: "agent",
-    request: "Accept GOAL-007 and approve main merge.",
+    request: `Accept ${goalId} and approve main merge.`,
   });
   assert.equal(created.ok, true);
   if (!created.ok) throw new Error(created.error.message);
@@ -134,16 +137,16 @@ test("unaccepted tasks cannot commit or merge into the goal branch", async () =>
   }
 });
 
-test("accepted task commits with Tasks body and merges into the goal branch", async () => {
-  const fixture = await createRepository();
+test("accepted non-TASK-034 delivery keeps the actual task reference in the goal merge", async () => {
+  const fixture = await createRepository("GOAL-099", "TASK-099");
   const git = new GitProcess();
   const service = new GitTaskDeliveryService(git);
   try {
     await writeFile(join(fixture.root, "result.md"), "accepted\n", "utf8");
     const delivered = await service.deliverTask({
       projectRoot: fixture.root,
-      goalId: "GOAL-007",
-      taskId: "TASK-034",
+      goalId: "GOAL-099",
+      taskId: "TASK-099",
       taskStatus: "completed",
       accepted: true,
       allowedPaths: ["result.md"],
@@ -154,16 +157,16 @@ test("accepted task commits with Tasks body and merges into the goal branch", as
     });
     assert.equal(delivered.ok, true);
     if (!delivered.ok) throw new Error(delivered.error.message);
-    assert.equal(delivered.value.task.branch, "task/TASK-034");
-    assert.equal(delivered.value.goalBranch, "goal/GOAL-007");
+    assert.equal(delivered.value.task.branch, "task/TASK-099");
+    assert.equal(delivered.value.goalBranch, "goal/GOAL-099");
     assert.notEqual(delivered.value.goalCommit, fixture.main);
     const log = await runGit(git, fixture.root, [
       "log",
       "-1",
       "--format=%s%n%b",
     ]);
-    assert.match(log, /merge\(task\): 合并 TASK-034/);
-    assert.match(log, /Tasks: TASK-034/);
+    assert.match(log, /merge\(task\): 合并 TASK-099/);
+    assert.match(log, /Tasks: TASK-099/);
     assert.equal(
       (await readFile(join(fixture.root, "result.md"), "utf8")).replaceAll(
         "\r\n",
@@ -176,8 +179,8 @@ test("accepted task commits with Tasks body and merges into the goal branch", as
   }
 });
 
-test("main merge requires a current user approval and creates a local merge commit", async () => {
-  const fixture = await createRepository();
+test("main merge requires approval and keeps the actual non-TASK-034 reference", async () => {
+  const fixture = await createRepository("GOAL-099", "TASK-099");
   const git = new GitProcess();
   const taskService = new GitTaskDeliveryService(git);
   const mergeService = new GitGoalMergeService(git);
@@ -185,8 +188,8 @@ test("main merge requires a current user approval and creates a local merge comm
     await writeFile(join(fixture.root, "result.md"), "accepted\n", "utf8");
     const delivered = await taskService.deliverTask({
       projectRoot: fixture.root,
-      goalId: "GOAL-007",
-      taskId: "TASK-034",
+      goalId: "GOAL-099",
+      taskId: "TASK-099",
       taskStatus: "completed",
       accepted: true,
       allowedPaths: ["result.md"],
@@ -200,6 +203,7 @@ test("main merge requires a current user approval and creates a local merge comm
     const denied = await mergeService.mergeGoal({
       projectRoot: fixture.root,
       goalId: "GOAL-007",
+      taskId: "TASK-034",
     });
     assert.equal(denied.ok, false);
     if (denied.ok) throw new Error("main merge unexpectedly bypassed approval");
@@ -207,8 +211,9 @@ test("main merge requires a current user approval and creates a local merge comm
 
     const merged = await mergeService.mergeGoal({
       projectRoot: fixture.root,
-      goalId: "GOAL-007",
-      approval: await acceptedApproval(),
+      goalId: "GOAL-099",
+      taskId: "TASK-099",
+      approval: await acceptedApproval("GOAL-099"),
     });
     assert.equal(merged.ok, true);
     if (!merged.ok) throw new Error(merged.error.message);
@@ -223,8 +228,8 @@ test("main merge requires a current user approval and creates a local merge comm
       "-1",
       "--format=%s%n%b",
     ]);
-    assert.match(log, /merge\(goal\): 合并 GOAL-007/);
-    assert.match(log, /Tasks: TASK-034/);
+    assert.match(log, /merge\(goal\): 合并 GOAL-099/);
+    assert.match(log, /Tasks: TASK-099/);
   } finally {
     await rm(fixture.root, { recursive: true, force: true });
   }

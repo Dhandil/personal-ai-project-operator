@@ -88,6 +88,7 @@ export type MainMergeApproval = Readonly<{
 export type GoalMergeRequest = Readonly<{
   readonly projectRoot: string;
   readonly goalId: string;
+  readonly taskId: string;
   readonly projectKey?: string;
   readonly approval?: MainMergeApproval;
   readonly mainBranch?: string;
@@ -403,7 +404,7 @@ export class GitTaskDeliveryService {
         "-m",
         `merge(task): 合并 ${request.taskId}`,
         "-m",
-        "Tasks: TASK-034",
+        `Tasks: ${request.taskId}`,
         task,
       ],
       root,
@@ -454,7 +455,11 @@ export class GitGoalMergeService {
   public async mergeGoal(
     request: GoalMergeRequest,
   ): Promise<GitDeliveryResult<GoalMergeResult>> {
-    if (!isAbsolute(request.projectRoot) || !validGoalId(request.goalId)) {
+    if (
+      !isAbsolute(request.projectRoot) ||
+      !validGoalId(request.goalId) ||
+      !validTaskId(request.taskId)
+    ) {
       return failure("invalid_request", "Project root or goal ID is invalid.");
     }
     const root = resolve(request.projectRoot);
@@ -550,7 +555,7 @@ export class GitGoalMergeService {
         "-m",
         `merge(goal): 合并 ${request.goalId}`,
         "-m",
-        "Tasks: TASK-034",
+        `Tasks: ${request.taskId}`,
         goal,
       ],
       root,
