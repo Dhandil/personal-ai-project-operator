@@ -2,13 +2,16 @@
 schema_version: 1
 id: TASK-005
 title: 定义 ID 状态时间和共享数据契约
-status: draft
+status: ready
 goal_id: GOAL-002
 role: executor
 dependencies: [TASK-004]
-revision: 1
+revision: 2
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-13T12:29:07Z
+updated_at: 2026-08-14T01:06:42Z
+approval_id: APPROVAL-001
+target_branch: goal/GOAL-001
+unblocked_by: TASK-004
 ---
 
 # TASK-005：定义 ID、状态、时间和共享数据契约
