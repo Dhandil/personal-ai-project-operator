@@ -2,6 +2,7 @@ import type { ReactElement } from "react";
 import { useEffect, useState } from "react";
 
 import { ProjectCreationWizard } from "./project-creation-wizard";
+import { ProjectOverview } from "./project-overview-page";
 import { strings } from "./strings";
 
 type AppRoute = "home" | "health" | "create";
@@ -96,6 +97,11 @@ export function App(): ReactElement {
           />
         ) : (
           <>
+            <ProjectOverview
+              onCreate={() => {
+                window.location.href = "/projects/new";
+              }}
+            />
             <section className="hero-card" aria-labelledby="page-title">
               <p className="eyebrow">{strings.home.eyebrow}</p>
               <h1 id="page-title">{strings.home.title}</h1>
