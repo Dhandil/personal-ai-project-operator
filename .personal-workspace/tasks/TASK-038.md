@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-038
 title: 实现 Codex CLI 环境与沙箱能力检查
-status: in_review
+status: changes_requested
 goal_id: GOAL-008
 role: executor
 dependencies: [TASK-035]
-revision: 4
+revision: 5
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-14T17:27:23Z
+updated_at: 2026-08-14T17:38:39Z
 approval_id: APPROVAL-003
 target_branch: goal/GOAL-008
 unblocked_by: TASK-035
@@ -50,6 +50,6 @@ Codex 进程探测器、能力模型、Windows 沙箱探测、诊断 Route、测
 
 ## 交接
 
-- TASK-038 当前状态为 `in_review`，等待项目负责人独立验收。
+- TASK-038 独立复核发现登录状态解析边界缺陷，状态更新为 `changes_requested`，等待修复后重新复核。
 - 实现范围仅覆盖 TASK-038；未执行 TASK-039 或 GOAL-009。
-- 后续交接对象：TASK-039、TASK-046。
+- 修复要求：`codex login status` 成功但输出为空或无法识别时必须报告 `unknown` 并阻断 `canExecute`，补充回归测试；修复后再交接 TASK-039、TASK-046。

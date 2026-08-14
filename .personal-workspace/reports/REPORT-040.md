@@ -3,15 +3,17 @@ schema_version: 1
 document_type: report
 id: REPORT-040
 title: TASK-038 Codex CLI 环境与沙箱能力检查验证报告
-status: in_review
+status: changes_requested
 report_type: task_verification
-acceptance_state: pending
+acceptance_state: changes_requested
 task_id: TASK-038
 goal_id: GOAL-008
-revision: 1
+revision: 2
 created_at: 2026-08-14T17:27:23Z
-updated_at: 2026-08-14T17:27:23Z
+updated_at: 2026-08-14T17:38:39Z
 verified_commit: 3aa0006
+reviewed_by: project_lead
+reviewed_at: 2026-08-14T17:38:39Z
 verification_commands:
   - npx tsx --test apps/server/test/codex-cli-preflight.integration.test.ts
   - npm run test:codex-cli -- preflight
@@ -42,6 +44,16 @@ TASK-038 已实现并提交，当前等待项目负责人独立验收。实现�
 
 - 未执行 `codex exec`、安装、登录、配置修改、会话删除或其他真实任务操作。
 - 未执行 TASK-039 或 GOAL-009。
+
+## 独立复核结果
+
+- 专项模拟集成测试 5/5、相关单元测试 2/2、完整 `npm run verify` 均通过；完整验证为 66 个单元测试、82 个集成测试、14 个 Chromium Playwright 测试，以及格式、Lint、类型检查和构建。
+- 真实 preflight 在当前 Windows 环境收到 `spawn EPERM`，报告 `canExecute: false` 并给出权限提升建议；该阻断行为符合预期。
+- 发现登录状态解析缺陷：当 `codex login status` 退出码为 0 但 stdout/stderr 为空或不包含可识别的已登录信号时，当前 `loginStatus` 会返回 `authenticated`，导致 `canExecute: true`。最小模拟复现已确认该结果。
+
+## 修复要求
+
+将成功但空/未知输出解析为 `unknown`，并保持 `unknown` 阻断 `canExecute`；补充回归测试后重新运行专项和完整验证。TASK-038 当前登记为 `changes_requested`，在修复复核通过前不解锁 TASK-039。
 
 ## 待验收
 
