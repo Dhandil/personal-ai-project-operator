@@ -30,6 +30,7 @@ export function buildCodexExecArgs(
   const sandbox = sandboxForRole(request.role);
   const args = [
     "exec",
+    ...(request.sessionPolicy === "ephemeral" ? ["--ephemeral"] : []),
     "--json",
     "--cd",
     request.workingDirectory,
@@ -45,6 +46,23 @@ export function buildCodexExecArgs(
     args,
     workingDirectory: request.workingDirectory,
     sandbox,
+  };
+}
+
+export function buildCodexDeleteArgs(
+  sessionId: string,
+  workingDirectory: string,
+): CodexExecCommand {
+  if (sessionId.trim().length === 0) {
+    throw new AgentRuntimeValidationError(
+      "A precise Codex session ID is required for cleanup.",
+    );
+  }
+  return {
+    executable: "codex",
+    args: ["delete", sessionId, "--force"],
+    workingDirectory,
+    sandbox: "read-only",
   };
 }
 

@@ -1,9 +1,11 @@
 import { resolve } from "node:path";
 
 import type {
+  AgentCleanupResult,
   AgentEvent,
   AgentResult,
   AgentRuntime,
+  AgentSessionPolicy,
   AgentSession,
   AgentStartRequest,
   ExecutionId,
@@ -52,6 +54,7 @@ export type ExecutionRun = Readonly<{
   readonly events: readonly AgentEvent[];
   readonly result: AgentResult | null;
   readonly recovery: ExecutionRecoveryReport | null;
+  readonly cleanup?: AgentCleanupResult | null;
 }>;
 
 export type ExecutionRecoveryReport = Readonly<{
@@ -614,7 +617,9 @@ export class ExecutionCoordinatorService {
         session = await this.runtime.resume({
           executionId: id,
           sessionId: storedSessionId,
-          startRequest: this.agentRequest(candidate.value, input),
+          startRequest: this.agentRequest(candidate.value, input, {
+            forcePersistent: true,
+          }),
         });
       } catch (error) {
         await this.transitionCurrent(
@@ -738,10 +743,7 @@ export class ExecutionCoordinatorService {
     const cancelled = await this.runtime.cancel({ executionId: id });
     if (!cancelled.ok)
       return failure("runtime_failed", cancelled.message, [cancelled.code]);
-    return {
-      ok: true,
-      value: { projectKey: input.projectKey, run: run.state },
-    };
+    return await this.finishRun(run, { cleanupInterrupted: true });
   }
 
   public async retry(
@@ -1048,8 +1050,21 @@ export class ExecutionCoordinatorService {
   private agentRequest(
     candidate: Candidate,
     input: Record<string, unknown>,
+    options: Readonly<{ readonly forcePersistent?: boolean }> = {},
   ): AgentStartRequest {
     const task = candidate.task.task;
+    const requestedPolicy =
+      input.sessionPolicy === "ephemeral" ||
+      input.sessionPolicy === "persistent"
+        ? (input.sessionPolicy as AgentSessionPolicy)
+        : undefined;
+    const sessionPolicy = options.forcePersistent
+      ? "persistent"
+      : requestedPolicy;
+    const runtimeDirectory =
+      typeof input.runtimeDirectory === "string"
+        ? input.runtimeDirectory
+        : undefined;
     return {
       taskId: task.id,
       goalId: task.goalId,
@@ -1067,6 +1082,8 @@ export class ExecutionCoordinatorService {
         { key: "goal_id", value: task.goalId },
         { key: "role", value: task.currentRole },
       ],
+      ...(sessionPolicy === undefined ? {} : { sessionPolicy }),
+      ...(runtimeDirectory === undefined ? {} : { runtimeDirectory }),
     };
   }
 
@@ -1117,6 +1134,7 @@ export class ExecutionCoordinatorService {
 
   private async finishRun(
     run: InternalRun,
+    options: Readonly<{ readonly cleanupInterrupted?: boolean }> = {},
   ): Promise<ExecutionCoordinatorResult<ExecutionStartResult>> {
     try {
       const events = await collectEvents(run.session.events);
@@ -1148,28 +1166,68 @@ export class ExecutionCoordinatorService {
           transitioned.error.message,
           transitioned.error.details,
         );
+      let cleanup: AgentCleanupResult | null = null;
+      if (
+        result.status !== "interrupted" ||
+        options.cleanupInterrupted === true
+      ) {
+        try {
+          cleanup = await this.runtime.cleanup({
+            executionId: run.state.executionId,
+          });
+        } catch (error) {
+          cleanup = {
+            ok: false,
+            code: "cleanup_failed",
+            executionId: run.state.executionId,
+            message: error instanceof Error ? error.message : String(error),
+            retryable: true,
+          };
+        }
+      }
+      let finalSnapshot = transitioned.value;
+      let recovery =
+        result.status === "interrupted"
+          ? recoveryReport(
+              run.state.executionId,
+              run.state.taskId,
+              run.session.sessionId ??
+                (typeof result.output?.threadId === "string"
+                  ? result.output.threadId
+                  : null),
+              result.error?.message ??
+                "The Agent execution was interrupted and requires a user recovery choice.",
+            )
+          : null;
+      if (
+        result.status === "interrupted" &&
+        options.cleanupInterrupted === true &&
+        cleanup?.ok === true
+      ) {
+        const cancelled = await this.taskService.transition({
+          projectKey: run.state.projectKey,
+          taskId: run.state.taskId,
+          toStatus: "cancelled",
+          reason: "User cancelled the execution and its saved session.",
+          revision: finalSnapshot.revision,
+          hash: finalSnapshot.hash,
+        });
+        if (cancelled.ok) {
+          finalSnapshot = cancelled.value;
+          recovery = null;
+        }
+      }
       run.state = {
         ...run.state,
         status: result.status,
-        taskStatus: transitioned.value.task.status,
+        taskStatus: finalSnapshot.task.status,
         completedAt: this.now(),
         events,
         result,
-        recovery:
-          result.status === "interrupted"
-            ? recoveryReport(
-                run.state.executionId,
-                run.state.taskId,
-                run.session.sessionId ??
-                  (typeof result.output?.threadId === "string"
-                    ? result.output.threadId
-                    : null),
-                result.error?.message ??
-                  "The Agent execution was interrupted and requires a user recovery choice.",
-              )
-            : null,
+        recovery,
+        cleanup,
       };
-      if (result.status === "interrupted") {
+      if (recovery !== null) {
         await this.recoveryRepository.upsert(
           run.projectRoot,
           recoveryRecord(run, result, run.state.completedAt ?? this.now()),
@@ -1184,7 +1242,7 @@ export class ExecutionCoordinatorService {
         ok: true,
         value: {
           projectKey: run.state.projectKey,
-          task: transitioned.value,
+          task: finalSnapshot,
           run: run.state,
         },
       };

@@ -1,4 +1,7 @@
 import { strict as assert } from "node:assert";
+import { mkdir, mkdtemp, rm, stat, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { PassThrough } from "node:stream";
 import { test } from "node:test";
 
@@ -299,4 +302,146 @@ test("cancel terminates the child process and reports interrupted", async () => 
   });
   assert.equal(fake.killedWith, "SIGTERM");
   assert.equal((await session.result).status, "interrupted");
+});
+
+test("ephemeral sessions use --ephemeral and do not invoke official deletion", async () => {
+  const root = await mkdtemp(join(tmpdir(), "personal-ai-runtime-"));
+  try {
+    const fake = new FakeProcess();
+    const captured: { command: CodexExecCommand | null } = { command: null };
+    const adapter = new CodexCliAdapter({
+      runtimeDirectoryRoot: root,
+      processFactory: (command) => {
+        captured.command = command;
+        return fake;
+      },
+    });
+    const session = await adapter.start({
+      ...request,
+      sessionPolicy: "ephemeral",
+      runtimeDirectory: join(root, "execution"),
+    });
+    fake.stdout.write('{"type":"result","result":{"summary":"done"}}\n');
+    fake.finish();
+    await session.result;
+
+    const cleaned = await adapter.cleanup({ executionId: session.executionId });
+    assert.equal(cleaned.ok, true);
+    assert.deepEqual(captured.command?.args.slice(0, 2), [
+      "exec",
+      "--ephemeral",
+    ]);
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+test("persistent cleanup deletes the exact session and reports released runtime bytes", async () => {
+  const root = await mkdtemp(join(tmpdir(), "personal-ai-runtime-"));
+  try {
+    const startProcess = new FakeProcess();
+    const deleteProcess = new FakeProcess();
+    const commands: CodexExecCommand[] = [];
+    const runtimeDirectory = join(root, "execution");
+    await mkdir(runtimeDirectory, { recursive: true });
+    await writeFile(join(runtimeDirectory, "output.txt"), "runtime output\n");
+    const adapter = new CodexCliAdapter({
+      runtimeDirectoryRoot: root,
+      processFactory: (command) => {
+        commands.push(command);
+        return commands.length === 1 ? startProcess : deleteProcess;
+      },
+    });
+    const session = await adapter.start({ ...request, runtimeDirectory });
+    startProcess.stdout.write(
+      '{"type":"thread.started","thread_id":"session-to-delete"}\n',
+    );
+    startProcess.stdout.write('{"type":"result","result":{"ok":true}}\n');
+    startProcess.finish();
+    await session.result;
+
+    const cleanupPromise = adapter.cleanup({
+      executionId: session.executionId,
+    });
+    deleteProcess.finish();
+    const cleaned = await cleanupPromise;
+    assert.equal(cleaned.ok, true);
+    if (cleaned.ok) assert.ok((cleaned.estimatedFreedBytes ?? 0) > 0);
+    assert.deepEqual(commands[1]?.args, [
+      "delete",
+      "session-to-delete",
+      "--force",
+    ]);
+    await assert.rejects(stat(runtimeDirectory));
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+test("cleanup failures remain retryable and do not lose the execution record", async () => {
+  const first = new FakeProcess();
+  const deleteFailure = new FakeProcess();
+  const deleteRetry = new FakeProcess();
+  const processes = [first, deleteFailure, deleteRetry];
+  const commands: CodexExecCommand[] = [];
+  const adapter = new CodexCliAdapter({
+    processFactory: (command) => {
+      commands.push(command);
+      return processes.shift() ?? new FakeProcess();
+    },
+  });
+  const session = await adapter.start(request);
+  first.stdout.write('{"type":"thread.started","thread_id":"retry-session"}\n');
+  first.stdout.write('{"type":"result","result":{"ok":true}}\n');
+  first.finish();
+  await session.result;
+
+  const firstCleanupPromise = adapter.cleanup({
+    executionId: session.executionId,
+  });
+  deleteFailure.finish(17);
+  const firstCleanup = await firstCleanupPromise;
+  assert.equal(firstCleanup.ok, false);
+  if (!firstCleanup.ok) assert.equal(firstCleanup.code, "cleanup_failed");
+
+  const retryPromise = adapter.cleanup({ executionId: session.executionId });
+  deleteRetry.finish();
+  const retry = await retryPromise;
+  assert.equal(retry.ok, true);
+  assert.equal(
+    commands.filter((command) => command.args[0] === "delete").length,
+    2,
+  );
+});
+
+test("cleanup rejects runtime directories outside the application runtime root before deletion", async () => {
+  const root = await mkdtemp(join(tmpdir(), "personal-ai-runtime-"));
+  try {
+    const fake = new FakeProcess();
+    const commands: CodexExecCommand[] = [];
+    const adapter = new CodexCliAdapter({
+      runtimeDirectoryRoot: root,
+      processFactory: (command) => {
+        commands.push(command);
+        return fake;
+      },
+    });
+    const session = await adapter.start({
+      ...request,
+      runtimeDirectory: join(root, "..", "outside-runtime"),
+    });
+    fake.stdout.write('{"type":"result","result":{"ok":true}}\n');
+    fake.finish();
+    await session.result;
+
+    const cleanup = await adapter.cleanup({ executionId: session.executionId });
+    assert.equal(cleanup.ok, false);
+    if (!cleanup.ok) {
+      assert.equal(cleanup.code, "cleanup_failed");
+      assert.equal(cleanup.retryable, false);
+    }
+    assert.equal(commands.length, 1);
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
 });

@@ -46,6 +46,10 @@ export type AgentContextItem = Readonly<{
   readonly value: string;
 }>;
 
+export const agentSessionPolicies = ["persistent", "ephemeral"] as const;
+
+export type AgentSessionPolicy = (typeof agentSessionPolicies)[number];
+
 export type AgentStartRequest = Readonly<{
   readonly taskId: TaskId;
   readonly goalId: GoalId | null;
@@ -55,6 +59,8 @@ export type AgentStartRequest = Readonly<{
   readonly allowedPaths: readonly string[];
   readonly forbiddenPaths: readonly string[];
   readonly context: readonly AgentContextItem[];
+  readonly sessionPolicy?: AgentSessionPolicy;
+  readonly runtimeDirectory?: string;
 }>;
 
 export type AgentResumeRequest = Readonly<{
@@ -120,12 +126,17 @@ export type AgentCleanupResult =
       readonly ok: true;
       readonly executionId: ExecutionId;
       readonly status: "cleaned";
+      readonly sessionId?: string | null;
+      readonly estimatedFreedBytes?: number;
+      readonly message?: string;
     }>
   | Readonly<{
       readonly ok: false;
       readonly code: "cleanup_failed" | "not_found" | "not_terminal";
       readonly executionId: ExecutionId;
       readonly message: string;
+      readonly retryable?: boolean;
+      readonly estimatedFreedBytes?: number;
     }>;
 
 export type AgentRuntime = Readonly<{
