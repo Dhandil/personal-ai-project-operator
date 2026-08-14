@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-034
 title: 实现规范提交目标分支合并和主分支审批门
-status: completed
+status: changes_requested
 goal_id: GOAL-007
 role: executor
 dependencies: [TASK-027, TASK-032, TASK-033]
-revision: 3
+revision: 4
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-14T15:03:33Z
+updated_at: 2026-08-14T15:10:42Z
 approval_id: APPROVAL-002
 target_branch: goal/GOAL-007
 unblocked_by: TASK-033
@@ -49,5 +49,5 @@ Commit 消息服务、任务交付服务、目标 Merge 服务、审批校验 Ad
 
 ## 交接
 
-- 请独立验收 [REPORT-036](../reports/REPORT-036.md)。
-- GOAL-007 Git 执行隔离检查点已具备验收证据；TASK-035 及其他后续任务未执行。
+- [REPORT-036](../reports/REPORT-036.md) 独立复核发现合并提交正文硬编码 TASK-034，状态为 `changes_requested`。
+- 修复前不得将 TASK-034 视为已接受，也不得进入依赖它的后续任务。
