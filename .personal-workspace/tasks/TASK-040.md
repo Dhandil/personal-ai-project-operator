@@ -2,13 +2,16 @@
 schema_version: 1
 id: TASK-040
 title: 实现续接取消中断标记和恢复报告
-status: draft
+status: ready
 goal_id: GOAL-008
 role: executor
 dependencies: [TASK-036, TASK-039]
-revision: 1
+revision: 2
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-13T12:29:07Z
+updated_at: 2026-08-14T18:15:45Z
+approval_id: APPROVAL-003
+target_branch: goal/GOAL-008
+unblocked_by: TASK-039
 ---
 
 # TASK-040：实现续接、取消、中断标记和恢复报告

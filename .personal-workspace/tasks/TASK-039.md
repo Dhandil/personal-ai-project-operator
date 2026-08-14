@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-039
 title: 实现 codex exec 启动及 JSONL 事件解析
-status: in_review
+status: completed
 goal_id: GOAL-008
 role: executor
 dependencies: [TASK-035, TASK-037, TASK-038]
-revision: 3
+revision: 4
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-14T18:07:44Z
+updated_at: 2026-08-14T18:15:45Z
 approval_id: APPROVAL-003
 target_branch: goal/GOAL-008
 unblocked_by: TASK-038
@@ -51,5 +51,6 @@ Codex CLI Adapter、参数构建器、JSONL 解析器、进程事件桥、集成
 
 ## 交接
 
-- 验证报告为 `REPORT-041`，当前等待独立用户验收。
+- 验证报告为 `REPORT-041`，独立验收已通过，TASK-039 状态为 `completed`。
 - 本次未执行 TASK-040、TASK-041、TASK-042、TASK-043 或 GOAL-009；续接、取消、中断恢复和临时会话清理留给后续任务。
+- TASK-040 的依赖已满足并已解锁为 `ready`；TASK-040 之前的续接、取消和恢复边界保持不变。
