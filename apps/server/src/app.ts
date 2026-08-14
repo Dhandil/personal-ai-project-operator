@@ -19,6 +19,7 @@ import { TaskService } from "./infrastructure/tasks/task-service.js";
 import { ApprovalService } from "./infrastructure/approvals/approval-service.js";
 import { RecoveryService } from "./infrastructure/recovery/recovery-service.js";
 import { ExecutionCoordinatorService } from "./infrastructure/execution/execution-coordinator.js";
+import { TaskPackageService } from "./infrastructure/execution/task-package-service.js";
 
 const SERVICE_NAME = "@personal-ai-operator/server";
 
@@ -41,6 +42,7 @@ export type AppOptions = Readonly<{
   readonly approvalService?: ApprovalService;
   readonly recoveryService?: RecoveryService;
   readonly executionCoordinatorService?: ExecutionCoordinatorService;
+  readonly taskPackageService?: TaskPackageService;
 }>;
 
 export function buildApp(options: AppOptions = {}): FastifyInstance {
@@ -88,6 +90,9 @@ export function buildApp(options: AppOptions = {}): FastifyInstance {
       goalService,
       issueService,
     });
+  const taskPackageService =
+    options.taskPackageService ??
+    new TaskPackageService({ taskService, goalService, roleService });
 
   app.get("/api/projects", async (_request, reply) => {
     const result = await projectQueryService.list();
@@ -253,6 +258,46 @@ export function buildApp(options: AppOptions = {}): FastifyInstance {
   });
   app.post("/api/projects/tasks/ready", async (request, reply) => {
     const result = await taskService.ready(request.body);
+    return reply
+      .code(
+        result.ok ? 200 : result.error.code === "registry_failed" ? 500 : 400,
+      )
+      .send(result);
+  });
+  app.get<{
+    Querystring: {
+      readonly projectKey?: unknown;
+      readonly taskId?: unknown;
+      readonly role?: unknown;
+    };
+  }>("/api/projects/task-packages", async (request, reply) => {
+    const projectKey = request.query?.projectKey;
+    const taskId = request.query?.taskId;
+    if (typeof projectKey !== "string" || typeof taskId !== "string") {
+      return reply.code(400).send({
+        ok: false,
+        error: {
+          code: "invalid_input",
+          message: "A project key and taskId are required.",
+          details: [],
+        },
+      });
+    }
+    const result = await taskPackageService.build({
+      projectKey,
+      taskId,
+      ...(typeof request.query?.role === "string"
+        ? { role: request.query.role }
+        : {}),
+    });
+    return reply
+      .code(
+        result.ok ? 200 : result.error.code === "registry_failed" ? 500 : 400,
+      )
+      .send(result);
+  });
+  app.post("/api/projects/task-packages", async (request, reply) => {
+    const result = await taskPackageService.build(request.body);
     return reply
       .code(
         result.ok ? 200 : result.error.code === "registry_failed" ? 500 : 400,

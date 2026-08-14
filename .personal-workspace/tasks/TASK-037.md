@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-037
 title: 生成角色任务包和结构化输出 Schema
-status: ready
+status: in_review
 goal_id: GOAL-008
 role: executor
 dependencies: [TASK-024, TASK-025, TASK-035]
-revision: 3
+revision: 4
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-14T16:49:34Z
+updated_at: 2026-08-15T01:05:00Z
 approval_id: APPROVAL-003
 target_branch: goal/GOAL-008
 unblocked_by: TASK-035
@@ -37,3 +37,18 @@ unblocked_by: TASK-035
 ## 边界与交接
 
 不得把所有项目文件默认塞入上下文。完成后交给 TASK-039、043。
+
+## 完成证据
+
+- 新增角色任务包构建服务：按项目、目标、任务和角色事实生成最小充分上下文，包含职责、必读项、任务边界、实际项目路径、验证要求和交接要求；不包含聊天历史或全量项目文件。
+- 新增执行者与审核者专属结构化输出 Schema，并明确权限差异：执行者为 `workspace_write`，审核者为 `read_only`。
+- 新增任务包 API：`GET/POST /api/projects/task-packages`。
+- 指定单元测试：`npm run test:unit -- task-package`，2/2 通过。
+- 指定集成测试：任务包构建与 API 场景 3/3 通过。
+- 完整 `npm run verify` 通过：66 个单元测试、77 个集成测试、14 个 Chromium Playwright 测试，以及格式、Lint、类型检查和构建。
+
+## 交接
+
+- TASK-037 当前状态为 `in_review`，等待项目负责人独立验收。
+- 实现范围仅覆盖 TASK-037；未执行 TASK-038、TASK-039 或 GOAL-009。
+- 后续交接对象：TASK-039、TASK-043。
