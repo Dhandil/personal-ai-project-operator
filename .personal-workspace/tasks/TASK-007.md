@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-007
 title: 实现短期目标角色和任务卡模型
-status: ready
+status: completed
 goal_id: GOAL-002
 role: executor
 dependencies: [TASK-005, TASK-006]
-revision: 2
+revision: 3
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-14T01:40:19Z
+updated_at: 2026-08-14T01:55:40Z
 approval_id: APPROVAL-001
 target_branch: goal/GOAL-001
 unblocked_by: TASK-006
@@ -37,3 +37,23 @@ unblocked_by: TASK-006
 ## 边界与交接
 
 不实现复杂表单或自定义审批门。完成后解锁 TASK-008、009。
+
+## Completion
+
+- Status: `completed`.
+- Output: exported immutable short-term goal, role, task-card, and lightweight custom-field domain models from `@personal-ai-operator/domain`.
+- Approval gate: an unapproved goal can only produce a `draft` task; `markTaskReady` requires a user-approved goal.
+- Decoupling: role templates contain stable responsibilities and permissions only; they do not bind an Agent or CLI session.
+- Required fields: task-card fields are required in the immutable `Task` type and updates preserve them.
+- Custom fields: supports `text`, `number`, `boolean`, `date`, `single_select`, and `file_reference`.
+
+## Verification evidence
+
+- `npm run test:unit -- goal role task`: 8 tests passed.
+- `npm run verify`: format check, lint, all workspace type checks, 30 unit tests, 1 integration test, 1 Playwright Chromium test, and all workspace builds passed.
+- `git diff --check`: passed.
+
+## Handoff
+
+- TASK-008 and TASK-009 were not implemented in this task.
+- TASK-008 still requires this task; TASK-009 additionally requires TASK-008.

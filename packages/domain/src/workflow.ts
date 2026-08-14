@@ -32,7 +32,13 @@ export type DomainErrorCode =
   | "invalid_stage_order"
   | "invalid_stage_transition"
   | "reason_required"
-  | "user_decision_required";
+  | "user_decision_required"
+  | "invalid_goal"
+  | "goal_not_approved"
+  | "invalid_role"
+  | "invalid_task"
+  | "invalid_custom_field"
+  | "required_field";
 
 export type DomainError = Readonly<{
   readonly code: DomainErrorCode;
