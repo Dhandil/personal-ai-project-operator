@@ -15,6 +15,7 @@
     "test:unit": "vitest run --config vitest.config.ts",
     "test:integration": "npm run test:integration --workspace apps/server",
     "db:migrate": "npm run db:migrate --workspace apps/server",
+    "dogfood": "npm run dogfood --workspace apps/server",
     "test:coverage": "vitest run --config vitest.config.ts --coverage",
     "test:e2e": "playwright test --config=playwright.config.ts",
     "verify": "npm run format:check && npm run lint && npm run typecheck && npm run test:unit && npm run test:integration && npm run test:e2e && npm run build"
