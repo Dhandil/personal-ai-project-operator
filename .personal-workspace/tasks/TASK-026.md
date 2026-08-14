@@ -2,13 +2,16 @@
 schema_version: 1
 id: TASK-026
 title: 实现问题讨论决策和受影响任务暂停
-status: draft
+status: ready
 goal_id: GOAL-005
 role: executor
 dependencies: [TASK-008, TASK-009, TASK-020]
-revision: 1
+revision: 2
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-13T12:29:07Z
+updated_at: 2026-08-14T07:37:05Z
+approval_id: APPROVAL-001
+target_branch: goal/GOAL-001
+unblocked_by: TASK-020
 ---
 
 # TASK-026：实现问题、讨论、决策和受影响任务暂停
