@@ -12,6 +12,7 @@ import {
 import { WorkflowService } from "./infrastructure/workflow/workflow-service.js";
 import { GoalService } from "./infrastructure/goals/goal-service.js";
 import { RoleService } from "./infrastructure/roles/role-service.js";
+import { IssueService } from "./infrastructure/issues/issue-service.js";
 
 const SERVICE_NAME = "@personal-ai-operator/server";
 
@@ -27,6 +28,7 @@ export type AppOptions = Readonly<{
   readonly workflowService?: WorkflowService;
   readonly goalService?: GoalService;
   readonly roleService?: RoleService;
+  readonly issueService?: IssueService;
 }>;
 
 export function buildApp(options: AppOptions = {}): FastifyInstance {
@@ -61,6 +63,7 @@ export function buildApp(options: AppOptions = {}): FastifyInstance {
   const workflowService = options.workflowService ?? new WorkflowService();
   const goalService = options.goalService ?? new GoalService();
   const roleService = options.roleService ?? new RoleService();
+  const issueService = options.issueService ?? new IssueService();
 
   app.get("/api/projects", async (_request, reply) => {
     const result = await projectQueryService.list();
@@ -212,6 +215,61 @@ export function buildApp(options: AppOptions = {}): FastifyInstance {
 
   app.post("/api/projects/roles/update", async (request, reply) => {
     const result = await roleService.updateRole(request.body);
+    return reply
+      .code(
+        result.ok ? 200 : result.error.code === "registry_failed" ? 500 : 400,
+      )
+      .send(result);
+  });
+
+  app.get<{ Querystring: { readonly projectKey?: unknown } }>(
+    "/api/projects/issues",
+    async (request, reply) => {
+      const projectKey = request.query?.projectKey;
+      if (typeof projectKey !== "string")
+        return reply.code(400).send({
+          ok: false,
+          error: {
+            code: "invalid_input",
+            message: "A project key is required.",
+            details: [],
+          },
+        });
+      const result = await issueService.getIssues(projectKey);
+      return reply
+        .code(
+          result.ok ? 200 : result.error.code === "registry_failed" ? 500 : 400,
+        )
+        .send(result);
+    },
+  );
+
+  app.post("/api/projects/issues", async (request, reply) => {
+    const result = await issueService.create(request.body);
+    return reply
+      .code(
+        result.ok ? 200 : result.error.code === "registry_failed" ? 500 : 400,
+      )
+      .send(result);
+  });
+  app.post("/api/projects/issues/discussion", async (request, reply) => {
+    const result = await issueService.discuss(request.body);
+    return reply
+      .code(
+        result.ok ? 200 : result.error.code === "registry_failed" ? 500 : 400,
+      )
+      .send(result);
+  });
+  app.post("/api/projects/issues/decision", async (request, reply) => {
+    const result = await issueService.decide(request.body);
+    return reply
+      .code(
+        result.ok ? 200 : result.error.code === "registry_failed" ? 500 : 400,
+      )
+      .send(result);
+  });
+  app.post("/api/projects/issues/recover", async (request, reply) => {
+    const result = await issueService.recover(request.body);
     return reply
       .code(
         result.ok ? 200 : result.error.code === "registry_failed" ? 500 : 400,

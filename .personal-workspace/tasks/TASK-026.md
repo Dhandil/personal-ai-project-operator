@@ -1,39 +1,39 @@
 ---
 schema_version: 1
 id: TASK-026
-title: 实现问题讨论决策和受影响任务暂停
-status: ready
+title: Implement issues, discussions, decisions, and affected-task pausing
+status: completed
 goal_id: GOAL-005
 role: executor
 dependencies: [TASK-008, TASK-009, TASK-020]
-revision: 2
+revision: 3
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-14T07:37:05Z
+updated_at: 2026-08-14T09:40:00Z
 approval_id: APPROVAL-001
 target_branch: goal/GOAL-001
 unblocked_by: TASK-020
 ---
 
-# TASK-026：实现问题、讨论、决策和受影响任务暂停
+# TASK-026: Implement issue coordination and affected-task pausing
 
-## 目的与范围
+## Purpose and scope
 
-允许用户随时提出问题，由 Agent 分析影响和方案，并由用户决定是否修改。
+Record user issues, agent discussion, proposed options, user decisions, affected objects, and recovery actions in project facts. Apply the issue impact policy without changing unrelated tasks.
 
-## 验收条件
+## Acceptance criteria
 
-- 明确影响时只暂停关联任务；
-- 影响未知时暂停当前执行链；
-- 讨论、选项、用户决定和恢复动作可追溯。
+- Known impact pauses only explicitly affected tasks.
+- Unknown impact pauses the current execution chain and preserves the current task context for recovery.
+- Discussion, options, user decision rationale, affected tasks, and recovery results are traceable through API, Markdown facts, and audit events.
 
-## 验证
+## Implementation evidence
 
-问题影响集成测试和问题决策页面场景。
+- Added `IssueService` with issue, discussion, decision, recovery, impact-plan, task pause/resume, and audit coordination.
+- Added issue API routes and the `/projects/issues` page with issue creation, scope display, decision recording, and recovery controls.
+- Added backend integration tests for known and unknown impact, task pause/resume, decision persistence, and traceability.
+- Added frontend contract, route, and Chromium scenario tests.
+- Full `npm run verify` passed: 59 unit tests, 44 integration tests, 7 Playwright Chromium tests, formatting, lint, type checks, and builds.
 
-## 预计文件
+## Boundary and handoff
 
-问题协调服务、API Route、问题页面、决策对话框、测试。
-
-## 边界与交接
-
-Agent 不得代替用户作范围或架构决定。完成后交给 TASK-036。
+The executor records and applies the explicit impact policy; it does not replace user scope or architecture decisions. Further handoff work proceeds through TASK-036.

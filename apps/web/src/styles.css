@@ -1269,6 +1269,79 @@ button:disabled {
   line-height: 1.5;
 }
 
+.issue-list {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.issue-card {
+  padding: 18px;
+  border: 1px solid #2b4564;
+  border-radius: 14px;
+  background: #0f1e32;
+}
+
+.issue-card h3 {
+  margin: 18px 0 7px;
+  color: #dce7f3;
+  font-size: 14px;
+}
+
+.issue-card p,
+.issue-card li {
+  color: #b6c7d9;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.issue-card ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.issue-impact.unknown {
+  color: #f2c778;
+}
+
+.issue-decisions {
+  margin: 14px 0;
+  padding: 12px;
+  border-left: 3px solid #65d5d2;
+  background: rgb(31 64 80 / 35%);
+}
+
+.issue-editor {
+  display: grid;
+  gap: 12px;
+}
+
+.issue-editor label {
+  display: grid;
+  gap: 6px;
+  color: #dce7f3;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.issue-editor textarea,
+.issue-editor input,
+.issue-editor select {
+  width: 100%;
+  padding: 11px 13px;
+  border: 1px solid #355170;
+  border-radius: 10px;
+  background: #0f1e32;
+  color: #edf5fb;
+}
+
+.issue-editor textarea {
+  min-height: 74px;
+  resize: vertical;
+}
+
 .summary-status-row {
   justify-content: flex-start;
   margin: 22px 0;
