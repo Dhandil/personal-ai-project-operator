@@ -3,17 +3,19 @@ schema_version: 1
 document_type: report
 id: REPORT-040
 title: TASK-038 Codex CLI 环境与沙箱能力检查验证报告
-status: in_review
+status: accepted
 report_type: task_verification
-acceptance_state: pending
+acceptance_state: accepted
 task_id: TASK-038
 goal_id: GOAL-008
-revision: 3
+revision: 4
 created_at: 2026-08-14T17:27:23Z
-updated_at: 2026-08-14T17:45:01Z
+updated_at: 2026-08-14T17:50:43Z
 verified_commit: 2087f22
 reviewed_by: project_lead
 reviewed_at: 2026-08-14T17:38:39Z
+accepted_by: project_lead
+accepted_at: 2026-08-14T17:50:43Z
 verification_commands:
   - npx tsx --test apps/server/test/codex-cli-preflight.integration.test.ts
   - npm run test:codex-cli -- preflight
@@ -66,6 +68,16 @@ TASK-038 已实现并提交，当前等待项目负责人独立验收。实现�
 - 新增两条回归测试：成功空输出、成功未知输出；专项模拟集成测试现为 7/7 通过。
 - 完整 `npm run verify` 现为 66 个单元测试、84 个集成测试、14 个 Chromium Playwright 测试，以及格式、Lint、类型检查和构建全部通过。
 
-## 修复后待验收
+## 修复复核结果
+
+- 修复后的专项模拟集成测试 7/7 通过，新增成功空输出和成功未知输出两条回归场景；两者均报告 `login.status: unknown`、`canExecute: false`，并给出登录状态无法确认的阻断原因。
+- 完整 `npm run verify` 通过：66 个单元测试、84 个集成测试、14 个 Chromium Playwright 测试，以及格式、Lint、类型检查和构建。
+- 真实 preflight 的 `spawn EPERM` 阻断行为保持正确；未执行真实 `codex exec`，未安装、登录或修改配置。
+- 原缺陷已消除，TASK-038 满足验收条件，报告状态更新为 `accepted`。
+
+## 后续状态
+
+TASK-039 的 TASK-035、TASK-037、TASK-038 依赖均已满足，已解锁为 `ready`；TASK-039 尚未执行，GOAL-009 未启动。
+
 
 请项目负责人复核成功空/未知登录输出的 `unknown` 阻断行为；复核通过后再决定是否解锁 TASK-039。TASK-039 在此之前保持未执行。

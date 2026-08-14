@@ -2,13 +2,16 @@
 schema_version: 1
 id: TASK-039
 title: 实现 codex exec 启动及 JSONL 事件解析
-status: draft
+status: ready
 goal_id: GOAL-008
 role: executor
 dependencies: [TASK-035, TASK-037, TASK-038]
-revision: 1
+revision: 2
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-13T12:29:07Z
+updated_at: 2026-08-14T17:50:43Z
+approval_id: APPROVAL-003
+target_branch: goal/GOAL-008
+unblocked_by: TASK-038
 ---
 
 # TASK-039：实现 `codex exec` 启动及 JSONL 事件解析

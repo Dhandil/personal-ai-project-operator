@@ -2,16 +2,17 @@
 schema_version: 1
 id: TASK-038
 title: 实现 Codex CLI 环境与沙箱能力检查
-status: in_review
+status: completed
 goal_id: GOAL-008
 role: executor
 dependencies: [TASK-035]
-revision: 6
+revision: 7
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-14T17:45:01Z
+updated_at: 2026-08-14T17:50:43Z
 approval_id: APPROVAL-003
 target_branch: goal/GOAL-008
 unblocked_by: TASK-035
+verification_report_id: REPORT-040
 ---
 
 # TASK-038：实现 Codex CLI 环境与沙箱能力检查
@@ -50,9 +51,9 @@ Codex 进程探测器、能力模型、Windows 沙箱探测、诊断 Route、测
 
 ## 交接
 
-- TASK-038 独立复核发现登录状态解析边界缺陷，状态更新为 `changes_requested`，等待修复后重新复核。
+- TASK-038 独立复核通过，状态更新为 `completed`，验证报告为 `REPORT-040`。
 - 实现范围仅覆盖 TASK-038；未执行 TASK-039 或 GOAL-009。
-- 修复要求：`codex login status` 成功但输出为空或无法识别时必须报告 `unknown` 并阻断 `canExecute`，补充回归测试；修复后再交接 TASK-039、TASK-046。
+- 登录状态修复已复核：成功但空/未知输出报告为 `unknown` 并阻断 `canExecute`；TASK-039、TASK-046 的依赖已满足。
 
 ## 修复证据
 
@@ -63,5 +64,5 @@ Codex 进程探测器、能力模型、Windows 沙箱探测、诊断 Route、测
 
 ## 修复后交接
 
-- TASK-038 当前状态恢复为 `in_review`，等待项目负责人复核 REPORT-040。
-- 复核通过后才允许继续交接 TASK-039、TASK-046。
+- TASK-038 当前状态为 `completed`，REPORT-040 已接受。
+- TASK-039 已解锁为 `ready`；TASK-046 后续仍按其依赖推进。
