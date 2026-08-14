@@ -2,13 +2,16 @@
 schema_version: 1
 id: TASK-032
 title: 实现目标分支任务分支和 Worktree 生命周期
-status: draft
+status: ready
 goal_id: GOAL-007
 role: executor
 dependencies: [TASK-016, TASK-031]
-revision: 1
+revision: 2
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-13T12:29:07Z
+updated_at: 2026-08-14T13:43:29Z
+approval_id: APPROVAL-002
+target_branch: goal/GOAL-007
+unblocked_by: TASK-031
 ---
 
 # TASK-032：实现目标分支、任务分支和 Worktree 生命周期

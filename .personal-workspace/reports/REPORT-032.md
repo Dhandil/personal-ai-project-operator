@@ -3,14 +3,16 @@ schema_version: 1
 document_type: report
 id: REPORT-032
 title: TASK-031 Dogfooding 导入与自举报告
-status: draft
+status: accepted
 report_type: dogfooding
-acceptance_state: pending_user_acceptance
+acceptance_state: accepted
 task_id: TASK-031
 goal_id: GOAL-006
-revision: 3
+revision: 4
 created_at: 2026-08-14T12:35:37.289Z
-updated_at: 2026-08-14T13:33:42.399Z
+updated_at: 2026-08-14T13:43:29Z
+accepted_by: user
+accepted_at: 2026-08-14T13:43:29Z
 source_manifest_hash: 495f7982cfe5e678d79274965cf09e13f15c4aa9ea145d0a51f6a32de520da35
 source_counts:
   stages: 3
@@ -30,7 +32,7 @@ snapshot_label: TASK-031 首次自举导入
 # REPORT-032：TASK-031 Dogfooding 导入与自举报告
 
 ## 结论
-本项目已使用自身正式治理文件建立 V0 可读取的项目身份、工作流、状态快照和兼容任务视图。用户验收仍待完成。
+本项目已使用自身正式治理文件建立 V0 可读取的项目身份、工作流、状态快照和兼容任务视图。用户验收通过。
 
 ## 正式事实清单
 - 当前源阶段：03-spec
@@ -57,9 +59,13 @@ snapshot_label: TASK-031 首次自举导入
 - 专项测试验证扫描、哈希稳定性、删除后重建和未知 YAML 字段保留。
 
 ## 用户验收
-请用户对照正式阶段、目标、任务卡和应用视图；确认无信息丢失后，将本报告状态更新为 accepted。
+用户已对照正式阶段、目标、任务卡和应用视图，确认无信息丢失，接受本报告。
 
 ## 历史快照边界
 - 本报告是 TASK-031 在 2026-08-14T12:35:37.289Z 执行时的历史事实快照（TASK-031 首次自举导入）。
 - 快照边界：TASK-031 dogfooding 执行前、TASK-031 完成状态写回前；不包含 TASK-035 及其后续事实。后续 TASK-035 及其后续事实不属于本报告。
 - 当前工作区的 status.md 可能反映后续事实；本报告只与同一快照标记的自举产物对照。
+
+## 验收结果
+- 用户确认 TASK-031 的自举导入、状态视图、兼容任务视图和恢复能力符合预期。
+- REPORT-032 状态更新为 `accepted`，允许进入 GOAL-007；GOAL-007 已记录为已批准但尚未启动。

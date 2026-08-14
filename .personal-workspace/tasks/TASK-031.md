@@ -6,9 +6,9 @@ status: completed
 goal_id: GOAL-006
 role: project-lead
 dependencies: [TASK-030]
-revision: 3
+revision: 4
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-14T12:36:00Z
+updated_at: 2026-08-14T13:43:29Z
 approval_id: APPROVAL-001
 target_branch: goal/GOAL-001
 unblocked_by: TASK-030
@@ -48,5 +48,5 @@ verification_report_id: REPORT-032
 
 ## 交接
 
-- 用户请对照正式阶段、目标、任务卡与 V0 视图，完成 REPORT-032 的验收并将其状态更新为 `accepted`。
-- TASK-035 保持 `ready`；GOAL-007 尚未启动。
+- 用户已完成 REPORT-032 验收，报告状态为 `accepted`。
+- GOAL-007 已批准但尚未启动；TASK-032 已按依赖解锁为 `ready`。
