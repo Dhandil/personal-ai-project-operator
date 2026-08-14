@@ -2,13 +2,16 @@
 schema_version: 1
 id: TASK-013
 title: 从领域事实生成唯一 status.md 快照
-status: draft
+status: ready
 goal_id: GOAL-003
 role: executor
 dependencies: [TASK-011, TASK-012]
-revision: 1
+revision: 2
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-13T12:29:07Z
+updated_at: 2026-08-14T04:12:05Z
+approval_id: APPROVAL-001
+target_branch: goal/GOAL-001
+unblocked_by: TASK-012
 ---
 
 # TASK-013：从领域事实生成唯一 `status.md` 快照
