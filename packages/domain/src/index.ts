@@ -8,4 +8,8 @@ export * from "./approval.js";
 export * from "./issue.js";
 export * from "./decision.js";
 export * from "./handoff.js";
+export * from "./task-transition.js";
+export * from "./approval-policy.js";
+export * from "./issue-impact-policy.js";
+export * from "./completion-policy.js";
 export * from "./task.js";

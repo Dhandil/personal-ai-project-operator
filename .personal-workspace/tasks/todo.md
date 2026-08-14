@@ -13,7 +13,7 @@ This file is generated from the formal task cards. Update the corresponding
 | TASK-006 | completed |
 | TASK-007 | completed |
 | TASK-008 | completed |
-| TASK-009 | draft |
+| TASK-009 | completed |
 | TASK-010 | draft |
 | TASK-011 | draft |
 | TASK-012 | draft |

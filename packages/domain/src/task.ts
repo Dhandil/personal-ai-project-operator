@@ -28,19 +28,21 @@ export type TaskCompletion = Readonly<{
   readonly handoff: string;
 }>;
 
+export type TaskStatus =
+  | "draft"
+  | "ready"
+  | "in_progress"
+  | "in_review"
+  | "completed"
+  | "blocked"
+  | "changes_requested"
+  | "paused"
+  | "cancelled";
+
 export type Task = Readonly<{
   readonly id: TaskId;
   readonly title: string;
-  readonly status:
-    | "draft"
-    | "ready"
-    | "in_progress"
-    | "in_review"
-    | "completed"
-    | "blocked"
-    | "changes_requested"
-    | "paused"
-    | "cancelled";
+  readonly status: TaskStatus;
   readonly goalId: GoalId;
   readonly currentRole: RoleKey;
   readonly dependencies: readonly TaskId[];

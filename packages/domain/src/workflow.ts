@@ -43,7 +43,11 @@ export type DomainErrorCode =
   | "invalid_issue"
   | "invalid_decision"
   | "invalid_handoff"
-  | "decision_required";
+  | "decision_required"
+  | "approval_required"
+  | "invalid_task_transition"
+  | "completion_not_allowed"
+  | "invalid_issue_impact";
 
 export type DomainError = Readonly<{
   readonly code: DomainErrorCode;
