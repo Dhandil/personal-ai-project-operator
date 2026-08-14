@@ -8,7 +8,7 @@
     "build": "tsc -p tsconfig.json",
     "start": "node dist/main.js",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "test:integration": "tsx --test test/app.test.ts test/governance-codec.integration.test.ts"
+    "test:integration": "tsx --test test/app.test.ts test/governance-codec.integration.test.ts test/governance-repository.integration.test.ts"
   },
   "dependencies": {
     "fastify": "^5.0.0",

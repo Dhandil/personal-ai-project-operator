@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-011
 title: 实现原子写入 revision 哈希和项目写入队列
-status: ready
+status: completed
 goal_id: GOAL-003
 role: executor
 dependencies: [TASK-010]
-revision: 2
+revision: 3
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-14T02:53:03Z
+updated_at: 2026-08-14T03:03:47Z
 approval_id: APPROVAL-001
 target_branch: goal/GOAL-001
 unblocked_by: TASK-010
@@ -37,3 +37,22 @@ unblocked_by: TASK-010
 ## 边界与交接
 
 不得静默解决冲突或写中央数据库代替项目文件。完成后解锁 TASK-012～014。
+
+## Completion
+
+- Status: `completed`.
+- Output: added SHA-256 hashing, atomic file replacement, per-project serialized write queues, and a governance repository with revision/hash compare-and-write checks.
+- Atomicity: writes use a unique temporary file, flush/sync, rename, and cleanup on failure; rejected writes leave the formal file unchanged.
+- Conflict safety: revision or content-hash mismatches return structured errors and never overwrite external changes.
+- Concurrency: writes sharing a project root execute in queue order; concurrent stale writers cannot both overwrite the same revision.
+- Boundary: no silent conflict resolution and no central database replacement was added.
+
+## Verification evidence
+
+- `npm run test:integration -- governance-repository`: 6 tests passed.
+- `npm run verify`: format check, lint, all workspace type checks, 40 unit tests, 6 integration tests, 1 Playwright Chromium test, and all workspace builds passed.
+- `git diff --check`: passed.
+
+## Handoff
+
+- TASK-012, TASK-013, and TASK-014 were not implemented in this task.
