@@ -10,6 +10,8 @@ import { RolePage } from "./role-page";
 import { IssuePage } from "./issue-page";
 import { ReportPage } from "./report-page";
 import { TaskPage } from "./task-page";
+import { ApprovalPage } from "./approval-page";
+import { HistoryPageView } from "./history-page";
 
 type AppRoute =
   | "home"
@@ -20,7 +22,9 @@ type AppRoute =
   | "roles"
   | "issues"
   | "reports"
-  | "tasks";
+  | "tasks"
+  | "approvals"
+  | "history";
 
 type HealthPayload = Readonly<{
   readonly status: "ok";
@@ -54,6 +58,8 @@ export function resolveRoute(pathname: string): AppRoute {
   if (pathname === "/projects/tasks") {
     return "tasks";
   }
+  if (pathname === "/projects/approvals") return "approvals";
+  if (pathname === "/projects/history") return "history";
   return pathname === "/health" ? "health" : "home";
 }
 
@@ -124,6 +130,18 @@ export function App(): ReactElement {
           >
             工作流
           </a>
+          <a
+            className={route === "approvals" ? "active" : ""}
+            href="/projects/approvals"
+          >
+            审批
+          </a>
+          <a
+            className={route === "history" ? "active" : ""}
+            href="/projects/history"
+          >
+            历史
+          </a>
         </nav>
       </header>
 
@@ -146,6 +164,10 @@ export function App(): ReactElement {
           <ReportPage />
         ) : route === "tasks" ? (
           <TaskPage />
+        ) : route === "approvals" ? (
+          <ApprovalPage />
+        ) : route === "history" ? (
+          <HistoryPageView />
         ) : (
           <>
             <ProjectOverview

@@ -16,6 +16,8 @@ import { IssueService } from "./infrastructure/issues/issue-service.js";
 import { ReportService } from "./infrastructure/reports/report-service.js";
 import { SettingsService } from "./infrastructure/reports/settings-service.js";
 import { TaskService } from "./infrastructure/tasks/task-service.js";
+import { ApprovalService } from "./infrastructure/approvals/approval-service.js";
+import { RecoveryService } from "./infrastructure/recovery/recovery-service.js";
 
 const SERVICE_NAME = "@personal-ai-operator/server";
 
@@ -35,6 +37,8 @@ export type AppOptions = Readonly<{
   readonly reportService?: ReportService;
   readonly settingsService?: SettingsService;
   readonly taskService?: TaskService;
+  readonly approvalService?: ApprovalService;
+  readonly recoveryService?: RecoveryService;
 }>;
 
 export function buildApp(options: AppOptions = {}): FastifyInstance {
@@ -73,6 +77,8 @@ export function buildApp(options: AppOptions = {}): FastifyInstance {
   const reportService = options.reportService ?? new ReportService();
   const settingsService = options.settingsService ?? new SettingsService();
   const taskService = options.taskService ?? new TaskService();
+  const approvalService = options.approvalService ?? new ApprovalService();
+  const recoveryService = options.recoveryService ?? new RecoveryService();
 
   app.get("/api/projects", async (_request, reply) => {
     const result = await projectQueryService.list();
@@ -244,6 +250,90 @@ export function buildApp(options: AppOptions = {}): FastifyInstance {
       )
       .send(result);
   });
+
+  app.get<{ Querystring: { readonly projectKey?: unknown } }>(
+    "/api/projects/approvals",
+    async (request, reply) => {
+      const projectKey = request.query?.projectKey;
+      if (typeof projectKey !== "string")
+        return reply.code(400).send({
+          ok: false,
+          error: {
+            code: "invalid_input",
+            message: "A project key is required.",
+            details: [],
+          },
+        });
+      const result = await approvalService.getApprovals(projectKey);
+      return reply
+        .code(
+          result.ok ? 200 : result.error.code === "registry_failed" ? 500 : 400,
+        )
+        .send(result);
+    },
+  );
+  app.post("/api/projects/approvals", async (request, reply) => {
+    const result = await approvalService.request(request.body);
+    return reply
+      .code(
+        result.ok ? 200 : result.error.code === "registry_failed" ? 500 : 400,
+      )
+      .send(result);
+  });
+  app.post("/api/projects/approvals/request", async (request, reply) => {
+    const result = await approvalService.request(request.body);
+    return reply
+      .code(
+        result.ok ? 200 : result.error.code === "registry_failed" ? 500 : 400,
+      )
+      .send(result);
+  });
+  app.post("/api/projects/approvals/decision", async (request, reply) => {
+    const result = await approvalService.decide(request.body);
+    return reply
+      .code(
+        result.ok ? 200 : result.error.code === "registry_failed" ? 500 : 400,
+      )
+      .send(result);
+  });
+
+  app.post("/api/projects/recovery", async (request, reply) => {
+    const result = await recoveryService.recover(request.body);
+    return reply
+      .code(
+        result.ok ? 200 : result.error.code === "registry_failed" ? 500 : 400,
+      )
+      .send(result);
+  });
+  app.post("/api/projects/rebuild", async (request, reply) => {
+    const result = await recoveryService.recover(request.body);
+    return reply
+      .code(
+        result.ok ? 200 : result.error.code === "registry_failed" ? 500 : 400,
+      )
+      .send(result);
+  });
+  app.get<{ Querystring: { readonly projectKey?: unknown } }>(
+    "/api/projects/history",
+    async (request, reply) => {
+      const projectKey = request.query?.projectKey;
+      if (typeof projectKey !== "string")
+        return reply.code(400).send({
+          ok: false,
+          error: {
+            code: "invalid_input",
+            message: "A project key is required.",
+            details: [],
+          },
+        });
+      const result = await recoveryService.history(projectKey);
+      return reply
+        .code(
+          result.ok ? 200 : result.error.code === "registry_failed" ? 500 : 400,
+        )
+        .send(result);
+    },
+  );
 
   app.get<{ Querystring: { readonly projectKey?: unknown } }>(
     "/api/projects/roles",
