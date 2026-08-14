@@ -1,4 +1,4 @@
-import { lstat } from "node:fs/promises";
+import { lstat, readFile, readdir, readlink } from "node:fs/promises";
 import { basename, join, resolve } from "node:path";
 
 import {
@@ -14,6 +14,7 @@ import {
   type GitBootstrapErrorCode,
   type GitRepositoryState,
 } from "../git/git-bootstrap.js";
+import { sha256Content } from "../files/content-hash.js";
 
 export type ProjectInitializationPreviewInput = Readonly<{
   readonly projectRoot: string;
@@ -59,6 +60,7 @@ export type ProjectInitializationPreview = Readonly<{
   readonly projectRoot: string;
   readonly projectName: string;
   readonly idea: string;
+  readonly directoryFingerprint: string;
   readonly plannedFiles: readonly PlannedFile[];
   readonly plannedDirectories: readonly PlannedDirectory[];
   readonly conflicts: readonly PlannedFile[];
@@ -198,6 +200,64 @@ async function inspectPlannedFile(
   }
 }
 
+type DirectoryEntry = Readonly<{
+  readonly relativePath: string;
+  readonly kind: "directory" | "file" | "symlink";
+  readonly contentHash: string | null;
+}>;
+
+async function collectDirectoryEntries(
+  projectRoot: string,
+  relativeDirectory = "",
+): Promise<readonly DirectoryEntry[]> {
+  const directoryPath = join(projectRoot, relativeDirectory);
+  const entries = await readdir(directoryPath, { withFileTypes: true });
+  const collected: DirectoryEntry[] = [];
+
+  for (const entry of entries.toSorted((left, right) =>
+    left.name.localeCompare(right.name),
+  )) {
+    if (relativeDirectory === "" && entry.name === ".git") {
+      continue;
+    }
+
+    const relativePath = relativeDirectory
+      ? `${relativeDirectory}/${entry.name}`
+      : entry.name;
+    const absolutePath = join(projectRoot, relativePath);
+    const file = await lstat(absolutePath);
+    if (file.isDirectory()) {
+      collected.push({
+        relativePath,
+        kind: "directory",
+        contentHash: null,
+      });
+      collected.push(
+        ...(await collectDirectoryEntries(projectRoot, relativePath)),
+      );
+    } else if (file.isSymbolicLink()) {
+      collected.push({
+        relativePath,
+        kind: "symlink",
+        contentHash: sha256Content(await readlink(absolutePath)),
+      });
+    } else {
+      collected.push({
+        relativePath,
+        kind: "file",
+        contentHash: sha256Content(await readFile(absolutePath)),
+      });
+    }
+  }
+
+  return collected;
+}
+
+async function directoryFingerprint(projectRoot: string): Promise<string> {
+  const entries = await collectDirectoryEntries(projectRoot);
+  return sha256Content(JSON.stringify(entries));
+}
+
 function gitPlan(state: GitRepositoryState): PlannedGitAction {
   if (state === "no_repository") {
     return {
@@ -300,6 +360,7 @@ export class ProjectInitializationPreviewService {
         inspectPlannedFile(projectRoot, relativePath),
       ),
     );
+    const fingerprint = await directoryFingerprint(projectRoot);
 
     return {
       ok: true,
@@ -307,6 +368,7 @@ export class ProjectInitializationPreviewService {
         projectRoot,
         projectName,
         idea,
+        directoryFingerprint: fingerprint,
         plannedFiles,
         plannedDirectories: PLANNED_DIRECTORIES.map((relativePath) => ({
           relativePath,
