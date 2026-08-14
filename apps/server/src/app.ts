@@ -20,6 +20,7 @@ import { ApprovalService } from "./infrastructure/approvals/approval-service.js"
 import { RecoveryService } from "./infrastructure/recovery/recovery-service.js";
 import { ExecutionCoordinatorService } from "./infrastructure/execution/execution-coordinator.js";
 import { TaskPackageService } from "./infrastructure/execution/task-package-service.js";
+import { CodexCliPreflightService } from "./infrastructure/agent-runtime/codex-cli-preflight.js";
 
 const SERVICE_NAME = "@personal-ai-operator/server";
 
@@ -43,6 +44,7 @@ export type AppOptions = Readonly<{
   readonly recoveryService?: RecoveryService;
   readonly executionCoordinatorService?: ExecutionCoordinatorService;
   readonly taskPackageService?: TaskPackageService;
+  readonly codexCliPreflightService?: CodexCliPreflightService;
 }>;
 
 export function buildApp(options: AppOptions = {}): FastifyInstance {
@@ -93,6 +95,8 @@ export function buildApp(options: AppOptions = {}): FastifyInstance {
   const taskPackageService =
     options.taskPackageService ??
     new TaskPackageService({ taskService, goalService, roleService });
+  const codexCliPreflightService =
+    options.codexCliPreflightService ?? new CodexCliPreflightService();
 
   app.get("/api/projects", async (_request, reply) => {
     const result = await projectQueryService.list();
@@ -303,6 +307,11 @@ export function buildApp(options: AppOptions = {}): FastifyInstance {
         result.ok ? 200 : result.error.code === "registry_failed" ? 500 : 400,
       )
       .send(result);
+  });
+
+  app.get("/api/runtime/codex/preflight", async (_request, reply) => {
+    const report = await codexCliPreflightService.check();
+    return reply.code(200).send({ ok: true, value: report });
   });
 
   app.get<{ Querystring: { readonly projectKey?: unknown } }>(

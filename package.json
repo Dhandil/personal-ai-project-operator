@@ -14,6 +14,7 @@
     "format": "prettier --write package.json tsconfig.base.json eslint.config.js playwright.config.ts vitest.config.ts apps/**/*.{ts,tsx,json,css,html} packages/**/*.{ts,tsx,json,css,html} e2e/**/*.{ts,tsx}",
     "test:unit": "vitest run --config vitest.config.ts",
     "test:integration": "npm run test:integration --workspace apps/server",
+    "test:codex-cli": "npm run test:codex-cli --workspace apps/server",
     "db:migrate": "npm run db:migrate --workspace apps/server",
     "dogfood": "npm run dogfood --workspace apps/server",
     "test:coverage": "vitest run --config vitest.config.ts --coverage",
