@@ -2,13 +2,16 @@
 schema_version: 1
 id: TASK-019
 title: 实现项目创建向导界面
-status: draft
+status: ready
 goal_id: GOAL-004
 role: executor
 dependencies: [TASK-018]
-revision: 1
+revision: 2
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-13T12:29:07Z
+updated_at: 2026-08-14T06:54:23Z
+approval_id: APPROVAL-001
+target_branch: goal/GOAL-001
+unblocked_by: TASK-018
 ---
 
 # TASK-019：实现项目创建向导界面
