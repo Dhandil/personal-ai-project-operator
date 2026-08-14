@@ -32,7 +32,7 @@ This file is generated from the formal task cards. Update the corresponding
 | TASK-025 | draft |
 | TASK-026 | completed |
 | TASK-027 | draft |
-| TASK-028 | ready |
+| TASK-028 | completed |
 | TASK-029 | draft |
 | TASK-030 | draft |
 | TASK-031 | draft |
