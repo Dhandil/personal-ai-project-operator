@@ -34,7 +34,7 @@ This file is generated from the formal task cards. Update the corresponding
 | TASK-027 | completed |
 | TASK-028 | completed |
 | TASK-029 | completed |
-| TASK-030 | ready |
+| TASK-030 | completed |
 | TASK-031 | draft |
 | TASK-032 | draft |
 | TASK-033 | draft |
