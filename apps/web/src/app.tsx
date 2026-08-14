@@ -1,41 +1,41 @@
-import type { ReactElement } from 'react';
-import { useEffect, useState } from 'react';
+import type { ReactElement } from "react";
+import { useEffect, useState } from "react";
 
-import { strings } from './strings';
+import { strings } from "./strings";
 
-type AppRoute = 'home' | 'health';
+type AppRoute = "home" | "health";
 
 type HealthPayload = Readonly<{
-  readonly status: 'ok';
+  readonly status: "ok";
   readonly service: string;
 }>;
 
 type HealthState =
-  | Readonly<{ readonly status: 'checking' }>
-  | Readonly<{ readonly status: 'connected'; readonly service: string }>
-  | Readonly<{ readonly status: 'unavailable' }>;
+  | Readonly<{ readonly status: "checking" }>
+  | Readonly<{ readonly status: "connected"; readonly service: string }>
+  | Readonly<{ readonly status: "unavailable" }>;
 
 export function resolveRoute(pathname: string): AppRoute {
-  return pathname === '/health' ? 'health' : 'home';
+  return pathname === "/health" ? "health" : "home";
 }
 
 function isHealthPayload(value: unknown): value is HealthPayload {
-  if (typeof value !== 'object' || value === null) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
 
   const payload = value as Record<string, unknown>;
-  return payload.status === 'ok' && typeof payload.service === 'string';
+  return payload.status === "ok" && typeof payload.service === "string";
 }
 
 export function App(): ReactElement {
-  const [health, setHealth] = useState<HealthState>({ status: 'checking' });
+  const [health, setHealth] = useState<HealthState>({ status: "checking" });
   const route = resolveRoute(window.location.pathname);
 
   useEffect(() => {
     const controller = new AbortController();
 
-    void fetch('/health', { signal: controller.signal })
+    void fetch("/health", { signal: controller.signal })
       .then(async (response): Promise<unknown> => {
         if (!response.ok) {
           throw new Error(`Health request failed: ${response.status}`);
@@ -45,17 +45,17 @@ export function App(): ReactElement {
       })
       .then((payload: unknown) => {
         if (!isHealthPayload(payload)) {
-          throw new Error('Health response has an unexpected shape');
+          throw new Error("Health response has an unexpected shape");
         }
 
-        setHealth({ status: 'connected', service: payload.service });
+        setHealth({ status: "connected", service: payload.service });
       })
       .catch((error: unknown) => {
-        if (error instanceof DOMException && error.name === 'AbortError') {
+        if (error instanceof DOMException && error.name === "AbortError") {
           return;
         }
 
-        setHealth({ status: 'unavailable' });
+        setHealth({ status: "unavailable" });
       });
 
     return () => controller.abort();
@@ -71,10 +71,10 @@ export function App(): ReactElement {
           <span>{strings.productName}</span>
         </a>
         <nav aria-label="主导航" className="navigation">
-          <a className={route === 'home' ? 'active' : ''} href="/">
+          <a className={route === "home" ? "active" : ""} href="/">
             {strings.navigation.home}
           </a>
-          <a className={route === 'health' ? 'active' : ''} href="/health">
+          <a className={route === "health" ? "active" : ""} href="/health">
             {strings.navigation.health}
           </a>
         </nav>
@@ -90,16 +90,19 @@ export function App(): ReactElement {
 
         <section className="status-card" aria-labelledby="health-title">
           <div>
-            <p className="eyebrow">{route === 'health' ? 'HEALTH' : 'SYSTEM'}</p>
+            <p className="eyebrow">
+              {route === "health" ? "HEALTH" : "SYSTEM"}
+            </p>
             <h2 id="health-title">{strings.health.title}</h2>
             <p className="description">{strings.health.endpoint}</p>
           </div>
           <div className={`health-state ${health.status}`} role="status">
             <span className="status-dot" aria-hidden="true" />
             <span>
-              {health.status === 'checking' && strings.health.checking}
-              {health.status === 'connected' && `${strings.health.connected} · ${health.service}`}
-              {health.status === 'unavailable' && strings.health.unavailable}
+              {health.status === "checking" && strings.health.checking}
+              {health.status === "connected" &&
+                `${strings.health.connected} · ${health.service}`}
+              {health.status === "unavailable" && strings.health.unavailable}
             </span>
           </div>
         </section>
