@@ -151,6 +151,37 @@ test("summary settings default to ten minutes and support a project override", a
   }
 });
 
+test("consecutive live audit events receive unique report ids and remain visible", async () => {
+  const value = await fixture();
+  try {
+    const { report } = services(value);
+    const first = await report.publishAuditEvent(
+      value.projectKey,
+      event("EXEC-011", "task_completed", "status_changed", {
+        from: "in_progress",
+        to: "completed",
+        reason: "first live event",
+      }),
+    );
+    const second = await report.publishAuditEvent(
+      value.projectKey,
+      event("EXEC-012", "recovery_recorded", "recovery"),
+    );
+    assert.equal(first.ok, true);
+    assert.equal(second.ok, true);
+    if (!first.ok || !second.ok)
+      throw new Error("Live report publication failed.");
+    assert.equal(first.value.id, "REPORT-011");
+    assert.equal(second.value.id, "REPORT-012");
+    assert.deepEqual(
+      report.hub.replay(value.projectKey, null).map((item) => item.payload.id),
+      ["REPORT-011", "REPORT-012"],
+    );
+  } finally {
+    await rm(value.root, { recursive: true, force: true });
+  }
+});
+
 test("summary scheduler uses the configured interval and reschedules after a summary", async () => {
   const timers: Array<{ callback: () => void; delay: number }> = [];
   const summaries: string[] = [];

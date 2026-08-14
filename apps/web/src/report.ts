@@ -167,7 +167,7 @@ export function subscribeToProjectEvents(
 ): EventSource {
   const query = `/api/projects/events?projectKey=${encodeURIComponent(projectKey)}${lastEventId === null ? "" : `&lastEventId=${encodeURIComponent(lastEventId)}`}`;
   const source = new EventSource(query);
-  source.onmessage = (message) => {
+  const handleMessage = (message: MessageEvent<string>): void => {
     try {
       const data = JSON.parse(message.data) as unknown;
       if (isReport(data))
@@ -176,5 +176,7 @@ export function subscribeToProjectEvents(
       /* malformed events stay out of the fact view */
     }
   };
+  source.onmessage = handleMessage;
+  source.addEventListener("report", handleMessage);
   return source;
 }

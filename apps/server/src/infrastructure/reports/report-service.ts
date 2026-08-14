@@ -68,10 +68,11 @@ function reportKind(event: AuditEvent): ExecutionReportKind {
     return "blocker";
   return "event";
 }
-function reportId(index: number): ReportId {
-  return parseFormalId(`REPORT-${String(index).padStart(3, "0")}`) as ReportId;
+function reportIdFromEvent(eventId: string): ReportId {
+  const sequence = eventId.slice(eventId.indexOf("-") + 1);
+  return parseFormalId(`REPORT-${sequence}`) as ReportId;
 }
-function toReport(event: AuditEvent, index: number): ExecutionReport {
+function toReport(event: AuditEvent): ExecutionReport {
   const kind = reportKind(event);
   const title =
     kind === "completion"
@@ -86,7 +87,7 @@ function toReport(event: AuditEvent, index: number): ExecutionReport {
               ? "Privilege violation"
               : "Execution event";
   return {
-    id: reportId(index),
+    id: reportIdFromEvent(event.id),
     kind,
     title,
     summary: `${event.action}: ${
@@ -146,7 +147,7 @@ export class ReportService {
       ok: true,
       value: {
         projectKey,
-        reports: events.value.map((event, index) => toReport(event, index + 1)),
+        reports: events.value.map((event) => toReport(event)),
       },
     };
   }
@@ -166,7 +167,7 @@ export class ReportService {
     projectKey: string,
     event: AuditEvent,
   ): Promise<ReportResult<ExecutionReport>> {
-    const report = toReport(event, 1);
+    const report = toReport(event);
     this.hub.publish(toRealtime(projectKey, report));
     return { ok: true, value: report };
   }

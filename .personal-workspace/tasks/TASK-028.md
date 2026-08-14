@@ -6,9 +6,9 @@ status: changes_requested
 goal_id: GOAL-005
 role: executor
 dependencies: [TASK-012, TASK-020]
-revision: 4
+revision: 5
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-14T10:42:10Z
+updated_at: 2026-08-14T11:00:00Z
 approval_id: APPROVAL-001
 target_branch: goal/GOAL-001
 unblocked_by: TASK-020
@@ -34,12 +34,18 @@ Provide an SSE event stream with cursor replay, audit-backed execution reports, 
 - Added `SettingsService` for the 10-minute default, global setting, and project override.
 - Added `SummaryScheduler` with configurable intervals and rescheduling after each summary callback.
 - Added `/projects/reports` page showing evidence and saving project summary intervals.
-- Full `npm run verify` passed: 61 unit tests, 47 integration tests, 8 Playwright Chromium tests, formatting, lint, type checks, and builds.
 
-## Review note
+## Repair evidence for REPORT-027
 
-- Live `publishAuditEvent` currently assigns the constant report id `REPORT-001`; the reports page de-duplicates live reports by id. Consecutive live audit events can therefore be hidden as duplicates. Assign a unique, event-derived report id and add a regression test covering at least two consecutive live events before returning this task to `completed`.
+- `publishAuditEvent` now derives a stable unique `REPORT-###` from the unique audit event ID instead of using a constant `REPORT-001`.
+- Added a backend regression test publishing consecutive `EXEC-011` and `EXEC-012` events and asserting `REPORT-011` and `REPORT-012` both remain in the stream.
+- Added a Chromium regression scenario with two consecutive named `report` SSE events and verified both render; the client now subscribes to the named SSE event.
+- Full `npm run verify` passed after the repair: 61 unit tests, 48 integration tests, 8 Playwright Chromium tests, formatting, lint, type checks, and builds.
+
+## Review state
+
+The implementation repair is complete and awaiting independent re-acceptance of REPORT-027. Until then this task remains `changes_requested`.
 
 ## Boundary and handoff
 
-Reports cite persisted audit evidence and do not treat chat text as facts. This completes the GOAL-005 event/report checkpoint for handoff to the next governed task.
+Reports cite persisted audit evidence and do not treat chat text as facts. This completes the GOAL-005 event/report checkpoint for handoff to the next governed task after acceptance.

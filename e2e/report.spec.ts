@@ -57,11 +57,13 @@ test("reports page shows audit evidence and editable summary interval", async ({
       }),
     }),
   );
+  const liveReport = (id: string, kind: string, title: string): string =>
+    `id: ${id}\nevent: report\ndata: ${JSON.stringify({ id, kind, title, summary: `${kind}: live`, relatedObjectIds: [], evidence: [{ source: ".personal-workspace/audit/events.jsonl", eventId: id.replace("REPORT", "EXEC"), action: kind }], occurredAt: "2026-08-14T10:00:00Z" })}\n\n`;
   await page.route("**/api/projects/events**", async (route) =>
     route.fulfill({
       status: 200,
       contentType: "text/event-stream",
-      body: ": connected\n\n",
+      body: `${liveReport("REPORT-011", "blocker", "Execution blocked")}${liveReport("REPORT-012", "recovery", "Execution recovered")}`,
     }),
   );
   await page.goto("/projects/reports");
@@ -70,5 +72,7 @@ test("reports page shows audit evidence and editable summary interval", async ({
   ).toBeVisible();
   await expect(page.getByText("Execution completed")).toBeVisible();
   await expect(page.getByText(/Evidence: .*EXEC-001/)).toBeVisible();
+  await expect(page.getByText("Execution blocked")).toBeVisible();
+  await expect(page.getByText("Execution recovered")).toBeVisible();
   await expect(page.getByLabel("Summary interval minutes")).toHaveValue("10");
 });
