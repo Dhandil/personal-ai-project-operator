@@ -3,14 +3,14 @@ schema_version: 1
 document_type: report
 id: REPORT-042
 title: TASK-040 续接取消中断标记及恢复报告验证报告
-status: in_review
+status: changes_requested
 report_type: task_verification
-acceptance_state: pending_user_acceptance
+acceptance_state: changes_requested
 task_id: TASK-040
 goal_id: GOAL-008
-revision: 1
+revision: 2
 created_at: 2026-08-14T18:46:23Z
-updated_at: 2026-08-14T18:46:23Z
+updated_at: 2026-08-14T18:52:09Z
 verified_by: implementation_agent
 verified_commit: d21088d
 verification_commands:
@@ -43,6 +43,17 @@ TASK-040 已完成实现并提交，当前进入独立用户验收。实现仅�
 - 未修改 TASK-041 或 GOAL-009。
 - 未实现 `codex delete <UUID> --force` 会话删除清理；该行为留给 TASK-041。
 - 未使用 `--last`，未解析或编辑 Codex 内部会话文件。
+
+## 独立复核结果
+
+- 专项测试 12/12、完整 `npm run verify` 均通过：66 个单元测试、91 个集成测试、14 个 Chromium Playwright 测试，以及格式、Lint、类型检查和构建。
+- 精确 session ID、`--last` 禁止、进程终止、恢复选择和下一任务阻断的同一 Runtime 测试均符合预期。
+- 发现跨后端重启续接缺陷：`CodexCliAdapter.resume` 先从当前实例内存 `executions` 查找 `executionId`；真实重启后新 Adapter 的 Map 为空，即使恢复记录提供精确 `sessionId` 也会直接返回 `Execution ... does not exist`，无法构造 `codex exec resume`。
+- 现有“重启”测试复用了同一个 Fake Runtime 实例，未覆盖新 Runtime/新 Coordinator 的实际进程重启边界。
+
+## 修复要求
+
+让新 Runtime 实例仅凭持久化 `executionId`、精确 `sessionId` 及可重建的任务上下文构造 resume 命令，不依赖旧内存执行记录；补充新 Runtime 回归测试后重新运行专项和完整验证。TASK-040 当前为 `changes_requested`，TASK-041 不解锁。
 
 ## 用户验收建议
 
