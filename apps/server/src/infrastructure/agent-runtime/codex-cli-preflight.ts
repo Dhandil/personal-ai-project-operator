@@ -12,6 +12,8 @@ const VERSION_PATTERN =
   /(?:codex(?:-cli)?\s+)?v?(\d+\.\d+(?:\.\d+)?(?:[-+][0-9A-Za-z.-]+)?)/i;
 const NOT_AUTHENTICATED_PATTERN =
   /not\s+logged|not\s+authenticated|login\s+required|logged\s+out/i;
+const AUTHENTICATED_PATTERN =
+  /logged\s+in|authenticated|signed\s+in|login\s+successful/i;
 const HIGH_INTEGRITY_LEVEL = 12_288;
 
 export type CodexProbeCommand = Readonly<{
@@ -91,13 +93,9 @@ function hasAll(text: string, fragments: readonly string[]): boolean {
 
 function loginStatus(result: CodexProbeProcessResult): CodexLoginStatus {
   const output = outputOf(result);
-  if (commandSucceeded(result) && !NOT_AUTHENTICATED_PATTERN.test(output)) {
-    return "authenticated";
-  }
-  if (NOT_AUTHENTICATED_PATTERN.test(output) || result.error !== null) {
-    return "unauthenticated";
-  }
-  return "unknown";
+  if (NOT_AUTHENTICATED_PATTERN.test(output)) return "unauthenticated";
+  if (!commandSucceeded(result)) return "unknown";
+  return AUTHENTICATED_PATTERN.test(output) ? "authenticated" : "unknown";
 }
 
 function parseElevationOutput(result: CodexProbeProcessResult): boolean | null {

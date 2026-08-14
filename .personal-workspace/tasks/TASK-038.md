@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-038
 title: 实现 Codex CLI 环境与沙箱能力检查
-status: changes_requested
+status: in_review
 goal_id: GOAL-008
 role: executor
 dependencies: [TASK-035]
-revision: 5
+revision: 6
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-14T17:38:39Z
+updated_at: 2026-08-14T17:45:01Z
 approval_id: APPROVAL-003
 target_branch: goal/GOAL-008
 unblocked_by: TASK-035
@@ -53,3 +53,15 @@ Codex 进程探测器、能力模型、Windows 沙箱探测、诊断 Route、测
 - TASK-038 独立复核发现登录状态解析边界缺陷，状态更新为 `changes_requested`，等待修复后重新复核。
 - 实现范围仅覆盖 TASK-038；未执行 TASK-039 或 GOAL-009。
 - 修复要求：`codex login status` 成功但输出为空或无法识别时必须报告 `unknown` 并阻断 `canExecute`，补充回归测试；修复后再交接 TASK-039、TASK-046。
+
+## 修复证据
+
+- `loginStatus` 现在只接受可识别的已登录信号；成功但空输出或无法识别的输出返回 `unknown`，非零退出且无法识别时同样不会误报已登录。
+- 新增两条回归测试，分别覆盖成功空输出和成功未知输出；两者均确认 `login.status === "unknown"`、`canExecute === false`，专项测试 7/7 通过。
+- 完整 `npm run verify` 通过：66 个单元测试、84 个集成测试、14 个 Chromium Playwright 测试，以及格式、Lint、类型检查和构建。
+- 未执行 TASK-039 或 GOAL-009。
+
+## 修复后交接
+
+- TASK-038 当前状态恢复为 `in_review`，等待项目负责人复核 REPORT-040。
+- 复核通过后才允许继续交接 TASK-039、TASK-046。

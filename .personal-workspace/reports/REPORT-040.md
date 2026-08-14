@@ -3,15 +3,15 @@ schema_version: 1
 document_type: report
 id: REPORT-040
 title: TASK-038 Codex CLI 环境与沙箱能力检查验证报告
-status: changes_requested
+status: in_review
 report_type: task_verification
-acceptance_state: changes_requested
+acceptance_state: pending
 task_id: TASK-038
 goal_id: GOAL-008
-revision: 2
+revision: 3
 created_at: 2026-08-14T17:27:23Z
-updated_at: 2026-08-14T17:38:39Z
-verified_commit: 3aa0006
+updated_at: 2026-08-14T17:45:01Z
+verified_commit: pending
 reviewed_by: project_lead
 reviewed_at: 2026-08-14T17:38:39Z
 verification_commands:
@@ -58,3 +58,14 @@ TASK-038 已实现并提交，当前等待项目负责人独立验收。实现�
 ## 待验收
 
 请项目负责人复核 REPORT-040 的能力报告字段、阻断条件、Windows elevated/unelevated 降级提示及真实 preflight 的 `EPERM` 诊断；验收通过后再决定是否解锁 TASK-039。
+
+## 修复结果
+
+- `loginStatus` 现在只将包含可识别已登录信号的成功输出判定为 `authenticated`；成功但空输出或未知输出返回 `unknown`。
+- `unknown` 继续进入阻断逻辑，返回 `canExecute: false` 和“登录状态无法确认”的操作建议，不会启动真实执行。
+- 新增两条回归测试：成功空输出、成功未知输出；专项模拟集成测试现为 7/7 通过。
+- 完整 `npm run verify` 现为 66 个单元测试、84 个集成测试、14 个 Chromium Playwright 测试，以及格式、Lint、类型检查和构建全部通过。
+
+## 修复后待验收
+
+请项目负责人复核成功空/未知登录输出的 `unknown` 阻断行为；复核通过后再决定是否解锁 TASK-039。TASK-039 在此之前保持未执行。

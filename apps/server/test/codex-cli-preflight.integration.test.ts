@@ -104,6 +104,46 @@ test("preflight blocks unauthenticated execution without exposing credential out
   assert.match(report.sandbox.warning ?? "", /unelevated/);
 });
 
+test("preflight treats an empty successful login status as unknown and blocks execution", async () => {
+  const service = new CodexCliPreflightService({
+    platform: "win32",
+    runner: simulatedRunner({
+      "codex login status": result("", 0),
+    }),
+    elevationProbe: async () => true,
+  });
+
+  const report = await service.check();
+
+  assert.equal(report.login.status, "unknown");
+  assert.equal(report.canExecute, false);
+  assert.ok(
+    report.blockers.some((item) =>
+      /login status could not be confirmed/.test(item),
+    ),
+  );
+});
+
+test("preflight treats an unrecognized successful login status as unknown and blocks execution", async () => {
+  const service = new CodexCliPreflightService({
+    platform: "win32",
+    runner: simulatedRunner({
+      "codex login status": result("status output changed", 0),
+    }),
+    elevationProbe: async () => true,
+  });
+
+  const report = await service.check();
+
+  assert.equal(report.login.status, "unknown");
+  assert.equal(report.canExecute, false);
+  assert.ok(
+    report.blockers.some((item) =>
+      /login status could not be confirmed/.test(item),
+    ),
+  );
+});
+
 test("preflight blocks when required commands or sandbox flags are missing", async () => {
   const service = new CodexCliPreflightService({
     platform: "win32",
