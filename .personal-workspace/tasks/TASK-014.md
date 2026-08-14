@@ -2,13 +2,16 @@
 schema_version: 1
 id: TASK-014
 title: 实现外部修改检测和冲突处理入口
-status: draft
+status: ready
 goal_id: GOAL-003
 role: executor
 dependencies: [TASK-011, TASK-012, TASK-013]
-revision: 1
+revision: 2
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-13T12:29:07Z
+updated_at: 2026-08-14T04:32:15Z
+approval_id: APPROVAL-001
+target_branch: goal/GOAL-001
+unblocked_by: TASK-013
 ---
 
 # TASK-014：实现外部修改检测和冲突处理入口
