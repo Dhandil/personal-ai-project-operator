@@ -9,6 +9,7 @@ import {
   ProjectQueryService,
   ProjectStartupService,
 } from "./infrastructure/projects/project-startup.js";
+import { WorkflowService } from "./infrastructure/workflow/workflow-service.js";
 
 const SERVICE_NAME = "@personal-ai-operator/server";
 
@@ -21,6 +22,7 @@ export type AppOptions = Readonly<{
   readonly projectInitializationService?: ProjectInitializationService;
   readonly projectQueryService?: ProjectQueryService;
   readonly projectStartupService?: ProjectStartupService;
+  readonly workflowService?: WorkflowService;
 }>;
 
 export function buildApp(options: AppOptions = {}): FastifyInstance {
@@ -52,6 +54,7 @@ export function buildApp(options: AppOptions = {}): FastifyInstance {
   const projectStartupService =
     options.projectStartupService ??
     new ProjectStartupService({ queryService: projectQueryService });
+  const workflowService = options.workflowService ?? new WorkflowService();
 
   app.get("/api/projects", async (_request, reply) => {
     const result = await projectQueryService.list();
@@ -95,6 +98,47 @@ export function buildApp(options: AppOptions = {}): FastifyInstance {
       return reply.code(result.ok ? 200 : 400).send(result);
     },
   );
+
+  app.get<{ Querystring: { readonly projectKey?: unknown } }>(
+    "/api/projects/workflow",
+    async (request, reply) => {
+      const projectKey = request.query?.projectKey;
+      if (typeof projectKey !== "string") {
+        return reply.code(400).send({
+          ok: false,
+          error: {
+            code: "invalid_input",
+            message: "A project key is required.",
+            details: [],
+          },
+        });
+      }
+      const result = await workflowService.getWorkflow(projectKey);
+      return reply
+        .code(
+          result.ok ? 200 : result.error.code === "registry_failed" ? 500 : 400,
+        )
+        .send(result);
+    },
+  );
+
+  app.post("/api/projects/workflow/skip-proposal", async (request, reply) => {
+    const result = await workflowService.proposeSkip(request.body);
+    return reply
+      .code(
+        result.ok ? 200 : result.error.code === "registry_failed" ? 500 : 400,
+      )
+      .send(result);
+  });
+
+  app.post("/api/projects/workflow/skip-decision", async (request, reply) => {
+    const result = await workflowService.decideSkip(request.body);
+    return reply
+      .code(
+        result.ok ? 200 : result.error.code === "registry_failed" ? 500 : 400,
+      )
+      .send(result);
+  });
 
   return app;
 }

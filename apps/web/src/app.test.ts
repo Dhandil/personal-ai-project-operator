@@ -15,4 +15,8 @@ describe("resolveRoute", () => {
   it("recognizes the project creation route", () => {
     expect(resolveRoute("/projects/new")).toBe("create");
   });
+
+  it("recognizes the workflow route", () => {
+    expect(resolveRoute("/projects/workflow")).toBe("workflow");
+  });
 });

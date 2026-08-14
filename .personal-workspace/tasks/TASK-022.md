@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-022
 title: 实现工作流阶段和跳过建议
-status: ready
+status: completed
 goal_id: GOAL-005
 role: executor
 dependencies: [TASK-006, TASK-009, TASK-020]
-revision: 2
+revision: 3
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-14T07:37:05Z
+updated_at: 2026-08-14T08:20:00Z
 approval_id: APPROVAL-001
 target_branch: goal/GOAL-001
 unblocked_by: TASK-020
@@ -37,3 +37,12 @@ unblocked_by: TASK-020
 ## 边界与交接
 
 不实现自定义工作流设计器。完成后更新状态投影。
+
+## Completion evidence
+
+- Added the workflow application service and API routes for ordered workflow reads, stage artifact linkage, Agent skip proposals, and user skip decisions.
+- Workflow reads preserve the formal `workflow.md` revision/hash boundary and show each stage artifact as available or missing without inventing missing content.
+- Skip proposals contain material, missing information, risks, and rationale but do not write workflow facts. Rejected user decisions leave the workflow unchanged.
+- Approved user decisions require a reason, update `workflow.md` atomically with revision checking, move the current stage forward, and persist `status: skipped` plus the reason.
+- Added the workflow page and decision dialog; Playwright verifies proposal and user decision remain separate actions.
+- Verification: full `npm run verify` pipeline passed with 52 unit tests, 37 integration tests, 4 Playwright Chromium tests, all workspace type checks, lint, format check, and builds.

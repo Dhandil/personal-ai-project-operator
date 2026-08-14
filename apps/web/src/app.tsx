@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import { ProjectCreationWizard } from "./project-creation-wizard";
 import { ProjectOverview } from "./project-overview-page";
 import { strings } from "./strings";
+import { WorkflowPage } from "./workflow-page";
 
-type AppRoute = "home" | "health" | "create";
+type AppRoute = "home" | "health" | "create" | "workflow";
 
 type HealthPayload = Readonly<{
   readonly status: "ok";
@@ -20,6 +21,9 @@ type HealthState =
 export function resolveRoute(pathname: string): AppRoute {
   if (pathname === "/projects/new") {
     return "create";
+  }
+  if (pathname === "/projects/workflow") {
+    return "workflow";
   }
   return pathname === "/health" ? "health" : "home";
 }
@@ -85,6 +89,12 @@ export function App(): ReactElement {
           >
             新建项目
           </a>
+          <a
+            className={route === "workflow" ? "active" : ""}
+            href="/projects/workflow"
+          >
+            工作流
+          </a>
         </nav>
       </header>
 
@@ -95,6 +105,8 @@ export function App(): ReactElement {
               window.location.href = "/";
             }}
           />
+        ) : route === "workflow" ? (
+          <WorkflowPage />
         ) : (
           <>
             <ProjectOverview

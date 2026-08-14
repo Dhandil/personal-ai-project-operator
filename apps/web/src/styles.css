@@ -223,6 +223,256 @@ h2 {
   }
 }
 
+.workflow-page {
+  display: grid;
+  width: min(1080px, 100%);
+  gap: 20px;
+  margin: 0 auto;
+}
+
+.workflow-page-intro {
+  max-width: 740px;
+  padding: 20px 0 8px;
+}
+
+.workflow-page-intro h1 {
+  margin-bottom: 14px;
+  font-size: clamp(38px, 6vw, 64px);
+}
+
+.workflow-stage-list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.workflow-stage {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr);
+  gap: 14px;
+  padding: 14px;
+  border: 1px solid #2a425d;
+  border-radius: 14px;
+  background: #0f1e32;
+}
+
+.workflow-stage.current {
+  border-color: #65d5d2;
+  background: #122b3b;
+  box-shadow: 0 0 0 2px rgb(101 213 210 / 12%);
+}
+
+.workflow-stage.skipped {
+  border-color: #705b54;
+}
+
+.workflow-stage-marker {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border: 1px solid #41627e;
+  border-radius: 50%;
+  color: #a6bed2;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.workflow-stage.current .workflow-stage-marker {
+  border-color: #65d5d2;
+  color: #9ee1df;
+}
+
+.workflow-stage-content {
+  min-width: 0;
+}
+
+.workflow-stage-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.workflow-stage-heading h3 {
+  margin: 0;
+  color: #e7f0f8;
+  font-size: 16px;
+}
+
+.stage-status {
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.stage-status.draft {
+  background: rgb(147 165 186 / 13%);
+  color: #a9bacb;
+}
+
+.stage-status.in_progress {
+  background: rgb(101 213 210 / 15%);
+  color: #9ee1df;
+}
+
+.stage-status.completed {
+  background: rgb(104 211 145 / 14%);
+  color: #9de4c1;
+}
+
+.stage-status.skipped {
+  background: rgb(240 166 129 / 16%);
+  color: #f0b18e;
+}
+
+.current-stage-note {
+  display: block;
+  margin-top: 6px;
+  color: #8fe0d9;
+  font-size: 12px;
+}
+
+.skip-reason {
+  margin: 9px 0 0;
+  color: #d9c0b0;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.stage-artifacts {
+  display: grid;
+  gap: 6px;
+  margin-top: 11px;
+}
+
+.artifact-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 7px 9px;
+  border-radius: 7px;
+  background: #0b192b;
+  color: #9bb1c6;
+  font-size: 11px;
+}
+
+.artifact-link code {
+  overflow-wrap: anywhere;
+}
+
+.artifact-link.available span {
+  color: #9de4c1;
+}
+
+.artifact-link.missing span {
+  color: #f0b18e;
+}
+
+.skip-panel .description {
+  margin-bottom: 20px;
+}
+
+.skip-form,
+.proposal-panel {
+  margin-top: 22px;
+  padding-top: 22px;
+  border-top: 1px solid #2b4564;
+}
+
+.skip-form h3 {
+  margin: 0 0 5px;
+  color: #e7f0f8;
+}
+
+.skip-form label,
+.decision-reason {
+  display: grid;
+  gap: 7px;
+  margin-top: 17px;
+  color: #dce7f3;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.skip-form textarea,
+.decision-reason textarea {
+  width: 100%;
+  min-height: 78px;
+  padding: 11px 13px;
+  border: 1px solid #355170;
+  border-radius: 10px;
+  outline: none;
+  background: #0f1e32;
+  color: #edf5fb;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.skip-form textarea:focus,
+.decision-reason textarea:focus {
+  border-color: #65d5d2;
+  box-shadow: 0 0 0 3px rgb(101 213 210 / 15%);
+}
+
+.proposal-rationale {
+  margin: 0 0 20px;
+  padding: 13px 15px;
+  border-left: 3px solid #65d5d2;
+  background: #102c39;
+  color: #d8ebed;
+  line-height: 1.6;
+}
+
+.explanation-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.explanation-block {
+  padding: 14px;
+  border: 1px solid #2a425d;
+  border-radius: 12px;
+  background: #0f1e32;
+}
+
+.explanation-block strong {
+  color: #8ea6bc;
+  font-size: 12px;
+}
+
+.explanation-block ul {
+  margin: 9px 0 0;
+  padding-left: 18px;
+  color: #dfeaf2;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.missing-fact {
+  margin: 9px 0 0;
+  color: #7d94ab;
+  font-size: 13px;
+}
+
+@media (max-width: 680px) {
+  .workflow-stage-heading,
+  .artifact-link {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .explanation-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 button,
 input,
 textarea {
