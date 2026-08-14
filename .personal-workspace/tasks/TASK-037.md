@@ -2,16 +2,17 @@
 schema_version: 1
 id: TASK-037
 title: 生成角色任务包和结构化输出 Schema
-status: in_review
+status: completed
 goal_id: GOAL-008
 role: executor
 dependencies: [TASK-024, TASK-025, TASK-035]
-revision: 4
+revision: 5
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-15T01:05:00Z
+updated_at: 2026-08-14T17:11:05Z
 approval_id: APPROVAL-003
 target_branch: goal/GOAL-008
 unblocked_by: TASK-035
+verification_report_id: REPORT-039
 ---
 
 # TASK-037：生成角色任务包和结构化输出 Schema
@@ -49,6 +50,6 @@ unblocked_by: TASK-035
 
 ## 交接
 
-- TASK-037 当前状态为 `in_review`，等待项目负责人独立验收。
+- TASK-037 已完成独立验收，状态为 `completed`，验证报告为 `REPORT-039`。
 - 实现范围仅覆盖 TASK-037；未执行 TASK-038、TASK-039 或 GOAL-009。
-- 后续交接对象：TASK-039、TASK-043。
+- TASK-038 保持 `ready`，TASK-039 继续等待 TASK-038；后续交接对象为 TASK-039、TASK-043。
