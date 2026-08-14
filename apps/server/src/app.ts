@@ -18,6 +18,7 @@ import { SettingsService } from "./infrastructure/reports/settings-service.js";
 import { TaskService } from "./infrastructure/tasks/task-service.js";
 import { ApprovalService } from "./infrastructure/approvals/approval-service.js";
 import { RecoveryService } from "./infrastructure/recovery/recovery-service.js";
+import { ExecutionCoordinatorService } from "./infrastructure/execution/execution-coordinator.js";
 
 const SERVICE_NAME = "@personal-ai-operator/server";
 
@@ -39,6 +40,7 @@ export type AppOptions = Readonly<{
   readonly taskService?: TaskService;
   readonly approvalService?: ApprovalService;
   readonly recoveryService?: RecoveryService;
+  readonly executionCoordinatorService?: ExecutionCoordinatorService;
 }>;
 
 export function buildApp(options: AppOptions = {}): FastifyInstance {
@@ -79,6 +81,13 @@ export function buildApp(options: AppOptions = {}): FastifyInstance {
   const taskService = options.taskService ?? new TaskService();
   const approvalService = options.approvalService ?? new ApprovalService();
   const recoveryService = options.recoveryService ?? new RecoveryService();
+  const executionCoordinatorService =
+    options.executionCoordinatorService ??
+    new ExecutionCoordinatorService({
+      taskService,
+      goalService,
+      issueService,
+    });
 
   app.get("/api/projects", async (_request, reply) => {
     const result = await projectQueryService.list();
@@ -312,6 +321,36 @@ export function buildApp(options: AppOptions = {}): FastifyInstance {
         result.ok ? 200 : result.error.code === "registry_failed" ? 500 : 400,
       )
       .send(result);
+  });
+  app.get<{ Querystring: { readonly projectKey?: unknown } }>(
+    "/api/projects/execution",
+    async (request, reply) => {
+      const projectKey = request.query?.projectKey;
+      if (typeof projectKey !== "string") {
+        return reply.code(400).send({
+          ok: false,
+          error: {
+            code: "invalid_input",
+            message: "A project key is required.",
+            details: [],
+          },
+        });
+      }
+      const result = await executionCoordinatorService.getState(projectKey);
+      return reply.code(result.ok ? 200 : 400).send(result);
+    },
+  );
+  app.post("/api/projects/execution/start", async (request, reply) => {
+    const result = await executionCoordinatorService.start(request.body);
+    return reply.code(result.ok ? 200 : 400).send(result);
+  });
+  app.post("/api/projects/execution/resume", async (request, reply) => {
+    const result = await executionCoordinatorService.resume(request.body);
+    return reply.code(result.ok ? 200 : 400).send(result);
+  });
+  app.post("/api/projects/execution/cancel", async (request, reply) => {
+    const result = await executionCoordinatorService.cancel(request.body);
+    return reply.code(result.ok ? 200 : 400).send(result);
   });
   app.get<{ Querystring: { readonly projectKey?: unknown } }>(
     "/api/projects/history",

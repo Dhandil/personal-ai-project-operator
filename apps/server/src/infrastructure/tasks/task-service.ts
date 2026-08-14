@@ -5,6 +5,7 @@ import {
   createTaskDraft,
   getRole,
   markTaskReady,
+  transitionTask,
   updateTask,
   type CustomFieldDefinition,
   type CustomFieldValues,
@@ -58,6 +59,7 @@ export type TaskErrorCode =
   | "goal_not_found"
   | "invalid_goal"
   | "invalid_task"
+  | "invalid_task_transition"
   | "invalid_dependency"
   | "circular_dependency"
   | "task_not_found"
@@ -738,6 +740,85 @@ export class TaskService {
       },
     };
   }
+  public async transition(input: unknown): Promise<TaskResult<TaskSnapshot>> {
+    if (
+      !isRecord(input) ||
+      typeof input.projectKey !== "string" ||
+      taskId(input.taskId) === null ||
+      !taskStatus(input.toStatus)
+    )
+      return failure(
+        "invalid_input",
+        "A projectKey, taskId, and valid toStatus are required.",
+      );
+    const project = await this.findProject(input.projectKey);
+    if (!project.ok) return project;
+    const files = await this.readTasks(project.value);
+    if (!files.ok) return files;
+    const current = files.value.find((file) => file.task.id === input.taskId);
+    if (current === undefined)
+      return failure("task_not_found", "Task was not found.");
+    const expectedRevision =
+      input.revision === undefined ? null : Number(input.revision);
+    const expectedHash = input.hash === undefined ? null : input.hash;
+    if (
+      (expectedRevision !== null && expectedRevision !== current.revision) ||
+      (expectedHash !== null && expectedHash !== current.hash)
+    )
+      return failure(
+        "revision_mismatch",
+        "Task changed externally; reload before transitioning.",
+      );
+    const transitioned = transitionTask(
+      current.task,
+      input.toStatus as TaskStatus,
+      typeof input.reason === "string" ? input.reason : "",
+    );
+    if (!transitioned.ok)
+      return failure(
+        transitioned.error.code === "invalid_task_transition"
+          ? "invalid_task_transition"
+          : "invalid_task",
+        transitioned.error.message,
+      );
+    const document = taskDocument(
+      transitioned.value.task,
+      current.document,
+      current.revision + 1,
+      current.document.frontMatter.created_at as UtcIsoTimestamp,
+      this.now(),
+    );
+    const written = await new GovernanceRepository(
+      project.value.rootPath,
+    ).write(`.personal-workspace/tasks/${current.task.id}.md`, document, {
+      revision: current.revision,
+      hash: current.hash,
+    });
+    if (!written.ok)
+      return failure(
+        written.error.code === "revision_mismatch" ||
+          written.error.code === "hash_mismatch"
+          ? "revision_mismatch"
+          : "write_failed",
+        written.error.message,
+        written.error.details,
+      );
+    const audited = await this.audit(
+      project.value.rootPath,
+      transitioned.value.task,
+      "task_status_changed",
+      transitioned.value.audit,
+    );
+    if (!audited.ok) return audited;
+    return {
+      ok: true,
+      value: {
+        task: transitioned.value.task,
+        revision: written.value.version.revision,
+        hash: written.value.version.hash,
+      },
+    };
+  }
   private inputFrom(
     source: Record<string, unknown>,
     id: TaskId,
@@ -913,6 +994,11 @@ export class TaskService {
     root: string,
     task: Task,
     action: string,
+    transition?: Readonly<{
+      readonly fromStatus: TaskStatus;
+      readonly toStatus: TaskStatus;
+      readonly reason: string;
+    }>,
   ): Promise<TaskResult<true>> {
     const repository = new AuditLogRepository(root);
     const events = await repository.readAll();
@@ -939,9 +1025,10 @@ export class TaskService {
       relatedObjectIds: [task.id, task.goalId, ...task.dependencies],
       executionId,
       statusChange: {
-        from: task.status,
-        to: task.status,
+        from: transition?.fromStatus ?? task.status,
+        to: transition?.toStatus ?? task.status,
         reason:
+          transition?.reason ||
           "Task fact was created or edited through the governed task service.",
       },
       details: {
