@@ -2,13 +2,16 @@
 schema_version: 1
 id: TASK-015
 title: 实现 SQLite 项目索引和迁移
-status: draft
+status: ready
 goal_id: GOAL-003
 role: executor
 dependencies: [TASK-004]
-revision: 1
+revision: 2
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-13T12:29:07Z
+updated_at: 2026-08-14T05:32:11Z
+approval_id: APPROVAL-001
+target_branch: goal/GOAL-001
+unblocked_by: TASK-014
 ---
 
 # TASK-015：实现 SQLite 项目索引和迁移
