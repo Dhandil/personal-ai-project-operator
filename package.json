@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "concurrently --kill-others --names server,web \"npm run dev --workspace apps/server\" \"npm run dev --workspace apps/web\"",
-    "build": "npm run build --workspace packages/contracts && npm run build --workspace apps/server && npm run build --workspace apps/web",
+    "build": "npm run build --workspace packages/contracts && npm run build --workspace packages/domain && npm run build --workspace apps/server && npm run build --workspace apps/web",
     "start": "npm run start --workspace apps/server",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "lint": "eslint .",
