@@ -2,13 +2,16 @@
 schema_version: 1
 id: TASK-018
 title: 实现用户批准后的项目创建
-status: draft
+status: ready
 goal_id: GOAL-004
 role: executor
 dependencies: [TASK-017]
-revision: 1
+revision: 2
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-13T12:29:07Z
+updated_at: 2026-08-14T06:34:22Z
+approval_id: APPROVAL-001
+target_branch: goal/GOAL-001
+unblocked_by: TASK-017
 ---
 
 # TASK-018：实现用户批准后的项目创建
