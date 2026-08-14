@@ -2,16 +2,17 @@
 schema_version: 1
 id: TASK-033
 title: 实现差异允许路径和禁止动作校验
-status: ready
+status: completed
 goal_id: GOAL-007
 role: executor
 dependencies: [TASK-032]
-revision: 2
+revision: 3
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-14T14:05:08Z
+updated_at: 2026-08-14T14:33:58Z
 approval_id: APPROVAL-002
 target_branch: goal/GOAL-007
 unblocked_by: TASK-032
+verification_report_id: REPORT-035
 ---
 
 # TASK-033：实现差异、允许路径和禁止动作校验
@@ -37,3 +38,16 @@ unblocked_by: TASK-032
 ## 边界与交接
 
 不得自动删除越界文件。完成后交给 TASK-034、042。
+
+## 完成证据
+
+- 新增 `GitChangeBoundaryService` 与 `evaluateGitBoundary`，从临时 Git 仓库采集 HEAD、分支、已跟踪/未跟踪状态、修改、添加、删除、重命名/复制及内容哈希，并比较执行前后变化。
+- 允许路径和禁止路径均按相对路径、目录边界和 Windows 大小写规则规范化；绝对路径与 `..` 穿越会被拒绝，重命名同时检查旧路径和新路径。
+- 默认禁止 force push、历史重写、远程操作和直接写入 main；越界、非法路径、分支/HEAD 变化及禁止动作均返回结构化违规报告，阻止通过且不自动删除文件。
+- 提供带执行 ID 和时间的审计上下文入口；存在违规时追加 `privilege_violation` 审计事件，审计失败会阻止校验成功返回。
+- 专项测试 3/3、完整集成测试 65/65、单元测试 64/64、Chromium Playwright 14/14，以及格式、Lint、类型检查和构建全部通过。
+
+## 交接
+
+- 请独立验收 [REPORT-035](../reports/REPORT-035.md)。
+- TASK-034 尚未执行；规范提交、目标分支合并和 main 审批门仍留给后续任务。

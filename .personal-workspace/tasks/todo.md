@@ -56,7 +56,7 @@
 ## GOAL-007：建立 Git 执行隔离
 
 - [x] TASK-032 实现目标分支任务分支和 Worktree 生命周期
-- [ ] TASK-033 实现差异允许路径和禁止动作校验（ready）
+- [x] TASK-033 实现差异允许路径和禁止动作校验（completed）
 - [ ] TASK-034 实现规范提交目标分支合并和主分支审批门
 
 ## GOAL-008：接入 Codex CLI
