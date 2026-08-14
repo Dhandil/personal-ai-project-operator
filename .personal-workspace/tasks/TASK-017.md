@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-017
 title: 实现项目初始化预览
-status: ready
+status: completed
 goal_id: GOAL-004
 role: executor
 dependencies: [TASK-013, TASK-015, TASK-016]
-revision: 2
+revision: 3
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-14T05:58:43Z
+updated_at: 2026-08-14T06:23:54Z
 approval_id: APPROVAL-001
 target_branch: goal/GOAL-001
 unblocked_by: TASK-015, TASK-016
@@ -37,3 +37,11 @@ unblocked_by: TASK-015, TASK-016
 ## 边界与交接
 
 不得把“预览”与“执行”放在同一隐式操作中。完成后交给 TASK-018。
+
+## Completion evidence
+
+- Implemented the read-only project initialization preview service and `POST /api/projects/preview`.
+- Preview lists governance files, directories, existing-file conflicts, default workflow stages, default roles, default settings, and the local-only Git plan.
+- Preview explicitly reports `writesPerformed: false` and `registryChanged: false`; no file, registry, or Git mutation is performed.
+- Added integration coverage for empty projects, existing governance conflicts, API validation, and read-only behavior.
+- Verification: `npm run verify` passed: format check, lint, all workspace type checks, 40 unit tests, 26 integration tests, 1 Playwright Chromium test, and all builds.
