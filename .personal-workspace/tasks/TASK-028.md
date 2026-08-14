@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-028
 title: Implement real-time events, execution reports, and summary interval settings
-status: changes_requested
+status: completed
 goal_id: GOAL-005
 role: executor
 dependencies: [TASK-012, TASK-020]
-revision: 5
+revision: 6
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-14T11:00:00Z
+updated_at: 2026-08-14T11:20:00Z
 approval_id: APPROVAL-001
 target_branch: goal/GOAL-001
 unblocked_by: TASK-020
@@ -44,7 +44,7 @@ Provide an SSE event stream with cursor replay, audit-backed execution reports, 
 
 ## Review state
 
-The implementation repair is complete and awaiting independent re-acceptance of REPORT-027. Until then this task remains `changes_requested`.
+Independent re-review accepted REPORT-027 after the live report ID repair and regression verification.
 
 ## Boundary and handoff
 
