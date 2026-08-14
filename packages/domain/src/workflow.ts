@@ -38,7 +38,12 @@ export type DomainErrorCode =
   | "invalid_role"
   | "invalid_task"
   | "invalid_custom_field"
-  | "required_field";
+  | "required_field"
+  | "invalid_approval"
+  | "invalid_issue"
+  | "invalid_decision"
+  | "invalid_handoff"
+  | "decision_required";
 
 export type DomainError = Readonly<{
   readonly code: DomainErrorCode;
