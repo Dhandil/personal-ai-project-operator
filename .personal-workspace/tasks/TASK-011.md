@@ -2,13 +2,16 @@
 schema_version: 1
 id: TASK-011
 title: 实现原子写入 revision 哈希和项目写入队列
-status: draft
+status: ready
 goal_id: GOAL-003
 role: executor
 dependencies: [TASK-010]
-revision: 1
+revision: 2
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-13T12:29:07Z
+updated_at: 2026-08-14T02:53:03Z
+approval_id: APPROVAL-001
+target_branch: goal/GOAL-001
+unblocked_by: TASK-010
 ---
 
 # TASK-011：实现原子写入、revision、哈希和项目写入队列
