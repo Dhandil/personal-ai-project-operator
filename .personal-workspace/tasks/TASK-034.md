@@ -2,16 +2,17 @@
 schema_version: 1
 id: TASK-034
 title: 实现规范提交目标分支合并和主分支审批门
-status: ready
+status: completed
 goal_id: GOAL-007
 role: executor
 dependencies: [TASK-027, TASK-032, TASK-033]
-revision: 2
+revision: 3
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-14T14:43:26Z
+updated_at: 2026-08-14T15:03:33Z
 approval_id: APPROVAL-002
 target_branch: goal/GOAL-007
 unblocked_by: TASK-033
+verification_report_id: REPORT-036
 ---
 
 # TASK-034：实现规范提交、目标分支合并和主分支审批门
@@ -37,3 +38,16 @@ Commit 消息服务、任务交付服务、目标 Merge 服务、审批校验 Ad
 ## 边界与交接
 
 禁止 force、历史重写和远程 push。完成后提交 GOAL-007 检查点。
+
+## 完成证据
+
+- 新增 Commit 消息服务，生成 `<type>(<scope>): <description>` 标题，并固定写入 `Tasks: TASK-034` 正文；type/scope 强制使用英文小写 token。
+- 新增任务交付服务：未验收任务拒绝 Commit 和 task→goal 合并；已验收任务只在任务分支提交，并使用非 force 的本地合并进入目标分支。
+- 新增目标合并服务和审批 Adapter：只有当前、未过期且由用户批准的 `main_merge` 审批才能将 `goal/GOAL-xxx` 合入 `main`；无审批、拒绝或过期审批均不写入 Git。
+- 全部 Git 操作不执行 force、历史重写、远程 push 或直接绕过任务分支；测试仅使用临时仓库。
+- TASK-034 专项测试 4/4、完整集成测试 69/69、单元测试 64/64、Chromium Playwright 14/14，以及格式、Lint、类型检查和构建全部通过。
+
+## 交接
+
+- 请独立验收 [REPORT-036](../reports/REPORT-036.md)。
+- GOAL-007 Git 执行隔离检查点已具备验收证据；TASK-035 及其他后续任务未执行。
