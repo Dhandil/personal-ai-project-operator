@@ -112,6 +112,10 @@ function hasContent(values: readonly string[]): boolean {
   return values.every((value) => value.trim().length > 0);
 }
 
+function hasRequiredContent(values: readonly string[]): boolean {
+  return values.length > 0 && hasContent(values);
+}
+
 function validRun(run: TaskRun): boolean {
   return (
     run.mode.trim().length > 0 &&
@@ -125,7 +129,7 @@ function validRun(run: TaskRun): boolean {
 function validCompletion(completion: TaskCompletion): boolean {
   return (
     completion.output.trim().length > 0 &&
-    hasContent(completion.tests) &&
+    hasRequiredContent(completion.tests) &&
     hasContent(completion.outstandingIssues) &&
     completion.handoff.trim().length > 0
   );
@@ -135,14 +139,14 @@ function validInput(input: TaskInput): boolean {
   return (
     input.title.trim().length > 0 &&
     input.purpose.trim().length > 0 &&
-    hasContent(input.scope) &&
-    hasContent(input.outputs) &&
-    hasContent(input.acceptanceCriteria) &&
-    hasContent(input.requiredFiles) &&
-    hasContent(input.onDemandFiles) &&
-    hasContent(input.allowedPaths) &&
-    hasContent(input.forbiddenPaths) &&
-    hasContent(input.evidence) &&
+    hasRequiredContent(input.scope) &&
+    hasRequiredContent(input.outputs) &&
+    hasRequiredContent(input.acceptanceCriteria) &&
+    hasRequiredContent(input.requiredFiles) &&
+    hasRequiredContent(input.onDemandFiles) &&
+    hasRequiredContent(input.allowedPaths) &&
+    hasRequiredContent(input.forbiddenPaths) &&
+    hasRequiredContent(input.evidence) &&
     validRun(input.run) &&
     validCompletion(input.completion) &&
     getRole(input.currentRole) !== undefined
@@ -233,12 +237,14 @@ export function updateTask(task: Task, patch: TaskPatch): DomainResult<Task> {
   const nextTask: Task = { ...task, ...patch };
   if (
     nextTask.purpose.trim().length === 0 ||
-    !hasContent(nextTask.scope) ||
-    !hasContent(nextTask.outputs) ||
-    !hasContent(nextTask.acceptanceCriteria) ||
-    !hasContent(nextTask.requiredFiles) ||
-    !hasContent(nextTask.allowedPaths) ||
-    !hasContent(nextTask.forbiddenPaths) ||
+    !hasRequiredContent(nextTask.scope) ||
+    !hasRequiredContent(nextTask.outputs) ||
+    !hasRequiredContent(nextTask.acceptanceCriteria) ||
+    !hasRequiredContent(nextTask.requiredFiles) ||
+    !hasRequiredContent(nextTask.onDemandFiles) ||
+    !hasRequiredContent(nextTask.allowedPaths) ||
+    !hasRequiredContent(nextTask.forbiddenPaths) ||
+    !hasRequiredContent(nextTask.evidence) ||
     !validRun(nextTask.run) ||
     !validCompletion(nextTask.completion)
   ) {

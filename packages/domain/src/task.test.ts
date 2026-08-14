@@ -116,4 +116,21 @@ describe("task model", () => {
       );
     }
   });
+
+  it("rejects clearing required file and evidence lists", () => {
+    const draft = createTaskDraft(makeGoal(), taskInput);
+    expect(draft.ok).toBe(true);
+    if (!draft.ok) {
+      throw new Error(draft.error.message);
+    }
+
+    for (const patch of [{ onDemandFiles: [] }, { evidence: [] }] as const) {
+      const updated = updateTask(draft.value, patch);
+
+      expect(updated).toEqual({
+        ok: false,
+        error: expect.objectContaining({ code: "invalid_task" }),
+      });
+    }
+  });
 });

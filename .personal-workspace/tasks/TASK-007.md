@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-007
 title: 实现短期目标角色和任务卡模型
-status: changes_requested
+status: completed
 goal_id: GOAL-002
 role: executor
 dependencies: [TASK-005, TASK-006]
-revision: 4
+revision: 5
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-14T02:00:36Z
+updated_at: 2026-08-14T02:06:17Z
 approval_id: APPROVAL-001
 target_branch: goal/GOAL-001
 unblocked_by: TASK-006
@@ -51,7 +51,9 @@ verification_report_id: REPORT-007
 ## Verification evidence
 
 - `npm run test:unit -- goal role task`: 8 tests passed.
-- `npm run verify`: format check, lint, all workspace type checks, 30 unit tests, 1 integration test, 1 Playwright Chromium test, and all workspace builds passed.
+- Rework regression: `updateTask(task, { onDemandFiles: [] })` and `updateTask(task, { evidence: [] })` both return `invalid_task`.
+- `npm run test:unit -- goal role task`: 9 tests passed, including both required-field clearing regressions.
+- `npm run verify`: format check, lint, all workspace type checks, 31 unit tests, 1 integration test, 1 Playwright Chromium test, and all workspace builds passed.
 - `git diff --check`: passed.
 
 ## Handoff
