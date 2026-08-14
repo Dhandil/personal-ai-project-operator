@@ -225,37 +225,32 @@ export class CodexCliAdapter implements AgentRuntime {
 
   public async resume(request: AgentResumeRequest): Promise<AgentSession> {
     const execution = this.executions.get(request.executionId);
-    if (execution === undefined) {
-      throw new AgentRuntimeValidationError(
-        `Execution ${request.executionId} does not exist.`,
-      );
-    }
-    if (execution.status !== "interrupted") {
+    if (execution !== undefined && execution.status !== "interrupted") {
       throw new AgentRuntimeValidationError(
         `Execution ${request.executionId} is not resumable.`,
       );
     }
-    const sessionId = request.sessionId ?? execution.state.sessionId;
-    if (sessionId === null || sessionId.trim().length === 0) {
+    if (request.sessionId.trim().length === 0) {
       throw new AgentRuntimeValidationError(
         `Execution ${request.executionId} has no precise session ID.`,
       );
     }
     if (
-      request.sessionId !== undefined &&
-      request.sessionId !== execution.state.sessionId
+      execution !== undefined &&
+      execution.state.sessionId !== request.sessionId
     ) {
       throw new AgentRuntimeValidationError(
         `Execution ${request.executionId} session does not match the stored session.`,
       );
     }
+    validateRequest(request.startRequest);
     const argsOptions: CodexExecArgsOptions =
       this.outputSchemaPath === undefined
         ? {}
         : { outputSchemaPath: this.outputSchemaPath };
     const built = buildCodexExecResumeArgs(
-      execution.request,
-      sessionId,
+      request.startRequest,
+      request.sessionId,
       argsOptions,
     );
     const command: CodexExecCommand = {
@@ -264,17 +259,27 @@ export class CodexCliAdapter implements AgentRuntime {
     };
     const process = await this.processFactory(command);
     const state: ExecutionState = {
-      executionId: execution.executionId,
+      executionId: request.executionId,
       events: new AsyncEventQueue<AgentEvent>(),
-      sequence: execution.state.sequence,
-      sessionId,
+      sequence: execution?.state.sequence ?? 0,
+      sessionId: request.sessionId,
     };
-    execution.process = process;
-    execution.state = state;
-    execution.status = "running";
-    execution.cancelRequested = false;
-    const result = this.run(execution, command);
-    return this.session(execution, result);
+    const resumedExecution: CodexExecution = execution ?? {
+      executionId: request.executionId,
+      request: request.startRequest,
+      process,
+      state,
+      status: "running",
+      cancelRequested: false,
+    };
+    resumedExecution.process = process;
+    resumedExecution.state = state;
+    resumedExecution.status = "running";
+    resumedExecution.cancelRequested = false;
+    this.executions.set(request.executionId, resumedExecution);
+    this.reserveExecutionId(request.executionId);
+    const result = this.run(resumedExecution, command);
+    return this.session(resumedExecution, result);
   }
 
   public async cancel(
@@ -353,6 +358,14 @@ export class CodexCliAdapter implements AgentRuntime {
       throw new AgentRuntimeValidationError("Execution ID capacity exceeded.");
     }
     return `EXEC-${String(value).padStart(3, "0")}` as ExecutionId;
+  }
+
+  private reserveExecutionId(executionId: ExecutionId): void {
+    const match = /^EXEC-(\d{3})$/.exec(executionId);
+    if (match === null) return;
+    const number = Number(match[1]);
+    if (number >= this.nextExecutionNumber)
+      this.nextExecutionNumber = number + 1;
   }
 
   private append(

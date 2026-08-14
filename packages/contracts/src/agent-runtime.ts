@@ -59,7 +59,12 @@ export type AgentStartRequest = Readonly<{
 
 export type AgentResumeRequest = Readonly<{
   readonly executionId: ExecutionId;
-  readonly sessionId?: string | null;
+  readonly sessionId: string;
+  /**
+   * Reconstructed from persisted task facts after a runtime restart. Resume
+   * must not depend on the previous runtime's in-memory execution record.
+   */
+  readonly startRequest: AgentStartRequest;
 }>;
 
 export type AgentControlRequest = Readonly<{

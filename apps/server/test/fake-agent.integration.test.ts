@@ -84,7 +84,11 @@ test("fake adapter cancels and resumes the same execution with a continued seque
   assert.equal(interrupted.result.status, "interrupted");
   assert.equal(interrupted.events.at(-1)?.type, "interrupted");
 
-  const resumed = await adapter.resume({ executionId: session.executionId });
+  const resumed = await adapter.resume({
+    executionId: session.executionId,
+    sessionId: session.sessionId ?? "",
+    startRequest: request,
+  });
   assert.equal(resumed.executionId, session.executionId);
   const resumedResult = await collect(resumed);
   assert.equal(resumedResult.result.status, "completed");

@@ -210,7 +210,8 @@ test("resume uses the exact thread session ID and keeps the execution ID", async
 
   const resumed = await adapter.resume({
     executionId: interrupted.executionId,
-    sessionId: interrupted.sessionId,
+    sessionId: interrupted.sessionId ?? "",
+    startRequest: request,
   });
   second.stdout.write('{"type":"result","result":{"summary":"resumed"}}\n');
   second.finish();
@@ -229,6 +230,59 @@ test("resume uses the exact thread session ID and keeps the execution ID", async
     request.prompt,
   ]);
   assert.ok(!commands[1]?.args.includes("--last"));
+});
+
+test("a new runtime resumes from the persisted session and task context", async () => {
+  const first = new FakeProcess();
+  const second = new FakeProcess();
+  let firstCommand: CodexExecCommand | null = null;
+  let secondCommand: CodexExecCommand | null = null;
+  const original = new CodexCliAdapter({
+    now: () => timestamp as UtcIsoTimestamp,
+    processFactory: (command) => {
+      firstCommand = command;
+      return first;
+    },
+  });
+  const interrupted = await original.start(request);
+  first.stdout.write(
+    '{"type":"thread.started","thread_id":"thread-persisted"}\n',
+  );
+  first.finish(null, "SIGINT");
+  assert.equal((await interrupted.result).status, "interrupted");
+
+  const restarted = new CodexCliAdapter({
+    now: () => timestamp as UtcIsoTimestamp,
+    processFactory: (command) => {
+      secondCommand = command;
+      return second;
+    },
+  });
+  const resumed = await restarted.resume({
+    executionId: interrupted.executionId,
+    sessionId: interrupted.sessionId ?? "",
+    startRequest: request,
+  });
+  second.stdout.write(
+    '{"type":"result","result":{"summary":"resumed after restart"}}\n',
+  );
+  second.finish();
+  const result = await resumed.result;
+
+  assert.equal(result.status, "completed");
+  assert.equal(resumed.executionId, interrupted.executionId);
+  assert.equal(firstCommand?.args[0], "exec");
+  assert.deepEqual(secondCommand?.args, [
+    "exec",
+    "resume",
+    "thread-persisted",
+    "--json",
+    "--cd",
+    request.workingDirectory,
+    "--sandbox",
+    "workspace-write",
+    request.prompt,
+  ]);
 });
 
 test("cancel terminates the child process and reports interrupted", async () => {

@@ -185,6 +185,7 @@ export class FakeAgentAdapter implements AgentRuntime {
   }
 
   public async resume(request: AgentResumeRequest): Promise<AgentSession> {
+    validateRequest(request.startRequest);
     const state = this.executions.get(request.executionId);
     if (state === undefined) {
       throw new AgentRuntimeValidationError(
@@ -196,10 +197,7 @@ export class FakeAgentAdapter implements AgentRuntime {
         `Execution ${request.executionId} is not resumable.`,
       );
     }
-    if (
-      request.sessionId !== undefined &&
-      request.sessionId !== state.sessionId
-    ) {
+    if (request.sessionId !== state.sessionId) {
       throw new AgentRuntimeValidationError(
         `Execution ${request.executionId} session does not match the stored session.`,
       );

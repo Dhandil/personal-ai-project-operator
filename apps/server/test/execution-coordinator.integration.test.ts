@@ -3,10 +3,16 @@ import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { test } from "node:test";
+import { PassThrough } from "node:stream";
 
 import { parseUtcIsoTimestamp } from "@personal-ai-operator/contracts";
 
 import { buildApp } from "../src/app.js";
+import { CodexCliAdapter } from "../src/infrastructure/agent-runtime/codex-cli-adapter.js";
+import type {
+  CodexProcess,
+  CodexProcessExit,
+} from "../src/infrastructure/agent-runtime/codex-process.js";
 import { FakeAgentAdapter } from "../src/infrastructure/agent-runtime/fake-agent-adapter.js";
 import {
   ExecutionCoordinatorService,
@@ -18,6 +24,34 @@ import { ProjectRegistryRepository } from "../src/infrastructure/registry/projec
 import { TaskService } from "../src/infrastructure/tasks/task-service.js";
 
 const timestamp = parseUtcIsoTimestamp("2026-08-15T08:00:00Z");
+
+class ResumeProcess implements CodexProcess {
+  public readonly stdout = new PassThrough();
+  public readonly stderr = new PassThrough();
+  public readonly pid = 9876;
+  public readonly exit: Promise<CodexProcessExit>;
+  private resolveExit!: (value: CodexProcessExit) => void;
+
+  public constructor() {
+    this.exit = new Promise((resolve) => {
+      this.resolveExit = resolve;
+    });
+  }
+
+  public finish(
+    code: number | null = 0,
+    signal: NodeJS.Signals | null = null,
+  ): void {
+    this.stdout.end();
+    this.stderr.end();
+    this.resolveExit({ code, signal, error: null });
+  }
+
+  public kill(signal: NodeJS.Signals | number = "SIGTERM"): boolean {
+    this.finish(null, typeof signal === "string" ? signal : null);
+    return true;
+  }
+}
 
 async function fixture(approved = true) {
   const root = await mkdtemp(join(tmpdir(), "personal-ai-execution-"));
@@ -303,6 +337,86 @@ test("restart exposes recovery choices and blocks the next task until resume", a
     assert.equal(resumed.value.run.status, "completed");
     assert.equal(resumed.value.run.taskStatus, "in_review");
     assert.equal(nextTask.id !== resumed.value.run.taskId, true);
+  } finally {
+    await rm(value.root, { recursive: true, force: true });
+  }
+});
+
+test("new runtime and coordinator resume from persisted execution context", async () => {
+  const value = await fixture();
+  try {
+    const task = await createReadyTask(value);
+    const firstProcess = new ResumeProcess();
+    const firstRuntime = new CodexCliAdapter({
+      now: () => timestamp,
+      processFactory: () => firstProcess,
+    });
+    const firstServices = services(value);
+    const firstCoordinator = new ExecutionCoordinatorService({
+      runtime: firstRuntime,
+      ...firstServices,
+      now: () => timestamp,
+      lock: new ExecutionLock(),
+    });
+    const interruptedPromise = firstCoordinator.start({
+      projectKey: value.projectKey,
+      taskId: task.id,
+    });
+    firstProcess.stdout.write(
+      '{"type":"thread.started","thread_id":"thread-restarted"}\n',
+    );
+    firstProcess.finish(null, "SIGINT");
+    const interrupted = await interruptedPromise;
+    assert.equal(interrupted.ok, true);
+    if (!interrupted.ok) throw new Error(interrupted.error.message);
+
+    const secondProcess = new ResumeProcess();
+    const secondCommands: string[][] = [];
+    const secondRuntime = new CodexCliAdapter({
+      now: () => timestamp,
+      processFactory: (command) => {
+        secondCommands.push(command.args);
+        return secondProcess;
+      },
+    });
+    const restarted = new ExecutionCoordinatorService({
+      runtime: secondRuntime,
+      ...services(value),
+      now: () => timestamp,
+      lock: new ExecutionLock(),
+    });
+    const resumedPromise = restarted.resume({
+      projectKey: value.projectKey,
+      executionId: interrupted.value.run.executionId,
+    });
+    secondProcess.stdout.write(
+      '{"type":"result","result":{"summary":"resumed"}}\n',
+    );
+    secondProcess.finish();
+    const resumed = await resumedPromise;
+
+    assert.equal(resumed.ok, true);
+    if (!resumed.ok) throw new Error(resumed.error.message);
+    assert.equal(
+      resumed.value.run.executionId,
+      interrupted.value.run.executionId,
+    );
+    assert.deepEqual(secondCommands[0], [
+      "exec",
+      "resume",
+      "thread-restarted",
+      "--json",
+      "--cd",
+      value.projectRoot,
+      "--sandbox",
+      "workspace-write",
+      "Execute TASK-001: Run one governed task\n" +
+        "Purpose: Coordinate one task execution.\n" +
+        "Scope: apps/server/src/infrastructure/execution\n" +
+        "Acceptance: one active chain",
+    ]);
+    assert.equal(resumed.value.run.status, "completed");
+    assert.equal(resumed.value.run.taskStatus, "in_review");
   } finally {
     await rm(value.root, { recursive: true, force: true });
   }

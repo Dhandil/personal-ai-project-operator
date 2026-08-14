@@ -606,13 +606,16 @@ export class ExecutionCoordinatorService {
       try {
         const storedSessionId =
           persisted?.sessionId ?? existing?.session.sessionId;
-        session =
-          storedSessionId === undefined
-            ? await this.runtime.resume({ executionId: id })
-            : await this.runtime.resume({
-                executionId: id,
-                sessionId: storedSessionId,
-              });
+        if (storedSessionId === undefined || storedSessionId === null) {
+          throw new Error(
+            `Execution ${id} has no precise persisted session ID.`,
+          );
+        }
+        session = await this.runtime.resume({
+          executionId: id,
+          sessionId: storedSessionId,
+          startRequest: this.agentRequest(candidate.value, input),
+        });
       } catch (error) {
         await this.transitionCurrent(
           input.projectKey,
