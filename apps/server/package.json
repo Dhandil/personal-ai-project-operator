@@ -9,7 +9,7 @@
     "start": "node dist/main.js",
     "db:migrate": "tsx src/infrastructure/registry/db-migrate.ts",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "test:integration": "tsx --test test/app.test.ts test/governance-codec.integration.test.ts test/governance-repository.integration.test.ts test/audit-log.integration.test.ts test/status-projection.integration.test.ts test/external-conflict.integration.test.ts test/registry-db.integration.test.ts test/git-bootstrap.integration.test.ts test/project-init-preview.integration.test.ts test/project-initialization.integration.test.ts test/project-startup.integration.test.ts test/workflow.integration.test.ts"
+    "test:integration": "tsx --test test/app.test.ts test/governance-codec.integration.test.ts test/governance-repository.integration.test.ts test/audit-log.integration.test.ts test/status-projection.integration.test.ts test/external-conflict.integration.test.ts test/registry-db.integration.test.ts test/git-bootstrap.integration.test.ts test/project-init-preview.integration.test.ts test/project-initialization.integration.test.ts test/project-startup.integration.test.ts test/workflow.integration.test.ts test/goal.integration.test.ts"
   },
   "dependencies": {
     "@personal-ai-operator/contracts": "0.0.0",

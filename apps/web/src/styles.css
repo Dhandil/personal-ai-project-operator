@@ -1104,6 +1104,64 @@ button:disabled {
   font-size: 12px;
 }
 
+.goal-editor {
+  display: grid;
+  gap: 14px;
+}
+
+.goal-editor label {
+  display: grid;
+  gap: 7px;
+  color: #dce7f3;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.goal-editor textarea {
+  min-height: 84px;
+  padding: 11px 13px;
+  border: 1px solid #355170;
+  border-radius: 10px;
+  outline: none;
+  background: #0f1e32;
+  color: #edf5fb;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.goal-editor textarea:focus {
+  border-color: #65d5d2;
+  box-shadow: 0 0 0 3px rgb(101 213 210 / 15%);
+}
+
+.goal-list {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.goal-card {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+  border: 1px solid #2b4564;
+  border-radius: 14px;
+  background: #0f1e32;
+}
+
+.goal-card strong {
+  color: #e7f0f8;
+}
+
+.goal-card p {
+  margin: 0;
+  color: #9bb1c6;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
 .summary-status-row {
   justify-content: flex-start;
   margin: 22px 0;
