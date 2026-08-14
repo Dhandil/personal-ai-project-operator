@@ -3,20 +3,36 @@ schema_version: 1
 document_type: report
 id: REPORT-042
 title: TASK-040 续接取消中断标记及恢复报告验证报告
-status: changes_requested
+status: in_review
 report_type: task_verification
-acceptance_state: changes_requested
+acceptance_state: pending_user_acceptance
 task_id: TASK-040
 goal_id: GOAL-008
-revision: 2
+revision: 3
 created_at: 2026-08-14T18:46:23Z
-updated_at: 2026-08-14T18:52:09Z
+updated_at: 2026-08-14T19:05:15Z
 verified_by: implementation_agent
-verified_commit: d21088d
+verified_commit: 4959885
 verification_commands:
   - npx tsx --test apps/server/test/codex-cli-adapter.integration.test.ts apps/server/test/execution-coordinator.integration.test.ts
   - npm run verify
 ---
+
+## TASK-040 fix verification
+
+The requested cross-backend-restart defect is fixed. Resume now requires the persisted execution ID, the exact persisted session ID, and a reconstructed `AgentStartRequest`; it does not require the previous Runtime's in-memory `executions` map or an original session object.
+
+Evidence:
+
+- New Codex Runtime regression: `a new runtime resumes from the persisted session and task context`.
+- New Runtime + new Coordinator regression: `new runtime and coordinator resume from persisted execution context`.
+- The Coordinator rebuilds the resume command from the persisted recovery record and the current formal task snapshot, including the task worktree and prompt context.
+- The resumed command is asserted as `codex exec resume thread-restarted ...` and contains no `--last`; the original execution ID is preserved.
+- TASK-040 specialized regression set: 18/18 passed.
+- Full `npm run verify`: 66 unit tests, 93 integration tests, 14 Playwright tests, formatting, lint, typecheck, and builds all passed.
+- Fix implementation commit: `4959885` (`fix(execution): 支持跨 Runtime 持久化续接`, `Tasks: TASK-040`).
+
+Scope confirmation: TASK-041 and GOAL-009 were not executed or modified. This report is resubmitted for independent user acceptance; after acceptance, mark `REPORT-042` as `accepted` and `TASK-040` as `completed`.
 
 # REPORT-042：TASK-040 续接、取消、中断标记及恢复报告验证报告
 

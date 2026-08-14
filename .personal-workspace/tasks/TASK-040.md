@@ -2,18 +2,26 @@
 schema_version: 1
 id: TASK-040
 title: 实现续接取消中断标记和恢复报告
-status: changes_requested
+status: in_review
 goal_id: GOAL-008
 role: executor
 dependencies: [TASK-036, TASK-039]
-revision: 4
+revision: 5
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-14T18:52:09Z
+updated_at: 2026-08-14T19:05:15Z
 approval_id: APPROVAL-003
 target_branch: goal/GOAL-008
 unblocked_by: TASK-039
 verification_report_id: REPORT-042
 ---
+
+## TASK-040 fix verification
+
+- Fixed cross-runtime resume: `AgentResumeRequest` now carries the exact persisted `sessionId` and a `startRequest` reconstructed from formal task facts.
+- `CodexCliAdapter.resume` no longer requires an in-memory `executions` entry; a new Runtime instance creates the local process record and runs `codex exec resume <SESSION_ID>`.
+- `ExecutionCoordinatorService.resume` rebuilds working directory, role, prompt, allowed paths, forbidden paths, and context from the selected task snapshot.
+- Regression coverage includes a new Runtime and a new Coordinator using persisted recovery state; TASK-041 and GOAL-009 were not executed.
+- Implementation commit: `4959885` (`fix(execution): 支持跨 Runtime 持久化续接`, `Tasks: TASK-040`).
 
 # TASK-040：实现续接、取消、中断标记和恢复报告
 
