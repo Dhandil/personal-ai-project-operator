@@ -6,11 +6,11 @@ status: ready
 goal_id: GOAL-008
 role: executor
 dependencies: [TASK-035]
-revision: 2
+revision: 3
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-14T13:13:29Z
-approval_id: APPROVAL-001
-target_branch: goal/GOAL-001
+updated_at: 2026-08-14T16:49:34Z
+approval_id: APPROVAL-003
+target_branch: goal/GOAL-008
 unblocked_by: TASK-035
 ---
 
