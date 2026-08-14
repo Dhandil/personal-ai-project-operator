@@ -2,13 +2,16 @@
 schema_version: 1
 id: TASK-009
 title: 实现状态转换审批门和完成判定策略
-status: draft
+status: ready
 goal_id: GOAL-002
 role: executor
 dependencies: [TASK-006, TASK-007, TASK-008]
-revision: 1
+revision: 2
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-13T12:29:07Z
+updated_at: 2026-08-14T02:25:14Z
+approval_id: APPROVAL-001
+target_branch: goal/GOAL-001
+unblocked_by: TASK-008
 ---
 
 # TASK-009：实现状态转换、审批门和完成判定策略
