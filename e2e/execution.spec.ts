@@ -96,13 +96,33 @@ test("execution console restores recovery context after reload and records a dec
     ),
   );
 
-  await page.route("**/api/projects/events**", async (route) =>
-    route.fulfill({
+  let eventConnections = 0;
+  await page.route("**/api/projects/events**", async (route) => {
+    eventConnections += 1;
+    if (eventConnections === 1) {
+      await route.fulfill({
+        status: 503,
+        contentType: "text/plain",
+        body: "temporary event stream failure",
+      });
+      return;
+    }
+    await route.fulfill({
       status: 200,
       contentType: "text/event-stream",
-      body: ": connected\n\n",
-    }),
-  );
+      body: `: connected\n\nid: REPORT-045-LIVE\nevent: report\ndata: ${JSON.stringify(
+        {
+          id: "REPORT-045-LIVE",
+          kind: "progress",
+          title: "执行连接已恢复",
+          summary: "SSE 重连后继续接收实时进度。",
+          relatedObjectIds: ["EXEC-045"],
+          evidence: [],
+          occurredAt: "2026-08-15T00:01:30.000Z",
+        },
+      )}\n\n`,
+    });
+  });
 
   await page.route("**/api/projects/execution/resume", async (route) =>
     route.fulfill(
@@ -130,6 +150,8 @@ test("execution console restores recovery context after reload and records a dec
   ).toBeVisible();
   await expect(page.getByText(recovery.reason)).toBeVisible();
   await expect(page.getByText("TASK-045").first()).toBeVisible();
+  await expect.poll(() => eventConnections).toBeGreaterThan(1);
+  await expect(page.getByText("执行连接已恢复")).toBeVisible();
   await page.getByRole("button", { name: "恢复执行" }).click();
   await expect(page.getByText("已记录恢复执行决定。")).toBeVisible();
 
