@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-048
 title: 实现 Claude Code CLI Adapter
-status: blocked
+status: in_review
 goal_id: GOAL-009
 role: executor
 dependencies: [TASK-035, TASK-036, TASK-037, TASK-043, TASK-044, TASK-045]
-revision: 3
+revision: 5
 created_at: 2026-08-15T08:04:00Z
-updated_at: 2026-08-15T09:29:18Z
+updated_at: 2026-08-15T12:45:00Z
 approval_id: APPROVAL-004
 target_branch: goal/GOAL-009
 unblocked_by: TASK-045
@@ -30,6 +30,15 @@ verification_report_id: REPORT-050
 - TASK-048 is `in_review` and awaits independent acceptance of REPORT-050.
 - TASK-047 remains `draft` and was not executed or modified. GOAL-009 was not advanced by this task.
 - TASK-046 and REPORT-049 remain historical Codex CLI blocker records and were not rewritten.
+
+## Defect-fix evidence
+
+- Claude commands now always receive an explicit model, defaulting to the configured `CLAUDE_MODEL` or `deepseek-v4-pro`; the model is also exposed in execution metadata and diagnostics.
+- Preflight now separates `authenticationStatus`, `configuredModel`, provider metadata, and `canExecute`. `apiProvider: firstParty` does not block execution, and an empty configured model does block execution.
+- `unrecognized_model` from structured output or stderr is retained as a non-fatal diagnostic event. Non-zero exit, malformed output, and failed capability checks remain blocking results.
+- Reviewer commands expose only `Read` through `--tools` and explicitly deny edit, write, notebook, Bash, and PowerShell tool names. Executor commands retain explicit tool approval for non-interactive execution.
+- Acceptance timeout is configurable through `CLAUDE_ACCEPTANCE_TIMEOUT_MS`; the default is 120 seconds and the minimum accepted value is 90 seconds.
+- User-provided manual evidence confirms DeepSeek compatibility for JSON, stream JSON, JSON Schema, file write, read-only review, exact session resume, ephemeral non-resumability, and project purge. Automatic acceptance was rerun with model `deepseek-v4-pro` and a 90-second timeout; the executor still timed out, while `unrecognized_model` was recorded as non-fatal. This remains pending independent acceptance.
 
 ## 独立复核
 
