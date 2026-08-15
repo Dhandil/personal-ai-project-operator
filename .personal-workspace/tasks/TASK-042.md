@@ -23,6 +23,7 @@ verification_report_id: REPORT-045
 - Boundary failures remain visible in the report and use the existing `privilege_violation` audit path when an audit context is provided.
 - TASK-042 specialized tests: 8/8 passed. Full `npm run verify`: 66 unit tests, 106 integration tests, 14 Playwright tests, formatting, lint, typecheck, and builds all passed.
 - Implementation report: `REPORT-045`.
+- Implementation commit: `ff41126` (`feat(tasks): 实现任务成果差异与证据校验`, `Tasks: TASK-042`).
 
 ## Handoff
 
