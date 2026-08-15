@@ -12,6 +12,7 @@ import { ReportPage } from "./report-page";
 import { TaskPage } from "./task-page";
 import { ApprovalPage } from "./approval-page";
 import { HistoryPageView } from "./history-page";
+import { ExecutionConsolePage } from "./execution-console-page";
 
 type AppRoute =
   | "home"
@@ -24,7 +25,8 @@ type AppRoute =
   | "reports"
   | "tasks"
   | "approvals"
-  | "history";
+  | "history"
+  | "execution";
 
 type HealthPayload = Readonly<{
   readonly status: "ok";
@@ -60,6 +62,7 @@ export function resolveRoute(pathname: string): AppRoute {
   }
   if (pathname === "/projects/approvals") return "approvals";
   if (pathname === "/projects/history") return "history";
+  if (pathname === "/projects/execution") return "execution";
   return pathname === "/health" ? "health" : "home";
 }
 
@@ -142,6 +145,12 @@ export function App(): ReactElement {
           >
             历史
           </a>
+          <a
+            className={route === "execution" ? "active" : ""}
+            href="/projects/execution"
+          >
+            执行
+          </a>
         </nav>
       </header>
 
@@ -168,6 +177,8 @@ export function App(): ReactElement {
           <ApprovalPage />
         ) : route === "history" ? (
           <HistoryPageView />
+        ) : route === "execution" ? (
+          <ExecutionConsolePage />
         ) : (
           <>
             <ProjectOverview

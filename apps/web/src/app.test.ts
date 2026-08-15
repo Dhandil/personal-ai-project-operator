@@ -39,4 +39,8 @@ describe("resolveRoute", () => {
   it("recognizes the tasks route", () => {
     expect(resolveRoute("/projects/tasks")).toBe("tasks");
   });
+
+  it("recognizes the execution console route", () => {
+    expect(resolveRoute("/projects/execution")).toBe("execution");
+  });
 });
