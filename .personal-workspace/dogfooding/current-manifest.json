@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "manifest_kind": "current",
-  "generated_at": "2026-08-15T14:47:10.058Z",
-  "source_manifest_hash": "f5386eb5d561cee07d4eeb90e1c176684cc63624aa0cfa90d0ecc1eade9306eb",
+  "generated_at": "2026-08-15T14:55:08.539Z",
+  "source_manifest_hash": "eb581c1ea4d51c39935c9cd41c39508cb962e56447e2927aa39f47393cd8dabc",
   "current_source_stage": "03-spec",
-  "current_goal_id": "GOAL-009",
+  "current_goal_id": "GOAL-001",
   "current_task_id": null,
   "source_files": [
     {
@@ -154,14 +154,14 @@
     {
       "relativePath": ".personal-workspace/goals/GOAL-009.md",
       "kind": "goal",
-      "hash": "e44eb1a233c3d637c000469e072322f6dae80fae1779c1c09cd5514de0e562bc",
+      "hash": "6f317dc3f3c28349f4ca9c9ba52bb979f35ed315b014e68629d20739d4239151",
       "id": "GOAL-009",
       "title": "完成自动执行审核和交接",
-      "status": "in_progress",
+      "status": "completed",
       "stage": null,
       "goalId": null,
       "generated": false,
-      "revision": 2
+      "revision": 3
     },
     {
       "relativePath": ".personal-workspace/reports/REPORT-001.md",
@@ -778,14 +778,14 @@
     {
       "relativePath": ".personal-workspace/reports/REPORT-052.md",
       "kind": "report",
-      "hash": "5ee37064317b806d4d2aed7277080ab350b1520b181a4d30b0598eb3e62a9d94",
+      "hash": "8492d31cd248ac84c2a3e139268569714aebad595de89c4fec09d3260c437c27",
       "id": "REPORT-052",
       "title": "GOAL-009 自动执行审核和交接检查点报告",
-      "status": "in_review",
+      "status": "accepted",
       "stage": null,
       "goalId": "GOAL-009",
       "generated": false,
-      "revision": 1
+      "revision": 2
     },
     {
       "relativePath": ".personal-workspace/stages/01-idea/01-idea.md",

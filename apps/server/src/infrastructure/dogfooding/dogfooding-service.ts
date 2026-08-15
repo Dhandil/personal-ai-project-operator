@@ -456,6 +456,10 @@ function statusDocument(
   const activeTasks = inventory.tasks.filter((task) =>
     activeTaskStatus(task.status),
   );
+  const userTodo =
+    inventory.currentTaskId !== null
+      ? `- 继续处理 ${inventory.currentTaskId}。`
+      : "- 决定是否批准真实项目的 main 合并，或进入下一目标。";
   return {
     frontMatter: {
       schema_version: 1,
@@ -506,7 +510,7 @@ function statusDocument(
       `- 由项目负责人继续处理 ${inventory.currentTaskId ?? "当前就绪任务"}。`,
       "",
       "## 用户待办",
-      "- 验收 TASK-031 的 Dogfooding 报告后，再决定是否进入后续目标。",
+      userTodo,
       "",
     ].join("\n"),
   };

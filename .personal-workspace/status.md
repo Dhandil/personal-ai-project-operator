@@ -1,26 +1,26 @@
 ---
 schema_version: 1
 document_type: status_snapshot
-revision: 20
-generated_at: 2026-08-15T14:47:10.058Z
-updated_at: 2026-08-15T14:47:10.058Z
+revision: 21
+generated_at: 2026-08-15T14:55:08.539Z
+updated_at: 2026-08-15T14:55:08.539Z
 source: formal_project_facts
 status: in_progress
 current_stage: 03-spec
-current_goal: GOAL-009
+current_goal: GOAL-001
 current_task: null
-source_manifest_hash: f5386eb5d561cee07d4eeb90e1c176684cc63624aa0cfa90d0ecc1eade9306eb
+source_manifest_hash: eb581c1ea4d51c39935c9cd41c39508cb962e56447e2927aa39f47393cd8dabc
 ---
 # 项目状态
 
 - 项目：个人 AI 项目运营工具
 - 当前正式源阶段：03-spec
-- 当前目标：GOAL-009
+- 当前目标：GOAL-001
 - 当前任务：无
 - 本文件由正式项目事实自动生成，不是独立事实源。
 
 ## 当前获批短期目标
-- GOAL-009
+- GOAL-001
 
 ## 已完成成果
 - TASK-001 建立 npm Workspace 和 TypeScript 根配置
@@ -84,4 +84,4 @@ source_manifest_hash: f5386eb5d561cee07d4eeb90e1c176684cc63624aa0cfa90d0ecc1eade
 - 由项目负责人继续处理 当前就绪任务。
 
 ## 用户待办
-- 验收 TASK-031 的 Dogfooding 报告后，再决定是否进入后续目标。
+- 决定是否批准真实项目的 main 合并，或进入下一目标。
