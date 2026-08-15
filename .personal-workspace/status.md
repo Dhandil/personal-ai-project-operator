@@ -1,22 +1,22 @@
 ---
 schema_version: 1
 document_type: status_snapshot
-revision: 9
-generated_at: 2026-08-15T06:03:13.038Z
-updated_at: 2026-08-15T06:03:13.038Z
+revision: 10
+generated_at: 2026-08-15T06:42:52.045Z
+updated_at: 2026-08-15T06:42:52.045Z
 source: formal_project_facts
 status: in_progress
 current_stage: 03-spec
 current_goal: GOAL-009
-current_task: TASK-044
-source_manifest_hash: 95ab32ca610eed298fc1e978143f202a2de37ab285450a8058632daa40ae7be0
+current_task: TASK-045
+source_manifest_hash: 91683c5804bc9d44a115413928ab99f30bbca5802604cb080d4272429b01a3d8
 ---
 # 项目状态
 
 - 项目：个人 AI 项目运营工具
 - 当前正式源阶段：03-spec
 - 当前目标：GOAL-009
-- 当前任务：TASK-044
+- 当前任务：TASK-045
 - 本文件由正式项目事实自动生成，不是独立事实源。
 
 ## 当前获批短期目标
@@ -66,18 +66,19 @@ source_manifest_hash: 95ab32ca610eed298fc1e978143f202a2de37ab285450a8058632daa40
 - TASK-041 实现临时会话和官方删除清理
 - TASK-042 实现执行成果差异测试和证据校验
 - TASK-043 实现只读审核及结构化审核报告
+- TASK-044 实现返工同一审核者复审和自动下一任务
 
 ## 当前任务
-- TASK-044 实现返工同一审核者复审和自动下一任务 — ready
+- TASK-045 实现执行控制台进度摘要和恢复决策界面 — ready
 
 ## Blocker、风险和待决策事项
 - 以正式问题、审批和决策记录为准。
 
 ## 上一步
-- 已从 109 个正式文件重建导入清单。
+- 已从 110 个正式文件重建导入清单。
 
 ## 推荐下一步
-- 由项目负责人继续处理 TASK-044。
+- 由项目负责人继续处理 TASK-045。
 
 ## 用户待办
 - 验收 TASK-031 的 Dogfooding 报告后，再决定是否进入后续目标。

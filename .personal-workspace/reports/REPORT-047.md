@@ -3,16 +3,20 @@ schema_version: 1
 document_type: report
 id: REPORT-047
 title: TASK-044 rework review loop and next task report
-status: pending_acceptance
+status: accepted
 report_type: task_verification
-acceptance_state: pending
+acceptance_state: accepted
 task_id: TASK-044
 goal_id: GOAL-009
-revision: 1
+revision: 2
 created_at: 2026-08-15T14:45:00Z
-updated_at: 2026-08-15T14:45:00Z
+updated_at: 2026-08-15T15:05:00Z
 verified_by: implementation_agent
 verified_commit: bdff9d6
+reviewed_by: project_lead
+reviewed_at: 2026-08-15T15:05:00Z
+accepted_by: project_lead
+accepted_at: 2026-08-15T15:05:00Z
 verification_commands:
   - npx tsx --test apps/server/test/review-loop.integration.test.ts
   - npm run verify
@@ -53,3 +57,11 @@ TASK-044 is implemented and submitted for independent acceptance. A failed revie
 3. Confirm the second report references the first report, increments `reviewRound`, and preserves `reviewerInstanceId`.
 4. Confirm an accepted review without the goal acceptance approval remains `waiting_for_approval`, while an approved goal with an eligible same-goal task completes the current task and selects that task.
 5. After acceptance, mark `REPORT-047` as `accepted` and `TASK-044` as `completed`; only then decide whether to unlock TASK-045 or TASK-047.
+
+## 独立验收结果
+
+- 已独立复跑 `npx tsx --test apps/server/test/review-loop.integration.test.ts`，3/3 通过。
+- 已核对完整 `npm run verify`：66 个单元测试、113 个集成测试、14 个 Chromium Playwright 测试，以及格式、Lint、类型检查和构建全部通过。
+- 已核对首轮 `changes_requested`、同一审核者复审、前一报告关联、审批等待、已接受报告拒绝返工和同目标下一任务选择场景。
+- 返工不会越过执行者权限，自动推进不会启动新目标或绕过用户决策。
+- REPORT-047 已接受，TASK-044 可登记为 `completed`；TASK-045 依赖已满足并解锁为 `ready`。

@@ -2,13 +2,16 @@
 schema_version: 1
 id: TASK-045
 title: 实现执行控制台进度摘要和恢复决策界面
-status: draft
+status: ready
 goal_id: GOAL-009
 role: executor
 dependencies: [TASK-028, TASK-040, TASK-044]
-revision: 1
+revision: 2
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-13T12:29:07Z
+updated_at: 2026-08-15T15:05:00Z
+approval_id: APPROVAL-004
+target_branch: goal/GOAL-009
+unblocked_by: TASK-044
 ---
 
 # TASK-045：实现执行控制台、进度摘要和恢复决策界面
@@ -34,3 +37,9 @@ updated_at: 2026-08-13T12:29:07Z
 ## 边界与交接
 
 界面不得把“未报告”显示为“已完成”。完成后交给 TASK-046、047。
+
+## 解锁记录
+
+- GOAL-009 已获 APPROVAL-004 批准。
+- TASK-028、TASK-040 和 TASK-044 依赖均已完成独立验收。
+- TASK-045 现为 `ready`，可由实现对话开始执行；尚未执行或修改实现文件。

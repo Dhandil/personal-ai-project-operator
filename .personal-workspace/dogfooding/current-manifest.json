@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "manifest_kind": "current",
-  "generated_at": "2026-08-15T06:03:13.038Z",
-  "source_manifest_hash": "95ab32ca610eed298fc1e978143f202a2de37ab285450a8058632daa40ae7be0",
+  "generated_at": "2026-08-15T06:42:52.045Z",
+  "source_manifest_hash": "91683c5804bc9d44a115413928ab99f30bbca5802604cb080d4272429b01a3d8",
   "current_source_stage": "03-spec",
   "current_goal_id": "GOAL-009",
-  "current_task_id": "TASK-044",
+  "current_task_id": "TASK-045",
   "source_files": [
     {
       "relativePath": ".personal-workspace/approvals/APPROVAL-001.md",
@@ -716,6 +716,18 @@
       "revision": 2
     },
     {
+      "relativePath": ".personal-workspace/reports/REPORT-047.md",
+      "kind": "report",
+      "hash": "d76fa9e7c662faa5facbcfdc8bc947e6d832e6e5b472e5c2e2825dfeeff10282",
+      "id": "REPORT-047",
+      "title": "TASK-044 rework review loop and next task report",
+      "status": "accepted",
+      "stage": null,
+      "goalId": "GOAL-009",
+      "generated": false,
+      "revision": 2
+    },
+    {
       "relativePath": ".personal-workspace/stages/01-idea/01-idea.md",
       "kind": "stage",
       "hash": "b5fcb8638dc61127da5f228a1e2a41cf36417fd9f764dafb6dfbb0c172c157e4",
@@ -1270,26 +1282,26 @@
     {
       "relativePath": ".personal-workspace/tasks/TASK-044.md",
       "kind": "task",
-      "hash": "3281407a692088e596de71f3d9fd1a8f7881e6ca6d2f4c365eb3686ec48ec83e",
+      "hash": "536bd64497b9a0b06d1f727ad6e6a03587c980f2a017391098c2dc93bbb13481",
       "id": "TASK-044",
       "title": "实现返工同一审核者复审和自动下一任务",
+      "status": "completed",
+      "stage": null,
+      "goalId": "GOAL-009",
+      "generated": false,
+      "revision": 4
+    },
+    {
+      "relativePath": ".personal-workspace/tasks/TASK-045.md",
+      "kind": "task",
+      "hash": "3e7ad3a02bdde70997427ab37bd7ff3a63be2fa1e658ae2c5889cbbe6e732dd4",
+      "id": "TASK-045",
+      "title": "实现执行控制台进度摘要和恢复决策界面",
       "status": "ready",
       "stage": null,
       "goalId": "GOAL-009",
       "generated": false,
       "revision": 2
-    },
-    {
-      "relativePath": ".personal-workspace/tasks/TASK-045.md",
-      "kind": "task",
-      "hash": "f83d4bd8fa49bd69ee7de3e04db686765a87f41d68601509e07f1ce040681b2e",
-      "id": "TASK-045",
-      "title": "实现执行控制台进度摘要和恢复决策界面",
-      "status": "draft",
-      "stage": null,
-      "goalId": "GOAL-009",
-      "generated": false,
-      "revision": 1
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-046.md",

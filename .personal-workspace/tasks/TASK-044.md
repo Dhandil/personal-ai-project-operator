@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-044
 title: 实现返工同一审核者复审和自动下一任务
-status: in_review
+status: completed
 goal_id: GOAL-009
 role: executor
 dependencies: [TASK-036, TASK-042, TASK-043]
-revision: 3
+revision: 4
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-15T14:45:00Z
+updated_at: 2026-08-15T15:05:00Z
 approval_id: APPROVAL-004
 target_branch: goal/GOAL-009
 unblocked_by: TASK-043
@@ -61,3 +61,10 @@ verification_report_id: REPORT-047
 
 - TASK-044 is `in_review` and awaits independent acceptance of REPORT-047.
 - TASK-045, TASK-047, and all other later tasks were not executed or modified.
+
+## 独立验收
+
+- REPORT-047 已由项目负责人接受。
+- 独立专项测试 3/3、完整 `npm run verify` 全部通过。
+- 返工、复审和下一任务选择均遵守审核者、审批门、依赖和阻塞条件。
+- TASK-045 依赖已满足并解锁为 `ready`，尚未执行。
