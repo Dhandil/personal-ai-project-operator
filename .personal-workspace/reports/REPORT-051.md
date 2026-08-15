@@ -3,16 +3,20 @@ schema_version: 1
 document_type: report
 id: REPORT-051
 title: TASK-047 V0.2 全链路验收报告
-status: in_review
+status: accepted
 report_type: task_verification
-acceptance_state: pending
+acceptance_state: accepted
 task_id: TASK-047
 goal_id: GOAL-009
-revision: 1
+revision: 2
 created_at: 2026-08-15T14:35:08Z
-updated_at: 2026-08-15T14:35:08Z
+updated_at: 2026-08-15T14:43:59Z
 verified_by: implementation_agent
 verified_commit: 6874f3ef285a1852818db3b94ed82146be2990d0
+reviewed_by: project_lead
+reviewed_at: 2026-08-15T14:43:59Z
+accepted_by: project_lead
+accepted_at: 2026-08-15T14:43:59Z
 verification_commands:
   - npx tsx --test apps/server/test/review-loop.integration.test.ts
   - npm run verify
@@ -25,7 +29,7 @@ verification_commands:
 
 ## 结论
 
-TASK-047 的 V0.2 组合式验收、完整质量基线和真实 Claude Code 临时项目验收均已通过，现提交项目负责人独立验收。报告保持 `in_review` / `pending`，实现者不自行接受任务，也不执行真实项目的 `main` 合并。
+TASK-047 的 V0.2 组合式验收、完整质量基线和真实 Claude Code 临时项目验收均已通过。项目负责人已完成独立复验并接受本报告；本次未执行真实项目的 `main` 合并。
 
 ## 全链路场景
 
@@ -86,10 +90,17 @@ TASK-047 的 V0.2 组合式验收、完整质量基线和真实 Claude Code 临�
 - GOAL-009 保持 `in_progress`；REPORT-051 未标记为 `accepted`，TASK-047 未标记为 `completed`。
 - 未启动其他目标或任务，未请求或执行真实项目的 `main_merge`。
 
-## 独立验收建议
+## 独立验收记录
 
-1. 复跑 `npx tsx --test apps/server/test/review-loop.integration.test.ts`，确认 4/4 通过。
-2. 核对新增组合场景确实在同一临时仓库覆盖恢复、实际校验、退回、返工、复审、交接、越界拒绝、目标分支交付和 main 审批拒绝。
-3. 复跑 `npm run test:claude-cli -- preflight` 与真实 `npm run test:claude-cli -- acceptance`，确认七项结果全部通过且只使用临时项目。
-4. 核对 `npm run verify` 的 70/125/15 结果，以及 Codex preflight 仍只作为 TASK-046 的暂停证据。
-5. 验收通过后将 REPORT-051 更新为 `accepted`、TASK-047 更新为 `completed`，再生成 GOAL-009 检查点报告；是否合入 `main` 仍需用户单独批准。
+1. 独立复跑 `npx tsx --test apps/server/test/review-loop.integration.test.ts`，4/4 通过。
+2. 独立核对组合场景覆盖恢复、成果校验、退回、返工、复审、交接、越界拒绝、目标分支交付和 main 审批拒绝。
+3. 独立复跑 Claude acceptance，退出码 0，七项全部 `passed`，且只使用临时项目。
+4. 完整质量基线和 Codex 历史阻断证据与报告一致。
+5. 因此 REPORT-051 已接受，TASK-047 已完成；GOAL-009 检查点报告已生成，是否合入 `main` 仍需用户单独批准。
+
+## 独立验收结论
+
+- V0.2 专项测试 4/4 通过。
+- Claude Code 真实 acceptance 七个 case 全部通过，退出码为 0。
+- 审核者保持只读，越界交付被阻止，目标分支和 `main` 审批门行为符合预期。
+- 报告正式接受，TASK-047 标记为 `completed`。

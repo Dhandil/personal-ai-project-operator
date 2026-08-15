@@ -1,22 +1,22 @@
 ---
 schema_version: 1
 document_type: status_snapshot
-revision: 19
-generated_at: 2026-08-15T14:38:47.586Z
-updated_at: 2026-08-15T14:38:47.586Z
+revision: 20
+generated_at: 2026-08-15T14:47:10.058Z
+updated_at: 2026-08-15T14:47:10.058Z
 source: formal_project_facts
 status: in_progress
 current_stage: 03-spec
 current_goal: GOAL-009
-current_task: TASK-047
-source_manifest_hash: 4087f35a387cd46cc55d9bd9002bf08f85ad2e35e40e26a3acf5be881de09edc
+current_task: null
+source_manifest_hash: f5386eb5d561cee07d4eeb90e1c176684cc63624aa0cfa90d0ecc1eade9306eb
 ---
 # 项目状态
 
 - 项目：个人 AI 项目运营工具
 - 当前正式源阶段：03-spec
 - 当前目标：GOAL-009
-- 当前任务：TASK-047
+- 当前任务：无
 - 本文件由正式项目事实自动生成，不是独立事实源。
 
 ## 当前获批短期目标
@@ -68,19 +68,20 @@ source_manifest_hash: 4087f35a387cd46cc55d9bd9002bf08f85ad2e35e40e26a3acf5be881d
 - TASK-043 实现只读审核及结构化审核报告
 - TASK-044 实现返工同一审核者复审和自动下一任务
 - TASK-045 实现执行控制台进度摘要和恢复决策界面
+- TASK-047 完成 V0.2 全链路验收
 - TASK-048 实现 Claude Code CLI Adapter
 
 ## 当前任务
-- TASK-047 完成 V0.2 全链路验收 — in_review
+- 无
 
 ## Blocker、风险和待决策事项
 - 以正式问题、审批和决策记录为准。
 
 ## 上一步
-- 已从 115 个正式文件重建导入清单。
+- 已从 116 个正式文件重建导入清单。
 
 ## 推荐下一步
-- 由项目负责人继续处理 TASK-047。
+- 由项目负责人继续处理 当前就绪任务。
 
 ## 用户待办
 - 验收 TASK-031 的 Dogfooding 报告后，再决定是否进入后续目标。

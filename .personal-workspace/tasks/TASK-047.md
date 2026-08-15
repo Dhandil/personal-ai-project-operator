@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-047
 title: 完成 V0.2 全链路验收
-status: in_review
+status: completed
 goal_id: GOAL-009
 role: reviewer
 dependencies: [TASK-034, TASK-048]
-revision: 4
+revision: 5
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-15T14:35:08Z
+updated_at: 2026-08-15T14:43:59Z
 approval_id: APPROVAL-004
 target_branch: goal/GOAL-009
 unblocked_by: TASK-048
@@ -54,8 +54,8 @@ verification_report_id: REPORT-051
 
 ## 交接
 
-- TASK-047 进入 `in_review`，等待项目负责人独立验收 REPORT-051；实现者未自行接受报告。
-- GOAL-009 保持 `in_progress`，不得在 REPORT-051 被接受前完成目标或合并 `main`。
+- TASK-047 已通过项目负责人独立验收，状态更新为 `completed`。
+- GOAL-009 保持 `in_progress`；检查点已形成，但目标是否完成及是否合入 `main`仍需用户单独批准。
 - TASK-046 保持暂停存档；未启动其他目标或后续任务。
 
 ## 预计文件
@@ -65,3 +65,9 @@ V0.2 E2E 场景、全链路夹具、验收报告、Dogfooding 指标报告和必
 ## 边界与交接
 
 审核任务不得直接修复发现；缺陷创建新任务。用户决定是否合入 `main` 以及下一阶段方向。
+
+## 独立验收结论
+
+- REPORT-051 已接受。
+- V0.2 专项测试 4/4 通过；Claude 真实 acceptance 七个 case 全部通过。
+- TASK-047 已完成；未执行真实项目的 `main` 合并。
