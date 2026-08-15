@@ -19,6 +19,7 @@
     "dogfood": "npm run dogfood --workspace apps/server",
     "test:coverage": "vitest run --config vitest.config.ts --coverage",
     "test:e2e": "playwright test --config=playwright.config.ts",
+    "test:claude-cli": "npm run test:claude-cli --workspace apps/server",
     "verify": "npm run format:check && npm run lint && npm run typecheck && npm run test:unit && npm run test:integration && npm run test:e2e && npm run build"
   },
   "engines": {

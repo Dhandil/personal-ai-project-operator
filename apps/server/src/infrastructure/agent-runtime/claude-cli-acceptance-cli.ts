@@ -1,0 +1,291 @@
+import { execFile } from "node:child_process";
+import { mkdtemp, readFile, rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { promisify } from "node:util";
+
+import { parseFormalId } from "@personal-ai-operator/contracts";
+import type {
+  AgentSession,
+  AgentStartRequest,
+  GoalId,
+  TaskId,
+} from "@personal-ai-operator/contracts";
+
+import { ClaudeCodeAdapter } from "./claude-code-adapter.js";
+import { ClaudeCliPreflightService } from "./claude-cli-preflight.js";
+
+const execFileAsync = promisify(execFile);
+const outputSchema = {
+  type: "object",
+  properties: {
+    summary: { type: "string" },
+    verified: { type: "boolean" },
+    provider: { type: "string" },
+  },
+  required: ["summary", "verified", "provider"],
+  additionalProperties: false,
+} as const;
+
+type CaseResult = Readonly<{
+  readonly status: "passed" | "failed" | "skipped";
+  readonly detail: string;
+}>;
+
+type AcceptanceReport = Readonly<{
+  readonly schemaVersion: 1;
+  readonly checkedAt: string;
+  readonly status: "passed" | "failed" | "blocked";
+  readonly executable: string;
+  readonly version: string | null;
+  readonly provider: string;
+  readonly temporaryProjectCreated: boolean;
+  readonly cases: Readonly<Record<string, CaseResult>>;
+}>;
+
+function safeError(error: unknown): string {
+  const message = error instanceof Error ? error.message : String(error);
+  return message
+    .replace(/Bearer\s+\S+/gi, "Bearer <redacted>")
+    .replace(/(?:sk|api)[-_]?[A-Za-z0-9_-]{12,}/gi, "<redacted>")
+    .slice(0, 240);
+}
+
+async function collect(
+  session: AgentSession,
+  cancel: () => Promise<void>,
+  timeoutMs = 30_000,
+): Promise<Awaited<AgentSession["result"]>> {
+  const eventsTask = (async (): Promise<void> => {
+    for await (const event of session.events) {
+      // The Adapter owns event projection; acceptance only needs the final result.
+      void event;
+    }
+  })();
+  let timer: NodeJS.Timeout | undefined;
+  const timeout = new Promise<"timeout">((resolve) => {
+    timer = setTimeout(() => resolve("timeout"), timeoutMs);
+  });
+  const outcome = await Promise.race([
+    session.result.then((result) => ({ result, timedOut: false as const })),
+    timeout.then(() => ({ result: null, timedOut: true as const })),
+  ]);
+  if (timer !== undefined) clearTimeout(timer);
+  if (outcome.timedOut) {
+    await cancel();
+    await eventsTask;
+    return session.result;
+  }
+  await eventsTask;
+  return outcome.result;
+}
+
+function resultDetail(result: Awaited<AgentSession["result"]>): string {
+  const failure =
+    result.error === null
+      ? ""
+      : ` ${result.error.code}: ${result.error.message}`;
+  const diagnostics = result.diagnostics.join(" | ");
+  return `${result.status}.${failure}${diagnostics.length > 0 ? ` ${safeError(diagnostics)}` : ""}`.slice(
+    0,
+    480,
+  );
+}
+
+function request(
+  workingDirectory: string,
+  role: "executor" | "reviewer",
+  prompt: string,
+  sessionPolicy: "persistent" | "ephemeral" = "persistent",
+): AgentStartRequest {
+  return {
+    taskId: parseFormalId("TASK-048") as TaskId,
+    goalId: parseFormalId("GOAL-009") as GoalId,
+    role,
+    prompt,
+    workingDirectory,
+    allowedPaths: ["claude-acceptance.txt"],
+    forbiddenPaths: [".git", ".personal-workspace"],
+    context: [
+      { key: "task", value: "TASK-048" },
+      { key: "project", value: "temporary-only" },
+    ],
+    sessionPolicy,
+  };
+}
+
+async function runAcceptance(
+  preflight: Awaited<ReturnType<ClaudeCliPreflightService["check"]>>,
+): Promise<AcceptanceReport> {
+  const root = await mkdtemp(join(tmpdir(), "personal-ai-claude-acceptance-"));
+  const cases: Record<string, CaseResult> = {};
+  try {
+    await execFileAsync("git", ["init", "-q"], { cwd: root });
+    const runtimeRoot = join(root, "runtime");
+    const adapter = new ClaudeCodeAdapter({
+      executable: preflight.executable,
+      jsonSchema: outputSchema,
+      runtimeDirectoryRoot: runtimeRoot,
+      allowProjectPurge: true,
+    });
+    const outputPath = join(root, "claude-acceptance.txt");
+    const executor = await adapter.start(
+      request(
+        root,
+        "executor",
+        "In this temporary Git project only, create claude-acceptance.txt with exactly the text TASK-048 Claude acceptance. Then return structured output with summary, verified=true, and the configured provider. Do not access or change anything outside this directory.",
+      ),
+    );
+    const executorResult = await collect(executor, async () => {
+      await adapter.cancel({ executionId: executor.executionId });
+    });
+    const output = await readFile(outputPath, "utf8").catch(() => null);
+    cases.executor =
+      executorResult.status === "completed" &&
+      output === "TASK-048 Claude acceptance"
+        ? {
+            status: "passed",
+            detail: "non-interactive write and structured result",
+          }
+        : {
+            status: "failed",
+            detail: `executor ${resultDetail(executorResult)}`,
+          };
+    const executorCleanup = await adapter.cleanup({
+      executionId: executor.executionId,
+    });
+    cases.persistentCleanup = executorCleanup.ok
+      ? { status: "passed", detail: "temporary project purge completed" }
+      : { status: "failed", detail: executorCleanup.code };
+
+    const beforeReview = await readFile(outputPath, "utf8");
+    const reviewer = await adapter.start(
+      request(
+        root,
+        "reviewer",
+        "Read claude-acceptance.txt in this temporary project and return structured output with the observed text, verified=true, and the configured provider. Do not edit, write, delete, or execute shell commands.",
+        "ephemeral",
+      ),
+    );
+    const reviewerResult = await collect(reviewer, async () => {
+      await adapter.cancel({ executionId: reviewer.executionId });
+    });
+    const afterReview = await readFile(outputPath, "utf8");
+    cases.reviewer =
+      reviewerResult.status === "completed" && beforeReview === afterReview
+        ? { status: "passed", detail: "read-only reviewer preserved the file" }
+        : {
+            status: "failed",
+            detail: `reviewer ${resultDetail(reviewerResult)}`,
+          };
+    const ephemeralCleanup = await adapter.cleanup({
+      executionId: reviewer.executionId,
+    });
+    cases.ephemeralCleanup = ephemeralCleanup.ok
+      ? { status: "passed", detail: "no persisted session purge required" }
+      : { status: "failed", detail: ephemeralCleanup.code };
+
+    const resumeRequest = request(
+      root,
+      "executor",
+      "Wait for five seconds, then return structured output with summary, verified=true, and the configured provider. Do not change files.",
+    );
+    const resumable = await adapter.start(resumeRequest);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    const sessionId = resumable.sessionId;
+    if (sessionId !== null) {
+      await adapter.cancel({ executionId: resumable.executionId });
+      const resumed = await adapter.resume({
+        executionId: resumable.executionId,
+        sessionId,
+        startRequest: resumeRequest,
+      });
+      const resumedResult = await collect(resumed, async () => {
+        await adapter.cancel({ executionId: resumed.executionId });
+      });
+      cases.resume =
+        resumedResult.status === "completed"
+          ? { status: "passed", detail: "exact session resumed" }
+          : {
+              status: "failed",
+              detail: `resume ${resultDetail(resumedResult)}`,
+            };
+      const cleanup = await adapter.cleanup({
+        executionId: resumed.executionId,
+      });
+      cases.resumeCleanup = cleanup.ok
+        ? { status: "passed", detail: "resumed temporary session cleaned" }
+        : { status: "failed", detail: cleanup.code };
+    } else {
+      cases.resume = {
+        status: "skipped",
+        detail:
+          "Claude did not emit a session ID before the cancellation window",
+      };
+    }
+  } catch (error) {
+    cases.runtime = { status: "failed", detail: safeError(error) };
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+  const failed = Object.values(cases).some((item) => item.status === "failed");
+  return {
+    schemaVersion: 1,
+    checkedAt: preflight.checkedAt,
+    status: failed ? "failed" : "passed",
+    executable: preflight.executable,
+    version: preflight.version,
+    provider: preflight.provider,
+    temporaryProjectCreated: true,
+    cases,
+  };
+}
+
+const mode = process.argv[2] ?? "acceptance";
+const preflightService = new ClaudeCliPreflightService();
+const preflight = await preflightService.check();
+if (mode === "preflight") {
+  console.log(
+    JSON.stringify(
+      {
+        checkedAt: preflight.checkedAt,
+        executable: preflight.executable,
+        installed: preflight.installed,
+        version: preflight.version,
+        loggedIn: preflight.loggedIn,
+        provider: preflight.provider,
+        commands: preflight.commands,
+        canExecute: preflight.canExecute,
+        blockers: preflight.blockers,
+        recommendations: preflight.recommendations,
+      },
+      null,
+      2,
+    ),
+  );
+  if (!preflight.canExecute) process.exitCode = 2;
+} else if (mode === "acceptance") {
+  if (!preflight.canExecute) {
+    const blocked: AcceptanceReport = {
+      schemaVersion: 1,
+      checkedAt: preflight.checkedAt,
+      status: "blocked",
+      executable: preflight.executable,
+      version: preflight.version,
+      provider: preflight.provider,
+      temporaryProjectCreated: false,
+      cases: {
+        preflight: { status: "failed", detail: preflight.blockers.join("; ") },
+      },
+    };
+    console.log(JSON.stringify(blocked, null, 2));
+    process.exitCode = 2;
+  } else {
+    const report = await runAcceptance(preflight);
+    console.log(JSON.stringify(report, null, 2));
+    if (report.status !== "passed") process.exitCode = 1;
+  }
+} else {
+  console.error("Usage: test:claude-cli [preflight|acceptance]");
+  process.exitCode = 1;
+}
