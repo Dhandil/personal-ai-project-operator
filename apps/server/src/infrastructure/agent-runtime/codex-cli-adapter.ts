@@ -384,6 +384,35 @@ export class CodexCliAdapter implements AgentRuntime {
         message: "Running executions must be cancelled before cleanup.",
       };
     }
+    if (
+      execution.request.sessionPolicy !== "ephemeral" &&
+      execution.state.sessionId === null
+    ) {
+      return {
+        ok: false,
+        code: "cleanup_failed",
+        executionId: request.executionId,
+        message:
+          "Persistent Codex cleanup requires the precise session ID from thread.started.",
+        retryable: true,
+        estimatedFreedBytes: 0,
+      };
+    }
+    if (execution.request.runtimeDirectory !== undefined) {
+      const validationError = this.runtimeDirectoryCleaner.validate(
+        execution.request.runtimeDirectory,
+      );
+      if (validationError !== null) {
+        return {
+          ok: false,
+          code: "cleanup_failed",
+          executionId: request.executionId,
+          message: validationError,
+          retryable: false,
+          estimatedFreedBytes: 0,
+        };
+      }
+    }
 
     if (
       !execution.sessionDeleted &&
@@ -443,19 +472,6 @@ export class CodexCliAdapter implements AgentRuntime {
 
     let estimatedFreedBytes = 0;
     if (execution.request.runtimeDirectory !== undefined) {
-      const validationError = this.runtimeDirectoryCleaner.validate(
-        execution.request.runtimeDirectory,
-      );
-      if (validationError !== null) {
-        return {
-          ok: false,
-          code: "cleanup_failed",
-          executionId: request.executionId,
-          message: validationError,
-          retryable: false,
-          estimatedFreedBytes: 0,
-        };
-      }
       const cleaned = await this.runtimeDirectoryCleaner.cleanup(
         execution.request.runtimeDirectory,
       );

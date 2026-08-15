@@ -378,6 +378,41 @@ test("persistent cleanup deletes the exact session and reports released runtime 
   }
 });
 
+test("persistent cleanup without thread.started fails and preserves the runtime directory", async () => {
+  const root = await mkdtemp(join(tmpdir(), "personal-ai-runtime-"));
+  try {
+    const fake = new FakeProcess();
+    const commands: CodexExecCommand[] = [];
+    const runtimeDirectory = join(root, "execution");
+    await mkdir(runtimeDirectory, { recursive: true });
+    await writeFile(join(runtimeDirectory, "output.txt"), "runtime output\n");
+    const adapter = new CodexCliAdapter({
+      runtimeDirectoryRoot: root,
+      processFactory: (command) => {
+        commands.push(command);
+        return fake;
+      },
+    });
+    const session = await adapter.start({ ...request, runtimeDirectory });
+    fake.stdout.write('{"type":"result","result":{"ok":true}}\n');
+    fake.finish();
+    await session.result;
+
+    const cleanup = await adapter.cleanup({ executionId: session.executionId });
+    assert.equal(cleanup.ok, false);
+    if (!cleanup.ok) {
+      assert.equal(cleanup.code, "cleanup_failed");
+      assert.equal(cleanup.retryable, true);
+    }
+    assert.equal(commands.length, 1);
+    await stat(runtimeDirectory);
+    const retry = await adapter.cleanup({ executionId: session.executionId });
+    assert.equal(retry.ok, false);
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
 test("cleanup failures remain retryable and do not lose the execution record", async () => {
   const first = new FakeProcess();
   const deleteFailure = new FakeProcess();
@@ -430,6 +465,9 @@ test("cleanup rejects runtime directories outside the application runtime root b
       ...request,
       runtimeDirectory: join(root, "..", "outside-runtime"),
     });
+    fake.stdout.write(
+      '{"type":"thread.started","thread_id":"path-protected-session"}\n',
+    );
     fake.stdout.write('{"type":"result","result":{"ok":true}}\n');
     fake.finish();
     await session.result;
