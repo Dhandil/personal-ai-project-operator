@@ -1,22 +1,22 @@
 ---
 schema_version: 1
 document_type: status_snapshot
-revision: 10
-generated_at: 2026-08-15T06:42:52.045Z
-updated_at: 2026-08-15T06:42:52.045Z
+revision: 11
+generated_at: 2026-08-15T07:20:46.515Z
+updated_at: 2026-08-15T07:20:46.515Z
 source: formal_project_facts
 status: in_progress
 current_stage: 03-spec
 current_goal: GOAL-009
-current_task: TASK-045
-source_manifest_hash: 91683c5804bc9d44a115413928ab99f30bbca5802604cb080d4272429b01a3d8
+current_task: TASK-046
+source_manifest_hash: 59cbd847b852b3c9b9a66f829b3419d964a951550f9ce6d53220e36c8505ad12
 ---
 # 项目状态
 
 - 项目：个人 AI 项目运营工具
 - 当前正式源阶段：03-spec
 - 当前目标：GOAL-009
-- 当前任务：TASK-045
+- 当前任务：TASK-046
 - 本文件由正式项目事实自动生成，不是独立事实源。
 
 ## 当前获批短期目标
@@ -67,18 +67,19 @@ source_manifest_hash: 91683c5804bc9d44a115413928ab99f30bbca5802604cb080d4272429b
 - TASK-042 实现执行成果差异测试和证据校验
 - TASK-043 实现只读审核及结构化审核报告
 - TASK-044 实现返工同一审核者复审和自动下一任务
+- TASK-045 实现执行控制台进度摘要和恢复决策界面
 
 ## 当前任务
-- TASK-045 实现执行控制台进度摘要和恢复决策界面 — ready
+- TASK-046 完成真实 Codex CLI Adapter 验收 — ready
 
 ## Blocker、风险和待决策事项
 - 以正式问题、审批和决策记录为准。
 
 ## 上一步
-- 已从 110 个正式文件重建导入清单。
+- 已从 111 个正式文件重建导入清单。
 
 ## 推荐下一步
-- 由项目负责人继续处理 TASK-045。
+- 由项目负责人继续处理 TASK-046。
 
 ## 用户待办
 - 验收 TASK-031 的 Dogfooding 报告后，再决定是否进入后续目标。

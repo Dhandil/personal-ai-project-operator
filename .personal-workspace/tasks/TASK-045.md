@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-045
 title: 实现执行控制台进度摘要和恢复决策界面
-status: in_review
+status: completed
 goal_id: GOAL-009
 role: executor
 dependencies: [TASK-028, TASK-040, TASK-044]
-revision: 3
+revision: 4
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-15T07:10:00Z
+updated_at: 2026-08-15T15:30:00Z
 approval_id: APPROVAL-004
 target_branch: goal/GOAL-009
 unblocked_by: TASK-044
@@ -58,3 +58,10 @@ verification_report_id: REPORT-048
 
 - TASK-045 is `in_review` and awaits independent acceptance of REPORT-048.
 - TASK-046, TASK-047, GOAL-010, and all other later work were not executed or modified.
+
+## 独立验收
+
+- REPORT-048 已由项目负责人接受。
+- 前端专项测试 13/13、Chromium 场景 1/1、完整 `npm run verify` 全部通过。
+- 执行状态、SSE 重连、浏览器刷新恢复和恢复决定展示符合验收条件。
+- TASK-046 依赖已满足并解锁为 `ready`，TASK-047 尚未解锁。

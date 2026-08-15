@@ -2,13 +2,16 @@
 schema_version: 1
 id: TASK-046
 title: 完成真实 Codex CLI Adapter 验收
-status: draft
+status: ready
 goal_id: GOAL-009
 role: reviewer
 dependencies: [TASK-038, TASK-039, TASK-040, TASK-041, TASK-042, TASK-043, TASK-044, TASK-045]
-revision: 1
+revision: 2
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-13T12:29:07Z
+updated_at: 2026-08-15T15:30:00Z
+approval_id: APPROVAL-004
+target_branch: goal/GOAL-009
+unblocked_by: TASK-045
 ---
 
 # TASK-046：完成真实 Codex CLI Adapter 验收
@@ -34,3 +37,9 @@ updated_at: 2026-08-13T12:29:07Z
 ## 边界与交接
 
 可能消耗真实 Codex 用量；不得使用真实个人项目或读取凭据内容。发现不兼容先报告，不修改 Codex 内部文件。
+
+## 解锁记录
+
+- GOAL-009 已获 APPROVAL-004 批准。
+- TASK-038 至 TASK-045 的全部依赖均已完成独立验收。
+- TASK-046 现为 `ready`，可由实现对话开始执行；尚未执行或修改真实 Codex 环境。
