@@ -21,6 +21,10 @@ import { RecoveryService } from "./infrastructure/recovery/recovery-service.js";
 import { ExecutionCoordinatorService } from "./infrastructure/execution/execution-coordinator.js";
 import { TaskPackageService } from "./infrastructure/execution/task-package-service.js";
 import { CodexCliPreflightService } from "./infrastructure/agent-runtime/codex-cli-preflight.js";
+import {
+  ReviewService,
+  type ReviewInput,
+} from "./infrastructure/reviews/review-service.js";
 
 const SERVICE_NAME = "@personal-ai-operator/server";
 
@@ -45,6 +49,7 @@ export type AppOptions = Readonly<{
   readonly executionCoordinatorService?: ExecutionCoordinatorService;
   readonly taskPackageService?: TaskPackageService;
   readonly codexCliPreflightService?: CodexCliPreflightService;
+  readonly reviewService?: ReviewService;
 }>;
 
 export function buildApp(options: AppOptions = {}): FastifyInstance {
@@ -97,6 +102,7 @@ export function buildApp(options: AppOptions = {}): FastifyInstance {
     new TaskPackageService({ taskService, goalService, roleService });
   const codexCliPreflightService =
     options.codexCliPreflightService ?? new CodexCliPreflightService();
+  const reviewService = options.reviewService ?? new ReviewService();
 
   app.addHook("onClose", async () => {
     await executionCoordinatorService.shutdown();
@@ -309,6 +315,48 @@ export function buildApp(options: AppOptions = {}): FastifyInstance {
     return reply
       .code(
         result.ok ? 200 : result.error.code === "registry_failed" ? 500 : 400,
+      )
+      .send(result);
+  });
+
+  app.post("/api/projects/reviews", async (request, reply) => {
+    const result = await reviewService.review(request.body as ReviewInput);
+    return reply
+      .code(
+        result.ok
+          ? 200
+          : result.error.code === "project_not_found"
+            ? 404
+            : result.error.code === "runtime_failed" ||
+                result.error.code === "audit_failed"
+              ? 500
+              : 400,
+      )
+      .send(result);
+  });
+
+  app.get<{
+    Querystring: {
+      readonly projectKey?: unknown;
+      readonly reportId?: unknown;
+    };
+  }>("/api/projects/reviews", async (request, reply) => {
+    const projectKey = request.query?.projectKey;
+    const reportId = request.query?.reportId;
+    if (typeof projectKey !== "string" || typeof reportId !== "string") {
+      return reply.code(400).send({
+        ok: false,
+        error: {
+          code: "invalid_input",
+          message: "A project key and reportId are required.",
+          details: [],
+        },
+      });
+    }
+    const result = await reviewService.get(projectKey, reportId);
+    return reply
+      .code(
+        result.ok ? 200 : result.error.code === "project_not_found" ? 404 : 400,
       )
       .send(result);
   });
