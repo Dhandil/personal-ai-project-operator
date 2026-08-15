@@ -2,17 +2,34 @@
 schema_version: 1
 id: TASK-048
 title: 实现 Claude Code CLI Adapter
-status: ready
+status: in_review
 goal_id: GOAL-009
 role: executor
 dependencies: [TASK-035, TASK-036, TASK-037, TASK-043, TASK-044, TASK-045]
-revision: 1
+revision: 2
 created_at: 2026-08-15T08:04:00Z
-updated_at: 2026-08-15T08:04:00Z
+updated_at: 2026-08-15T08:55:00Z
 approval_id: APPROVAL-004
 target_branch: goal/GOAL-009
 unblocked_by: TASK-045
+verification_report_id: REPORT-050
 ---
+
+## Completion evidence
+
+- Added a Claude Code process adapter with non-interactive `claude -p` execution, JSON and stream-JSON parsing, exact execution/session tracking, resume, cancellation, interruption, structured failures, and bounded cleanup.
+- Executor and reviewer roles receive distinct permission modes and tool boundaries. Reviewer mode denies editing, writing, notebook editing, and shell tools; the working directory and task context remain explicit in command and result metadata.
+- Persistent sessions use the official project purge command only when explicitly enabled for a temporary project. Ephemeral sessions use `--no-session-persistence`. Cleanup failures remain structured and retryable without dropping the execution record.
+- Added preflight checks for installation, authentication, JSON/stream-JSON, resume, session persistence, permission boundaries, JSON schema, and project purge. Authentication output is reduced to safe status fields; the local CLI did not expose a recognizable provider, so provider is recorded as `unknown`.
+- Added 6 Claude-specific integration tests covering preflight, executor/reviewer boundaries, JSON/stream-JSON, new-runtime resume, ephemeral persistence, and project cleanup.
+- Full `npm run verify` passed: 70 unit tests, 119 integration tests, 15 Playwright tests, formatting, lint, typecheck, and all builds.
+- Real CLI acceptance was attempted only in a dedicated temporary Git project. Claude Code 2.1.227 was found and authenticated, but the request did not complete within the 30-second bounded execution window; cancellation and cleanup were then attempted. This remains an environment-blocked acceptance result, not a success claim.
+
+## Handoff
+
+- TASK-048 is `in_review` and awaits independent acceptance of REPORT-050.
+- TASK-047 remains `draft` and was not executed or modified. GOAL-009 was not advanced by this task.
+- TASK-046 and REPORT-049 remain historical Codex CLI blocker records and were not rewritten.
 
 # TASK-048：实现 Claude Code CLI Adapter
 
