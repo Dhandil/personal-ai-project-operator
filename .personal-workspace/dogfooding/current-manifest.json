@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "manifest_kind": "current",
-  "generated_at": "2026-08-15T14:08:15.659Z",
-  "source_manifest_hash": "c18352e06581ad16136e7f66f6e088b7ed63d6c1669e579c5143cd3f08dc9c10",
+  "generated_at": "2026-08-15T14:38:47.586Z",
+  "source_manifest_hash": "4087f35a387cd46cc55d9bd9002bf08f85ad2e35e40e26a3acf5be881de09edc",
   "current_source_stage": "03-spec",
   "current_goal_id": "GOAL-009",
   "current_task_id": "TASK-047",
@@ -764,6 +764,18 @@
       "revision": 7
     },
     {
+      "relativePath": ".personal-workspace/reports/REPORT-051.md",
+      "kind": "report",
+      "hash": "8750db060c176e4e1c016c0f5960e957e3b7e8afa68324b464766f19f92fbe69",
+      "id": "REPORT-051",
+      "title": "TASK-047 V0.2 全链路验收报告",
+      "status": "in_review",
+      "stage": null,
+      "goalId": "GOAL-009",
+      "generated": false,
+      "revision": 1
+    },
+    {
       "relativePath": ".personal-workspace/stages/01-idea/01-idea.md",
       "kind": "stage",
       "hash": "b5fcb8638dc61127da5f228a1e2a41cf36417fd9f764dafb6dfbb0c172c157e4",
@@ -1354,14 +1366,14 @@
     {
       "relativePath": ".personal-workspace/tasks/TASK-047.md",
       "kind": "task",
-      "hash": "425254bf389d230715bf992816029455db773e11da6791a27c77ca48e99eea30",
+      "hash": "4ebec650fc8786ce363abdd12a1d1c990a3ba1a5b306418725fbbe5268f323c5",
       "id": "TASK-047",
       "title": "完成 V0.2 全链路验收",
-      "status": "in_progress",
+      "status": "in_review",
       "stage": null,
       "goalId": "GOAL-009",
       "generated": false,
-      "revision": 3
+      "revision": 4
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-048.md",

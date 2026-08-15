@@ -1,15 +1,15 @@
 ---
 schema_version: 1
 document_type: status_snapshot
-revision: 17
-generated_at: 2026-08-15T14:08:15.659Z
-updated_at: 2026-08-15T14:08:15.659Z
+revision: 19
+generated_at: 2026-08-15T14:38:47.586Z
+updated_at: 2026-08-15T14:38:47.586Z
 source: formal_project_facts
 status: in_progress
 current_stage: 03-spec
 current_goal: GOAL-009
 current_task: TASK-047
-source_manifest_hash: c18352e06581ad16136e7f66f6e088b7ed63d6c1669e579c5143cd3f08dc9c10
+source_manifest_hash: 4087f35a387cd46cc55d9bd9002bf08f85ad2e35e40e26a3acf5be881de09edc
 ---
 # 项目状态
 
@@ -71,13 +71,13 @@ source_manifest_hash: c18352e06581ad16136e7f66f6e088b7ed63d6c1669e579c5143cd3f08
 - TASK-048 实现 Claude Code CLI Adapter
 
 ## 当前任务
-- TASK-047 完成 V0.2 全链路验收 — in_progress
+- TASK-047 完成 V0.2 全链路验收 — in_review
 
 ## Blocker、风险和待决策事项
 - 以正式问题、审批和决策记录为准。
 
 ## 上一步
-- 已从 114 个正式文件重建导入清单。
+- 已从 115 个正式文件重建导入清单。
 
 ## 推荐下一步
 - 由项目负责人继续处理 TASK-047。
