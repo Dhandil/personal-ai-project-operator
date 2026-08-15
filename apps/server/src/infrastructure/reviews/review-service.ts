@@ -7,6 +7,7 @@ import type {
   ExecutionId,
   FormalId,
   GoalId,
+  ReportId,
   TaskId,
   UtcIsoTimestamp,
 } from "@personal-ai-operator/contracts";
@@ -40,6 +41,7 @@ export type ReviewInput = Readonly<{
   readonly taskId: TaskId;
   readonly executionId: ExecutionId;
   readonly validation: TaskResultValidationReport;
+  readonly previousReportId?: ReportId;
 }>;
 
 export type ReviewErrorCode =
@@ -49,6 +51,7 @@ export type ReviewErrorCode =
   | "goal_not_found"
   | "runtime_failed"
   | "review_output_invalid"
+  | "review_chain_invalid"
   | "boundary_failed"
   | "privilege_violation"
   | "audit_failed"
@@ -125,6 +128,7 @@ function validationDetails(
 function reviewerRequest(
   packageValue: TaskPackage,
   validation: TaskResultValidationReport,
+  previousReport: ReviewReport | null,
 ): AgentStartRequest {
   const reviewContext = JSON.stringify({
     taskId: packageValue.taskId,
@@ -135,6 +139,8 @@ function reviewerRequest(
     tests: validation.verification,
     evidence: validation.evidence,
     reasons: validation.reasons,
+    previousReview: previousReport,
+    reviewerInstanceId: previousReport?.reviewerInstanceId ?? null,
   });
   return {
     taskId: parseFormalId(packageValue.taskId) as TaskId,
@@ -168,6 +174,7 @@ function reportFrom(
   reviewerExecutionId: ExecutionId,
   output: ReviewerOutput,
   validation: TaskResultValidationReport,
+  previousReport: ReviewReport | null,
   now: UtcIsoTimestamp,
 ): ReviewReport {
   return {
@@ -181,6 +188,10 @@ function reportFrom(
     goalId: parseFormalId(packageValue.goalId) as GoalId,
     executionId,
     reviewerExecutionId,
+    previousReportId: previousReport?.id ?? null,
+    reviewRound: (previousReport?.reviewRound ?? 0) + 1,
+    reviewerInstanceId:
+      previousReport?.reviewerInstanceId ?? reviewerExecutionId,
     decision: output.decision,
     readOnly: true,
     sandbox: "read-only",
@@ -305,6 +316,39 @@ export class ReviewService {
       );
     }
 
+    let previousReport: ReviewReport | null = null;
+    if (input.previousReportId !== undefined) {
+      const previous = await this.reportRepository.read(
+        packageValue.projectRoot,
+        input.previousReportId,
+      );
+      if (!previous.ok) {
+        return failure(
+          "review_chain_invalid",
+          "The previous review report could not be loaded for re-review.",
+          previous.error.details,
+        );
+      }
+      if (
+        previous.value.projectKey !== input.projectKey ||
+        previous.value.taskId !== input.taskId ||
+        previous.value.goalId !== parseFormalId(packageValue.goalId) ||
+        previous.value.decision !== "changes_requested"
+      ) {
+        return failure(
+          "review_chain_invalid",
+          "A re-review must reference a changes_requested report for the same task and goal.",
+        );
+      }
+      if (previous.value.executionId === input.executionId) {
+        return failure(
+          "review_chain_invalid",
+          "A re-review must include a new execution result.",
+        );
+      }
+      previousReport = previous.value;
+    }
+
     const before = await this.boundary.capture(packageValue.projectRoot);
     if (!before.ok) {
       return failure(
@@ -317,7 +361,7 @@ export class ReviewService {
     let session: Awaited<ReturnType<AgentRuntime["start"]>>;
     try {
       session = await this.runtime.start(
-        reviewerRequest(packageValue, input.validation),
+        reviewerRequest(packageValue, input.validation, previousReport),
       );
     } catch (error) {
       return failure("runtime_failed", "The reviewer Agent could not start.", [
@@ -421,6 +465,7 @@ export class ReviewService {
       session.executionId,
       parsed.data,
       input.validation,
+      previousReport,
       this.now(),
     );
     const saved: ReviewReportRepositoryResult<ReviewReport> =

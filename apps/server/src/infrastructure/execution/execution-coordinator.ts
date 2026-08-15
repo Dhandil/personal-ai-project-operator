@@ -480,6 +480,12 @@ export class ExecutionCoordinatorService {
       input.taskId === undefined ? null : taskId(input.taskId);
     if (input.taskId !== undefined && requestedTaskId === null)
       return failure("invalid_input", "taskId must be a TASK-### identifier.");
+    const rework = input.rework === true;
+    if (rework && requestedTaskId === null)
+      return failure(
+        "invalid_input",
+        "A rework execution must identify the task returned for changes.",
+      );
     const token = this.lock.acquire(input.projectKey, requestedTaskId);
     if (token === null)
       return failure(
@@ -490,6 +496,8 @@ export class ExecutionCoordinatorService {
       const candidate = await this.selectCandidate(
         input.projectKey,
         requestedTaskId,
+        false,
+        rework,
       );
       if (!candidate.ok) return candidate;
       const started = await this.transition(
@@ -889,6 +897,7 @@ export class ExecutionCoordinatorService {
     projectKey: string,
     requestedTaskId: TaskId | null,
     recovery = false,
+    rework = false,
   ): Promise<ExecutionCoordinatorResult<Candidate>> {
     const tasks = await this.taskService.getTasks(projectKey);
     if (!tasks.ok)
@@ -968,6 +977,7 @@ export class ExecutionCoordinatorService {
         tasks.value,
         issues.value,
         recovery,
+        rework,
       );
       if (checked.ok)
         return { ok: true, value: { task, goal, issues: issues.value } };
@@ -986,6 +996,7 @@ export class ExecutionCoordinatorService {
     allTasks: TaskPage,
     issues: IssuePage,
     recovery: boolean,
+    rework: boolean,
   ): ExecutionCoordinatorResult<Candidate> {
     if (goal.goal.approval?.approved !== true)
       return failure(
@@ -1003,6 +1014,16 @@ export class ExecutionCoordinatorService {
           "not_resumable",
           "Only a paused task can resume an interrupted execution.",
         );
+    } else if (rework) {
+      if (
+        task.task.status !== "changes_requested" ||
+        task.task.currentRole !== "executor"
+      ) {
+        return failure(
+          "task_not_ready",
+          "Only a changes_requested task assigned to the executor can be reworked.",
+        );
+      }
     } else if (task.task.status !== "ready") {
       return failure(
         task.task.status === "in_progress"

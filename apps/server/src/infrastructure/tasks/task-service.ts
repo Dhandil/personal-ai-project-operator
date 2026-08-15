@@ -82,6 +82,12 @@ type TaskFile = Readonly<{
   readonly hash: string;
 }>;
 
+type TaskAuditActor = "user" | "agent" | "reviewer";
+
+function auditActor(value: unknown): TaskAuditActor {
+  return value === "agent" || value === "reviewer" ? value : "user";
+}
+
 function failure<Value>(
   code: TaskErrorCode,
   message: string,
@@ -808,6 +814,7 @@ export class TaskService {
       transitioned.value.task,
       "task_status_changed",
       transitioned.value.audit,
+      auditActor(input.actor),
     );
     if (!audited.ok) return audited;
     return {
@@ -999,6 +1006,7 @@ export class TaskService {
       readonly toStatus: TaskStatus;
       readonly reason: string;
     }>,
+    actor: TaskAuditActor = "user",
   ): Promise<TaskResult<true>> {
     const repository = new AuditLogRepository(root);
     const events = await repository.readAll();
@@ -1020,7 +1028,7 @@ export class TaskService {
       id: executionId,
       occurredAt: this.now(),
       type: "status_changed",
-      actor: "user",
+      actor,
       action,
       relatedObjectIds: [task.id, task.goalId, ...task.dependencies],
       executionId,

@@ -1,4 +1,5 @@
 import Fastify, { type FastifyInstance } from "fastify";
+import type { ReportId, TaskId } from "@personal-ai-operator/contracts";
 
 import {
   ProjectInitializationPreviewService,
@@ -25,6 +26,10 @@ import {
   ReviewService,
   type ReviewInput,
 } from "./infrastructure/reviews/review-service.js";
+import {
+  ReviewLoopService,
+  type ReworkInput,
+} from "./infrastructure/reviews/review-loop-service.js";
 
 const SERVICE_NAME = "@personal-ai-operator/server";
 
@@ -50,6 +55,7 @@ export type AppOptions = Readonly<{
   readonly taskPackageService?: TaskPackageService;
   readonly codexCliPreflightService?: CodexCliPreflightService;
   readonly reviewService?: ReviewService;
+  readonly reviewLoopService?: ReviewLoopService;
 }>;
 
 export function buildApp(options: AppOptions = {}): FastifyInstance {
@@ -103,6 +109,16 @@ export function buildApp(options: AppOptions = {}): FastifyInstance {
   const codexCliPreflightService =
     options.codexCliPreflightService ?? new CodexCliPreflightService();
   const reviewService = options.reviewService ?? new ReviewService();
+  const reviewLoopService =
+    options.reviewLoopService ??
+    new ReviewLoopService({
+      reviewService,
+      taskService,
+      goalService,
+      issueService,
+      approvalService,
+      executionCoordinator: executionCoordinatorService,
+    });
 
   app.addHook("onClose", async () => {
     await executionCoordinatorService.shutdown();
@@ -309,6 +325,33 @@ export function buildApp(options: AppOptions = {}): FastifyInstance {
         result.ok ? 200 : result.error.code === "registry_failed" ? 500 : 400,
       )
       .send(result);
+  });
+
+  app.post("/api/projects/review-loop", async (request, reply) => {
+    const body = request.body as Record<string, unknown> | null;
+    const operation = body?.operation;
+    const result =
+      operation === "review"
+        ? await reviewLoopService.review(body as ReviewInput)
+        : operation === "rework"
+          ? await reviewLoopService.rework(body as ReworkInput)
+          : operation === "advance"
+            ? await reviewLoopService.advance(
+                body as {
+                  readonly projectKey: string;
+                  readonly taskId: TaskId;
+                  readonly reportId: ReportId;
+                },
+              )
+            : {
+                ok: false,
+                error: {
+                  code: "invalid_input",
+                  message: "operation must be review, rework, or advance.",
+                  details: [],
+                },
+              };
+    return reply.code(result.ok ? 200 : 400).send(result);
   });
   app.post("/api/projects/task-packages", async (request, reply) => {
     const result = await taskPackageService.build(request.body);
