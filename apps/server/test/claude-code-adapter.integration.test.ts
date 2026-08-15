@@ -78,6 +78,7 @@ test("Claude adapter uses non-interactive stream JSON and executor tool boundary
   const fake = new FakeProcess();
   let command: ClaudeCommand | null = null;
   const adapter = new ClaudeCodeAdapter({
+    model: "deepseek-v4-pro",
     now: () => timestamp as UtcIsoTimestamp,
     processFactory: (value) => {
       command = value;
@@ -104,7 +105,11 @@ test("Claude adapter uses non-interactive stream JSON and executor tool boundary
   assert.ok(command?.args.includes("stream-json"));
   assert.ok(command?.args.includes("--permission-mode"));
   assert.ok(command?.args.includes("acceptEdits"));
+  assert.ok(command?.args.includes("--model"));
+  assert.ok(command?.args.includes("deepseek-v4-pro"));
+  assert.ok(command?.args.includes("--tools"));
   assert.ok(command?.args.includes("Read,Edit,Write,Bash"));
+  assert.ok(command?.args.includes("--allowed-tools"));
   assert.ok(
     collected.events.some(
       (event) => event.data.sessionId === "claude-session-048",
@@ -133,8 +138,14 @@ test("Claude adapter supports one-document JSON output and read-only reviewer to
   assert.equal(collected.result.status, "completed");
   assert.equal(collected.result.output?.approved, true);
   assert.equal(command?.permissionMode, "plan");
+  assert.ok(command?.args.includes("--model"));
+  assert.ok(command?.args.includes("deepseek-v4-pro"));
+  assert.ok(command?.args.includes("--tools"));
+  assert.ok(command?.args.includes("Read"));
+  const reviewerToolsIndex = command?.args.indexOf("--tools") ?? -1;
+  assert.equal(command?.args[reviewerToolsIndex + 1], "Read");
   assert.ok(command?.args.includes("--disallowed-tools"));
-  assert.ok(command?.args.includes("Edit,Write,NotebookEdit,Bash"));
+  assert.ok(command?.args.includes("Edit,Write,NotebookEdit,Bash,PowerShell"));
 });
 
 test("Claude adapter resumes a precise session in a new runtime", async () => {
@@ -176,6 +187,36 @@ test("Claude adapter resumes a precise session in a new runtime", async () => {
   assert.ok(secondCommand?.args.includes("acceptEdits"));
   assert.ok(secondCommand?.args.includes("--resume"));
   assert.ok(secondCommand?.args.includes("resume-session"));
+});
+
+test("unrecognized_model is retained as a non-fatal diagnostic when execution succeeds", async () => {
+  const fake = new FakeProcess();
+  const adapter = new ClaudeCodeAdapter({ processFactory: () => fake });
+  const session = await adapter.start(request);
+  fake.stdout.write(
+    '{"type":"error","error":{"type":"unrecognized_model","message":"model metadata is not recognized"}}\n',
+  );
+  fake.stderr.write(
+    '[claude-code:unrecognized_model] {"model":"deepseek-v4-pro"}\n',
+  );
+  fake.stdout.write(
+    '{"type":"result","session_id":"diagnostic-session","result":{"summary":"ok"}}\n',
+  );
+  fake.finish();
+  const collected = await collect(session);
+
+  assert.equal(collected.result.status, "completed");
+  assert.equal(collected.result.error, null);
+  assert.ok(
+    collected.result.diagnostics.some((item) =>
+      item.includes("unrecognized_model"),
+    ),
+  );
+  assert.ok(
+    collected.events.some(
+      (event) => event.type === "error_output" && event.data.nonFatal === true,
+    ),
+  );
 });
 
 test("ephemeral cleanup disables persistence and persistent cleanup uses project purge", async () => {

@@ -13,7 +13,11 @@ import type {
 } from "@personal-ai-operator/contracts";
 
 import { ClaudeCodeAdapter } from "./claude-code-adapter.js";
+import { DEFAULT_CLAUDE_MODEL } from "./claude-cli-args.js";
 import { ClaudeCliPreflightService } from "./claude-cli-preflight.js";
+
+const DEFAULT_ACCEPTANCE_TIMEOUT_MS = 120_000;
+const MIN_ACCEPTANCE_TIMEOUT_MS = 90_000;
 
 const execFileAsync = promisify(execFile);
 const outputSchema = {
@@ -39,6 +43,8 @@ type AcceptanceReport = Readonly<{
   readonly executable: string;
   readonly version: string | null;
   readonly provider: string;
+  readonly configuredModel: string | null;
+  readonly timeoutMs: number;
   readonly temporaryProjectCreated: boolean;
   readonly cases: Readonly<Record<string, CaseResult>>;
 }>;
@@ -49,6 +55,13 @@ function safeError(error: unknown): string {
     .replace(/Bearer\s+\S+/gi, "Bearer <redacted>")
     .replace(/(?:sk|api)[-_]?[A-Za-z0-9_-]{12,}/gi, "<redacted>")
     .slice(0, 240);
+}
+
+function configuredAcceptanceTimeout(): number {
+  const value = Number(process.env.CLAUDE_ACCEPTANCE_TIMEOUT_MS);
+  return Number.isFinite(value) && value >= MIN_ACCEPTANCE_TIMEOUT_MS
+    ? Math.floor(value)
+    : DEFAULT_ACCEPTANCE_TIMEOUT_MS;
 }
 
 async function collect(
@@ -85,8 +98,12 @@ function resultDetail(result: Awaited<AgentSession["result"]>): string {
     result.error === null
       ? ""
       : ` ${result.error.code}: ${result.error.message}`;
+  const stderr =
+    typeof result.output?.stderr === "string"
+      ? ` stderr=${safeError(result.output.stderr)}`
+      : "";
   const diagnostics = result.diagnostics.join(" | ");
-  return `${result.status}.${failure}${diagnostics.length > 0 ? ` ${safeError(diagnostics)}` : ""}`.slice(
+  return `${result.status}.${failure}${stderr}${diagnostics.length > 0 ? ` ${safeError(diagnostics)}` : ""}`.slice(
     0,
     480,
   );
@@ -116,29 +133,43 @@ function request(
 
 async function runAcceptance(
   preflight: Awaited<ReturnType<ClaudeCliPreflightService["check"]>>,
+  timeoutMs: number,
 ): Promise<AcceptanceReport> {
   const root = await mkdtemp(join(tmpdir(), "personal-ai-claude-acceptance-"));
   const cases: Record<string, CaseResult> = {};
   try {
     await execFileAsync("git", ["init", "-q"], { cwd: root });
     const runtimeRoot = join(root, "runtime");
-    const adapter = new ClaudeCodeAdapter({
+    const streamAdapter = new ClaudeCodeAdapter({
       executable: preflight.executable,
+      model: preflight.configuredModel ?? DEFAULT_CLAUDE_MODEL,
+      outputFormat: "stream-json",
+      runtimeDirectoryRoot: runtimeRoot,
+      allowProjectPurge: true,
+    });
+    const structuredAdapter = new ClaudeCodeAdapter({
+      executable: preflight.executable,
+      model: preflight.configuredModel ?? DEFAULT_CLAUDE_MODEL,
+      outputFormat: "json",
       jsonSchema: outputSchema,
       runtimeDirectoryRoot: runtimeRoot,
       allowProjectPurge: true,
     });
     const outputPath = join(root, "claude-acceptance.txt");
-    const executor = await adapter.start(
+    const executor = await streamAdapter.start(
       request(
         root,
         "executor",
         "In this temporary Git project only, create claude-acceptance.txt with exactly the text TASK-048 Claude acceptance. Then return structured output with summary, verified=true, and the configured provider. Do not access or change anything outside this directory.",
       ),
     );
-    const executorResult = await collect(executor, async () => {
-      await adapter.cancel({ executionId: executor.executionId });
-    });
+    const executorResult = await collect(
+      executor,
+      async () => {
+        await streamAdapter.cancel({ executionId: executor.executionId });
+      },
+      timeoutMs,
+    );
     const output = await readFile(outputPath, "utf8").catch(() => null);
     cases.executor =
       executorResult.status === "completed" &&
@@ -151,7 +182,7 @@ async function runAcceptance(
             status: "failed",
             detail: `executor ${resultDetail(executorResult)}`,
           };
-    const executorCleanup = await adapter.cleanup({
+    const executorCleanup = await streamAdapter.cleanup({
       executionId: executor.executionId,
     });
     cases.persistentCleanup = executorCleanup.ok
@@ -159,7 +190,7 @@ async function runAcceptance(
       : { status: "failed", detail: executorCleanup.code };
 
     const beforeReview = await readFile(outputPath, "utf8");
-    const reviewer = await adapter.start(
+    const reviewer = await structuredAdapter.start(
       request(
         root,
         "reviewer",
@@ -167,9 +198,13 @@ async function runAcceptance(
         "ephemeral",
       ),
     );
-    const reviewerResult = await collect(reviewer, async () => {
-      await adapter.cancel({ executionId: reviewer.executionId });
-    });
+    const reviewerResult = await collect(
+      reviewer,
+      async () => {
+        await structuredAdapter.cancel({ executionId: reviewer.executionId });
+      },
+      timeoutMs,
+    );
     const afterReview = await readFile(outputPath, "utf8");
     cases.reviewer =
       reviewerResult.status === "completed" && beforeReview === afterReview
@@ -178,7 +213,7 @@ async function runAcceptance(
             status: "failed",
             detail: `reviewer ${resultDetail(reviewerResult)}`,
           };
-    const ephemeralCleanup = await adapter.cleanup({
+    const ephemeralCleanup = await structuredAdapter.cleanup({
       executionId: reviewer.executionId,
     });
     cases.ephemeralCleanup = ephemeralCleanup.ok
@@ -190,19 +225,23 @@ async function runAcceptance(
       "executor",
       "Wait for five seconds, then return structured output with summary, verified=true, and the configured provider. Do not change files.",
     );
-    const resumable = await adapter.start(resumeRequest);
+    const resumable = await streamAdapter.start(resumeRequest);
     await new Promise((resolve) => setTimeout(resolve, 1000));
     const sessionId = resumable.sessionId;
     if (sessionId !== null) {
-      await adapter.cancel({ executionId: resumable.executionId });
-      const resumed = await adapter.resume({
+      await streamAdapter.cancel({ executionId: resumable.executionId });
+      const resumed = await streamAdapter.resume({
         executionId: resumable.executionId,
         sessionId,
         startRequest: resumeRequest,
       });
-      const resumedResult = await collect(resumed, async () => {
-        await adapter.cancel({ executionId: resumed.executionId });
-      });
+      const resumedResult = await collect(
+        resumed,
+        async () => {
+          await streamAdapter.cancel({ executionId: resumed.executionId });
+        },
+        timeoutMs,
+      );
       cases.resume =
         resumedResult.status === "completed"
           ? { status: "passed", detail: "exact session resumed" }
@@ -210,7 +249,7 @@ async function runAcceptance(
               status: "failed",
               detail: `resume ${resultDetail(resumedResult)}`,
             };
-      const cleanup = await adapter.cleanup({
+      const cleanup = await streamAdapter.cleanup({
         executionId: resumed.executionId,
       });
       cases.resumeCleanup = cleanup.ok
@@ -236,12 +275,15 @@ async function runAcceptance(
     executable: preflight.executable,
     version: preflight.version,
     provider: preflight.provider,
+    configuredModel: preflight.configuredModel,
+    timeoutMs,
     temporaryProjectCreated: true,
     cases,
   };
 }
 
 const mode = process.argv[2] ?? "acceptance";
+const timeoutMs = configuredAcceptanceTimeout();
 const preflightService = new ClaudeCliPreflightService();
 const preflight = await preflightService.check();
 if (mode === "preflight") {
@@ -253,7 +295,9 @@ if (mode === "preflight") {
         installed: preflight.installed,
         version: preflight.version,
         loggedIn: preflight.loggedIn,
+        authenticationStatus: preflight.authenticationStatus,
         provider: preflight.provider,
+        configuredModel: preflight.configuredModel,
         commands: preflight.commands,
         canExecute: preflight.canExecute,
         blockers: preflight.blockers,
@@ -273,6 +317,8 @@ if (mode === "preflight") {
       executable: preflight.executable,
       version: preflight.version,
       provider: preflight.provider,
+      configuredModel: preflight.configuredModel,
+      timeoutMs,
       temporaryProjectCreated: false,
       cases: {
         preflight: { status: "failed", detail: preflight.blockers.join("; ") },
@@ -281,7 +327,7 @@ if (mode === "preflight") {
     console.log(JSON.stringify(blocked, null, 2));
     process.exitCode = 2;
   } else {
-    const report = await runAcceptance(preflight);
+    const report = await runAcceptance(preflight, timeoutMs);
     console.log(JSON.stringify(report, null, 2));
     if (report.status !== "passed") process.exitCode = 1;
   }

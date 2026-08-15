@@ -28,7 +28,7 @@ function runner(
       return result("claude -p --resume --no-session-persistence");
     if (key === "claude -p --help") {
       return result(
-        "-p --output-format json stream-json --verbose --resume --no-session-persistence --permission-mode --allowed-tools --disallowed-tools --json-schema",
+        "-p --output-format json stream-json --verbose --resume --no-session-persistence --permission-mode --tools --allowed-tools --disallowed-tools --json-schema",
       );
     }
     if (key === "claude project purge --help")
@@ -49,8 +49,28 @@ test("Claude preflight detects DeepSeek auth without exposing credential output"
   }).check();
   assert.equal(report.version, "2.1.1");
   assert.equal(report.loggedIn, true);
+  assert.equal(report.authenticationStatus, "authenticated");
   assert.equal(report.provider, "deepseek");
+  assert.equal(report.configuredModel, "deepseek-v4-pro");
   assert.equal(report.canExecute, true);
+});
+
+test("Claude preflight does not confuse first-party auth metadata with provider or execution capability", async () => {
+  const report = await new ClaudeCliPreflightService({
+    executable: "claude",
+    model: "deepseek-v4-pro",
+    runner: runner({
+      "claude auth status --json": result(
+        '{"loggedIn":true,"authMethod":"oauth","apiProvider":"firstParty"}',
+      ),
+    }),
+  }).check();
+  assert.equal(report.loggedIn, true);
+  assert.equal(report.authenticationStatus, "authenticated");
+  assert.equal(report.provider, "unknown");
+  assert.equal(report.configuredModel, "deepseek-v4-pro");
+  assert.equal(report.canExecute, true);
+  assert.deepEqual(report.blockers, []);
 });
 
 test("Claude preflight blocks unknown authentication and missing capabilities", async () => {
@@ -66,4 +86,16 @@ test("Claude preflight blocks unknown authentication and missing capabilities", 
   assert.equal(report.canExecute, false);
   assert.ok(report.blockers.some((item) => /authentication/.test(item)));
   assert.equal(JSON.stringify(report).includes("not-json"), false);
+});
+
+test("Claude preflight blocks an empty model configuration without using a CLI default", async () => {
+  const report = await new ClaudeCliPreflightService({
+    executable: "claude",
+    model: "",
+    runner: runner(),
+  }).check();
+  assert.equal(report.loggedIn, true);
+  assert.equal(report.configuredModel, null);
+  assert.equal(report.canExecute, false);
+  assert.ok(report.blockers.includes("No Claude model is configured."));
 });

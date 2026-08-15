@@ -4,6 +4,7 @@ import { AgentRuntimeValidationError } from "./agent-runtime-port.js";
 
 export type ClaudeOutputFormat = "json" | "stream-json";
 export type ClaudePermissionMode = "acceptEdits" | "plan";
+export const DEFAULT_CLAUDE_MODEL = "deepseek-v4-pro";
 
 export type ClaudeCommand = Readonly<{
   readonly executable: string;
@@ -16,6 +17,7 @@ export type ClaudeCommand = Readonly<{
 export type ClaudeCliArgsOptions = Readonly<{
   readonly outputFormat?: ClaudeOutputFormat;
   readonly jsonSchema?: Readonly<Record<string, unknown>>;
+  readonly model?: string;
 }>;
 
 function modeForRole(role: string): ClaudePermissionMode {
@@ -39,10 +41,30 @@ function commonArgs(
     "--permission-mode",
     permissionMode,
   ];
+  const model = options.model ?? DEFAULT_CLAUDE_MODEL;
+  if (model.trim().length === 0) {
+    throw new AgentRuntimeValidationError(
+      "Claude Code requires an explicit model configuration.",
+    );
+  }
+  args.push("--model", model);
   if (request.role === "executor") {
-    args.push("--allowed-tools", "Read,Edit,Write,Bash");
+    args.push(
+      "--tools",
+      "Read,Edit,Write,Bash",
+      "--allowed-tools",
+      "Read,Edit,Write,Bash",
+    );
   } else {
-    args.push("--disallowed-tools", "Edit,Write,NotebookEdit,Bash");
+    // On Windows, denying Bash alone is not a sufficient policy statement:
+    // a shell-capable tool could otherwise reach PowerShell. Reviewer mode
+    // therefore exposes only Read and also keeps explicit deny rules.
+    args.push(
+      "--tools",
+      "Read",
+      "--disallowed-tools",
+      "Edit,Write,NotebookEdit,Bash,PowerShell",
+    );
   }
   if (options.jsonSchema !== undefined) {
     args.push("--json-schema", JSON.stringify(options.jsonSchema));

@@ -108,10 +108,16 @@ function outputOf(record: JsonObject): AgentOutput | null {
 }
 
 function messageOf(record: JsonObject, type: string): string {
+  const nestedError =
+    nestedString(record, "error", "type") ??
+    nestedString(record, "error", "code") ??
+    nestedString(record, "error", "message") ??
+    stringValue(record.error);
   return (
     stringValue(record.message) ??
     stringValue(record.result) ??
     stringValue(record.text) ??
+    nestedError ??
     `${type} event received.`
   );
 }

@@ -3,6 +3,8 @@ import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { promisify } from "node:util";
 
+import { DEFAULT_CLAUDE_MODEL } from "./claude-cli-args.js";
+
 export type ClaudeProvider = "deepseek" | "anthropic" | "unknown";
 
 export type ClaudeCliPreflightReport = Readonly<{
@@ -12,7 +14,10 @@ export type ClaudeCliPreflightReport = Readonly<{
   readonly version: string | null;
   readonly launchError: string | null;
   readonly loggedIn: boolean | null;
+  readonly authenticationStatus:
+    "authenticated" | "unauthenticated" | "unknown";
   readonly provider: ClaudeProvider;
+  readonly configuredModel: string | null;
   readonly commands: Readonly<{
     readonly print: boolean;
     readonly json: boolean;
@@ -47,6 +52,7 @@ export type ClaudeProbeRunner = (
 
 export type ClaudeCliPreflightOptions = Readonly<{
   readonly executable?: string;
+  readonly model?: string;
   readonly now?: () => string;
   readonly runner?: ClaudeProbeRunner;
 }>;
@@ -142,12 +148,16 @@ function authOf(result: ClaudeProbeResult): Readonly<{
 
 export class ClaudeCliPreflightService {
   private readonly executable: string;
+  private readonly configuredModel: string | null;
   private readonly now: () => string;
   private readonly runner: ClaudeProbeRunner;
 
   public constructor(options: ClaudeCliPreflightOptions = {}) {
     this.executable =
       options.executable ?? process.env.CLAUDE_CLI_PATH ?? defaultExecutable();
+    const model =
+      options.model ?? process.env.CLAUDE_MODEL ?? DEFAULT_CLAUDE_MODEL;
+    this.configuredModel = model.trim().length > 0 ? model.trim() : null;
     this.now = options.now ?? now;
     this.runner = options.runner ?? runProcess;
   }
@@ -177,7 +187,9 @@ export class ClaudeCliPreflightService {
         version: null,
         launchError: versionResult.error,
         loggedIn: null,
+        authenticationStatus: "unknown",
         provider: "unknown",
+        configuredModel: this.configuredModel,
         commands: baseCommands,
         canExecute: false,
         blockers: [
@@ -223,6 +235,7 @@ export class ClaudeCliPreflightService {
       noSessionPersistence: printHelp.includes("--no-session-persistence"),
       permissionMode: printHelp.includes("--permission-mode"),
       toolBoundary:
+        printHelp.includes("--tools") &&
         printHelp.includes("--allowed-tools") &&
         printHelp.includes("--disallowed-tools"),
       jsonSchema: printHelp.includes("--json-schema"),
@@ -230,6 +243,12 @@ export class ClaudeCliPreflightService {
     };
     const blockers: string[] = [];
     const recommendations: string[] = [];
+    const authenticationStatus =
+      auth.loggedIn === true
+        ? "authenticated"
+        : auth.loggedIn === false
+          ? "unauthenticated"
+          : "unknown";
     if (auth.loggedIn !== true) {
       blockers.push(
         auth.loggedIn === false
@@ -238,6 +257,12 @@ export class ClaudeCliPreflightService {
       );
       recommendations.push(
         "Authenticate Claude Code before starting execution.",
+      );
+    }
+    if (this.configuredModel === null) {
+      blockers.push("No Claude model is configured.");
+      recommendations.push(
+        `Configure an explicit Claude model, for example ${DEFAULT_CLAUDE_MODEL}.`,
       );
     }
     const required = Object.entries(commands).filter(([, value]) => !value);
@@ -256,7 +281,9 @@ export class ClaudeCliPreflightService {
       version: versionOf(output(versionResult)),
       launchError: null,
       loggedIn: auth.loggedIn,
+      authenticationStatus,
       provider: auth.provider,
+      configuredModel: this.configuredModel,
       commands,
       canExecute: blockers.length === 0,
       blockers,

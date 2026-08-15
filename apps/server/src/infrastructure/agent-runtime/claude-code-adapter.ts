@@ -27,6 +27,7 @@ import {
 
 import { AgentRuntimeValidationError } from "./agent-runtime-port.js";
 import {
+  DEFAULT_CLAUDE_MODEL,
   buildClaudeProjectPurgeArgs,
   buildClaudeResumeArgs,
   buildClaudeStartArgs,
@@ -49,6 +50,7 @@ import { RuntimeDirectoryCleaner } from "./runtime-directory-cleaner.js";
 
 export type ClaudeCodeAdapterOptions = Readonly<{
   readonly executable?: string;
+  readonly model?: string;
   readonly now?: () => UtcIsoTimestamp;
   readonly processFactory?: ClaudeProcessFactory;
   readonly outputFormat?: ClaudeOutputFormat;
@@ -207,6 +209,10 @@ function mergeOutput(
   return { ...(projectionOutput ?? {}), ...metadata };
 }
 
+function isNonFatalDiagnostic(message: string): boolean {
+  return /(?:claude-code:)?unrecognized_model\b/i.test(message);
+}
+
 export class ClaudeCodeAdapter implements AgentRuntime {
   private readonly executable: string;
   private readonly now: () => UtcIsoTimestamp;
@@ -224,6 +230,7 @@ export class ClaudeCodeAdapter implements AgentRuntime {
     this.processFactory = options.processFactory ?? spawnClaudeProcess;
     this.argsOptions = {
       outputFormat: options.outputFormat ?? "stream-json",
+      model: options.model ?? process.env.CLAUDE_MODEL ?? DEFAULT_CLAUDE_MODEL,
       ...(options.jsonSchema === undefined
         ? {}
         : { jsonSchema: options.jsonSchema }),
@@ -530,6 +537,7 @@ export class ClaudeCodeAdapter implements AgentRuntime {
     let finalOutput: AgentOutput | null = null;
     let parseFailure: ClaudeJsonParseError | null = null;
     let cliError: string | null = null;
+    const nonFatalDiagnostics: string[] = [];
     let records = 0;
     this.append(state, "started", "Claude Code process started.", {
       command: commandDescription(command),
@@ -547,7 +555,22 @@ export class ClaudeCodeAdapter implements AgentRuntime {
               state.sessionId = projection.sessionId;
             projection.changedFiles.forEach((path) => changedFiles.add(path));
             if (projection.output !== null) finalOutput = projection.output;
-            if (projection.error !== null) cliError = projection.error;
+            if (projection.error !== null) {
+              if (isNonFatalDiagnostic(projection.error)) {
+                nonFatalDiagnostics.push(projection.error);
+                this.append(
+                  state,
+                  "error_output",
+                  "Claude emitted a non-fatal diagnostic.",
+                  {
+                    diagnostic: projection.error,
+                    nonFatal: true,
+                  },
+                );
+              } else {
+                cliError = projection.error;
+              }
+            }
             this.appendProjection(state, projection);
           }
         } catch (error) {
@@ -566,7 +589,22 @@ export class ClaudeCodeAdapter implements AgentRuntime {
             state.sessionId = projection.sessionId;
           projection.changedFiles.forEach((path) => changedFiles.add(path));
           if (projection.output !== null) finalOutput = projection.output;
-          if (projection.error !== null) cliError = projection.error;
+          if (projection.error !== null) {
+            if (isNonFatalDiagnostic(projection.error)) {
+              nonFatalDiagnostics.push(projection.error);
+              this.append(
+                state,
+                "error_output",
+                "Claude emitted a non-fatal diagnostic.",
+                {
+                  diagnostic: projection.error,
+                  nonFatal: true,
+                },
+              );
+            } else {
+              cliError = projection.error;
+            }
+          }
           this.appendProjection(state, projection);
         }
       } catch (error) {
@@ -589,22 +627,31 @@ export class ClaudeCodeAdapter implements AgentRuntime {
     if (records === 0 && parseFailure === null)
       parseFailure = new ClaudeJsonParseError("no JSON events received", 0);
     const stderr = stderrChunks.join("");
-    if (stderr.length > 0)
+    if (stderr.length > 0) {
+      const nonFatalStderr = isNonFatalDiagnostic(stderr);
+      if (nonFatalStderr) nonFatalDiagnostics.push(stderr);
       this.append(state, "error_output", "Claude wrote to stderr.", {
         stderr,
+        ...(nonFatalStderr ? { nonFatal: true } : {}),
       });
+    }
     const metadata: AgentOutput = {
       sessionId: state.sessionId,
       pid: process.pid ?? null,
       command: commandDescription(command),
       workingDirectory: request.workingDirectory,
       permissionMode: command.permissionMode,
+      model: this.argsOptions.model ?? null,
       fileChanges: JSON.stringify([...changedFiles]),
       ...(stderr.length > 0 ? { stderr } : {}),
     };
     const diagnostics = [
       `command=${commandDescription(command)}`,
       `workingDirectory=${request.workingDirectory}`,
+      ...(this.argsOptions.model !== undefined
+        ? [`model=${this.argsOptions.model}`]
+        : []),
+      ...nonFatalDiagnostics.map((item) => `nonFatalDiagnostic=${item}`),
       ...(stderr.length > 0 ? [`stderr=${stderr}`] : []),
     ];
     let status: AgentResult["status"] = "completed";
