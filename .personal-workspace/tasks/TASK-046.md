@@ -2,16 +2,17 @@
 schema_version: 1
 id: TASK-046
 title: 完成真实 Codex CLI Adapter 验收
-status: ready
+status: blocked
 goal_id: GOAL-009
 role: reviewer
 dependencies: [TASK-038, TASK-039, TASK-040, TASK-041, TASK-042, TASK-043, TASK-044, TASK-045]
-revision: 2
+revision: 3
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-15T15:30:00Z
+updated_at: 2026-08-15T07:37:21Z
 approval_id: APPROVAL-004
 target_branch: goal/GOAL-009
 unblocked_by: TASK-045
+verification_report_id: REPORT-049
 ---
 
 # TASK-046：完成真实 Codex CLI Adapter 验收
@@ -42,4 +43,17 @@ unblocked_by: TASK-045
 
 - GOAL-009 已获 APPROVAL-004 批准。
 - TASK-038 至 TASK-045 的全部依赖均已完成独立验收。
-- TASK-046 现为 `ready`，可由实现对话开始执行；尚未执行或修改真实 Codex 环境。
+- TASK-046 已尝试执行，但因当前 Windows 环境无法启动真实 Codex CLI 而进入 `blocked`；未修改真实 Codex 环境。
+
+## Attempt evidence
+
+- Read-only preflight was run through `npm run test:codex-cli -- preflight`. It resolved the installed Windows AppX Codex executable but returned `installed: false`, `launchError: spawn EPERM`, `canExecute: false`, and no command or sandbox capabilities.
+- A direct read-only `codex.exe --version` attempt at the resolved executable path returned `Access is denied`. No alternate executable was copied, installed, or modified.
+- Because preflight did not authorize execution, no temporary project was created and no real `codex exec`, `exec resume`, `codex delete`, login, or configuration operation was attempted.
+- No credential content was read or printed, and no real personal project was used.
+- TASK-046 cannot satisfy the real execution acceptance conditions until the service process can start the approved Codex executable (or `CODEX_CLI_PATH` points to an accessible executable). The existing Adapter and prior simulated coverage were not treated as real CLI evidence.
+
+## Handoff
+
+- TASK-046 remains blocked pending a Windows process-permission or approved executable-path change outside this task; after that environment change, rerun the real temporary-project acceptance.
+- TASK-047 remains locked and was not executed.
