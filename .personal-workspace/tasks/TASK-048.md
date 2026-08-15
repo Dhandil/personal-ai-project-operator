@@ -6,9 +6,9 @@ status: in_review
 goal_id: GOAL-009
 role: executor
 dependencies: [TASK-035, TASK-036, TASK-037, TASK-043, TASK-044, TASK-045]
-revision: 5
+revision: 6
 created_at: 2026-08-15T08:04:00Z
-updated_at: 2026-08-15T12:45:00Z
+updated_at: 2026-08-15T13:02:18Z
 approval_id: APPROVAL-004
 target_branch: goal/GOAL-009
 unblocked_by: TASK-045
@@ -21,9 +21,9 @@ verification_report_id: REPORT-050
 - Executor and reviewer roles receive distinct permission modes and tool boundaries. Reviewer mode denies editing, writing, notebook editing, and shell tools; the working directory and task context remain explicit in command and result metadata.
 - Persistent sessions use the official project purge command only when explicitly enabled for a temporary project. Ephemeral sessions use `--no-session-persistence`. Cleanup failures remain structured and retryable without dropping the execution record.
 - Added preflight checks for installation, authentication, JSON/stream-JSON, resume, session persistence, permission boundaries, JSON schema, and project purge. Authentication output is reduced to safe status fields; the local CLI did not expose a recognizable provider, so provider is recorded as `unknown`.
-- Added 6 Claude-specific integration tests covering preflight, executor/reviewer boundaries, JSON/stream-JSON, new-runtime resume, ephemeral persistence, and project cleanup.
-- Full `npm run verify` passed: 70 unit tests, 119 integration tests, 15 Playwright tests, formatting, lint, typecheck, and all builds.
-- Real CLI acceptance was attempted only in a dedicated temporary Git project. Claude Code 2.1.227 was found and authenticated, but the request did not complete within the 30-second bounded execution window; cancellation and cleanup were then attempted. This remains an environment-blocked acceptance result, not a success claim.
+- Added 9 Claude-specific integration tests covering preflight, explicit model selection, executor/reviewer boundaries, JSON/stream-JSON, new-runtime resume, ephemeral persistence, non-fatal diagnostics, and project cleanup.
+- Full `npm run verify` passed: 70 unit tests, 122 integration tests, 15 Playwright tests, formatting, lint, typecheck, and all builds.
+- Real acceptance used Claude Code 2.1.233 and `deepseek-v4-pro` in a dedicated temporary Git project with a configurable 90-second timeout. The execution result timed out and was cancelled, but the temporary project cleanup completed and the script emitted a complete structured report.
 
 ## Handoff
 
@@ -42,8 +42,8 @@ verification_report_id: REPORT-050
 
 ## 独立复核
 
-- Claude Code 2.1.227 的 preflight 独立复跑通过安装、登录和命令能力检查，但 provider 为 `unknown`。
-- Claude 专项回归测试 6/6 通过；真实 provider 请求仍无法在限定时间内完成，因此 TASK-048 保持 `blocked`。
+- Claude Code 2.1.233 的 preflight 独立复跑通过安装、认证和命令能力检查；配置模型为 `deepseek-v4-pro`，provider 仅作为元数据记录为 `unknown`。
+- Claude 专项回归测试 9/9 通过；自动 acceptance 已输出完整结构化报告，临时项目清理成功，TASK-048 保持 `in_review` 等待独立验收。
 - TASK-047 继续保持 `draft`，未执行或解锁。
 
 # TASK-048：实现 Claude Code CLI Adapter

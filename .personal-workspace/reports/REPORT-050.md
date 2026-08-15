@@ -8,11 +8,11 @@ report_type: task_verification
 acceptance_state: pending
 task_id: TASK-048
 goal_id: GOAL-009
-revision: 4
+revision: 5
 created_at: 2026-08-15T08:55:00Z
-updated_at: 2026-08-15T12:45:00Z
+updated_at: 2026-08-15T13:02:18Z
 verified_by: implementation_agent
-verified_commit: dfd0992
+verified_commit: 5210c98
 verification_commands:
   - npm run test:claude-cli -- preflight
   - npm run test:claude-cli -- acceptance
@@ -58,6 +58,7 @@ The TASK-048 defect fix is implemented and submitted for independent review. Loc
 - A dedicated temporary Git project was created under the operating system temporary directory. No real personal project was opened or changed.
 - The acceptance attempted executor write, persistent cleanup, read-only reviewer execution, ephemeral cleanup, and exact session resume. No credential content or configuration values were read or logged.
 - The final automatic acceptance used `CLAUDE_MODEL=deepseek-v4-pro` and `CLAUDE_ACCEPTANCE_TIMEOUT_MS=90000`. The executor request did not return a final result within the 90-second window and was cancelled. The safe result was `failed`, not `completed`; the expected file was absent and the following project-purge cleanup returned `cleanup_failed`.
+- The final `temporaryProjectCleanup` case passed after one removal attempt. All session result/event drains completed before the removal attempt, and the acceptance command emitted the complete structured report with exit code 1 for the failed execution case rather than throwing an unhandled `EBUSY`.
 - The safe automatic detail included `[claude-code:unrecognized_model]` for `deepseek-v4-pro`; the Adapter retained it as a non-fatal diagnostic. The blocking condition was the missing final result after the timeout, not that diagnostic.
 - The local CLI did not expose a recognizable DeepSeek or Anthropic provider in `auth status --json`; the report records provider metadata as `unknown` and does not infer the actual backend from `apiProvider`.
 
@@ -75,9 +76,9 @@ The TASK-048 defect fix is implemented and submitted for independent review. Loc
 3. Confirm the reported provider/connection mode explicitly; if the CLI continues to return `unknown`, keep DeepSeek compatibility unaccepted rather than inferring it.
 4. After successful independent acceptance, update REPORT-050 to `accepted`, TASK-048 to `completed`, and only then decide whether TASK-047 may be unlocked. Until then, keep TASK-048 pending and TASK-047 unchanged.
 
-## 独立复核结论
+## 当前独立复核状态
 
-- 独立运行 Claude 专项回归测试 6/6，全部通过；这些测试不等同于真实 DeepSeek 请求成功。
-- 独立复跑只读 preflight：Claude Code 2.1.227 已安装、已登录、能力探测通过，但 provider 仍为 `unknown`。
-- 报告没有把 provider unknown 或超时结果伪装成 DeepSeek 兼容成功；真实验收阻断结论成立。
-- REPORT-050 保持 `blocked`，TASK-048 不得标记为 `completed`，TASK-047 保持 `draft`。
+- 当前专项回归测试为 9/9，完整 `npm run verify` 为 70 单元、122 集成、15 Playwright，全部通过。
+- 当前 preflight 为 Claude Code 2.1.233，认证状态 `authenticated`，配置模型 `deepseek-v4-pro`，provider 元数据 `unknown`，`canExecute: true`。
+- 当前自动 acceptance 使用 90 秒超时；执行结果未在窗口内返回并被取消，但 `unrecognized_model` 已作为非致命诊断记录，临时项目最终清理成功并输出了完整结构化报告。
+- REPORT-050 保持 `in_review`/`pending`，TASK-048 保持 `in_review`，TASK-047 保持 `draft`。
