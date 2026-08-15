@@ -100,6 +100,20 @@ async function createFixture(): Promise<Fixture> {
       },
     ],
     [
+      ".personal-workspace/tasks/TASK-002.md",
+      {
+        frontMatter: {
+          schema_version: 1,
+          id: "TASK-002",
+          title: "已暂停的历史任务",
+          status: "paused",
+          goal_id: "GOAL-008",
+          revision: 1,
+        },
+        body: "# TASK-002\n",
+      },
+    ],
+    [
       ".personal-workspace/tasks/TASK-031.md",
       {
         frontMatter: {
@@ -179,7 +193,7 @@ test("dogfooding scan preserves source hashes, unknown fields, and current work"
     assert.equal(inspected.value.currentGoalId, "GOAL-006");
     assert.equal(inspected.value.currentTaskId, "TASK-031");
     assert.equal(inspected.value.stages.length, 2);
-    assert.equal(inspected.value.tasks.length, 3);
+    assert.equal(inspected.value.tasks.length, 4);
     assert.equal(inspected.value.reports.length, 1);
     assert.match(inspected.value.sourceManifestHash, /^[a-f0-9]{64}$/);
 
@@ -409,7 +423,7 @@ test("historical TASK-031 snapshot keeps report and generated views aligned", as
     const expectedCounts = {
       stages: 2,
       goals: 2,
-      tasks: 3,
+      tasks: 4,
       approvals: 1,
       reports: 1,
     };

@@ -2,17 +2,18 @@
 schema_version: 1
 id: TASK-046
 title: 完成真实 Codex CLI Adapter 验收
-status: blocked
+status: paused
 goal_id: GOAL-009
 role: reviewer
 dependencies: [TASK-038, TASK-039, TASK-040, TASK-041, TASK-042, TASK-043, TASK-044, TASK-045]
-revision: 4
+revision: 5
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-15T07:45:00Z
+updated_at: 2026-08-15T08:04:00Z
 approval_id: APPROVAL-004
 target_branch: goal/GOAL-009
 unblocked_by: TASK-045
 verification_report_id: REPORT-049
+archive_path: .personal-workspace/archive/tasks/TASK-046.md
 ---
 
 # TASK-046：完成真实 Codex CLI Adapter 验收
@@ -50,6 +51,12 @@ verification_report_id: REPORT-049
 - 已独立复跑只读 preflight，结果仍为 `spawn EPERM`、`canExecute: false`。
 - 相关预检与 Adapter 回归测试 19/19 通过，但未替代真实 CLI 验收。
 - 阻断结论成立；在环境恢复前不得将 TASK-046 标记为 `completed`，也不得解锁 TASK-047。
+
+## 暂停与存档
+
+- 用户决定暂时暂停真实 Codex CLI 验收，保留阻断报告和完整历史快照。
+- 历史快照保存在 `.personal-workspace/archive/tasks/TASK-046.md`；本任务卡作为当前治理索引保留，状态为 `paused`。
+- 后续只有在用户重新批准并恢复可用 Codex CLI 环境后，才可恢复本任务。
 
 ## Attempt evidence
 

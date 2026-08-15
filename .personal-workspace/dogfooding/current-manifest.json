@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "manifest_kind": "current",
-  "generated_at": "2026-08-15T07:47:12.211Z",
-  "source_manifest_hash": "df63a4d9a29e5529aade36b13d4ddeb0d349219f4014aaddbef0336a330f5c34",
+  "generated_at": "2026-08-15T08:09:51.667Z",
+  "source_manifest_hash": "22988e3954dfd3d3161901325545c37581492de83976c1fd3841d32d7197e206",
   "current_source_stage": "03-spec",
   "current_goal_id": "GOAL-009",
-  "current_task_id": "TASK-046",
+  "current_task_id": "TASK-048",
   "source_files": [
     {
       "relativePath": ".personal-workspace/approvals/APPROVAL-001.md",
@@ -154,7 +154,7 @@
     {
       "relativePath": ".personal-workspace/goals/GOAL-009.md",
       "kind": "goal",
-      "hash": "7c38b14ef6e5c6ccd46efdb2101aad484b603bf146fcd5af1d98f567bcfb236f",
+      "hash": "e44eb1a233c3d637c000469e072322f6dae80fae1779c1c09cd5514de0e562bc",
       "id": "GOAL-009",
       "title": "完成自动执行审核和交接",
       "status": "in_progress",
@@ -1330,22 +1330,34 @@
     {
       "relativePath": ".personal-workspace/tasks/TASK-046.md",
       "kind": "task",
-      "hash": "74fea7a285cab6a112ec0735ba2fd79cef20520d18426358ed27387ab95e17e9",
+      "hash": "8f15e9c0b4393e0f70f821925f0ae0dc4da0a21a057e82943872f328a43e1ff9",
       "id": "TASK-046",
       "title": "完成真实 Codex CLI Adapter 验收",
-      "status": "blocked",
+      "status": "paused",
       "stage": null,
       "goalId": "GOAL-009",
       "generated": false,
-      "revision": 4
+      "revision": 5
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-047.md",
       "kind": "task",
-      "hash": "cafeccc3dd7d18ffbf76bb1fe7ea1adb32d0d4678aec24540628cbcd47dcb9af",
+      "hash": "a87e2e839b429d977750a1523408747db764218bb0854674defebb33a44887f6",
       "id": "TASK-047",
       "title": "完成 V0.2 全链路验收",
       "status": "draft",
+      "stage": null,
+      "goalId": "GOAL-009",
+      "generated": false,
+      "revision": 2
+    },
+    {
+      "relativePath": ".personal-workspace/tasks/TASK-048.md",
+      "kind": "task",
+      "hash": "5c2d44404cba1649af949f65303c89bee5e2b4150f32ecc1604cc72c1b3ba75b",
+      "id": "TASK-048",
+      "title": "实现 Claude Code CLI Adapter",
+      "status": "ready",
       "stage": null,
       "goalId": "GOAL-009",
       "generated": false,

@@ -266,8 +266,7 @@ function activeTaskStatus(status: string | null): boolean {
     status === "in_progress" ||
     status === "in_review" ||
     status === "blocked" ||
-    status === "changes_requested" ||
-    status === "paused"
+    status === "changes_requested"
   );
 }
 

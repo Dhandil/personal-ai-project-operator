@@ -2,7 +2,7 @@
 
 > 本文件由 `.personal-workspace/tasks/TASK-xxx.md` 正式任务卡生成。
 > 禁止在本文件中独立修改状态；正式状态以任务卡为准。
-> 生成时间：2026-08-15T07:47:12.211Z
+> 生成时间：2026-08-15T08:09:51.667Z
 
 ## GOAL-001：建立可运行工程
 
@@ -77,3 +77,4 @@
 - [x] TASK-045 实现执行控制台进度摘要和恢复决策界面
 - [ ] TASK-046 完成真实 Codex CLI Adapter 验收
 - [ ] TASK-047 完成 V0.2 全链路验收
+- [ ] TASK-048 实现 Claude Code CLI Adapter

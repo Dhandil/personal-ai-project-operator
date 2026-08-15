@@ -1,22 +1,22 @@
 ---
 schema_version: 1
 document_type: status_snapshot
-revision: 12
-generated_at: 2026-08-15T07:47:12.211Z
-updated_at: 2026-08-15T07:47:12.211Z
+revision: 14
+generated_at: 2026-08-15T08:09:51.667Z
+updated_at: 2026-08-15T08:09:51.667Z
 source: formal_project_facts
 status: in_progress
 current_stage: 03-spec
 current_goal: GOAL-009
-current_task: TASK-046
-source_manifest_hash: df63a4d9a29e5529aade36b13d4ddeb0d349219f4014aaddbef0336a330f5c34
+current_task: TASK-048
+source_manifest_hash: 22988e3954dfd3d3161901325545c37581492de83976c1fd3841d32d7197e206
 ---
 # 项目状态
 
 - 项目：个人 AI 项目运营工具
 - 当前正式源阶段：03-spec
 - 当前目标：GOAL-009
-- 当前任务：TASK-046
+- 当前任务：TASK-048
 - 本文件由正式项目事实自动生成，不是独立事实源。
 
 ## 当前获批短期目标
@@ -70,16 +70,16 @@ source_manifest_hash: df63a4d9a29e5529aade36b13d4ddeb0d349219f4014aaddbef0336a33
 - TASK-045 实现执行控制台进度摘要和恢复决策界面
 
 ## 当前任务
-- TASK-046 完成真实 Codex CLI Adapter 验收 — blocked
+- TASK-048 实现 Claude Code CLI Adapter — ready
 
 ## Blocker、风险和待决策事项
 - 以正式问题、审批和决策记录为准。
 
 ## 上一步
-- 已从 112 个正式文件重建导入清单。
+- 已从 113 个正式文件重建导入清单。
 
 ## 推荐下一步
-- 由项目负责人继续处理 TASK-046。
+- 由项目负责人继续处理 TASK-048。
 
 ## 用户待办
 - 验收 TASK-031 的 Dogfooding 报告后，再决定是否进入后续目标。
