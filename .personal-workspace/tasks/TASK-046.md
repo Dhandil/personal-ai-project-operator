@@ -6,9 +6,9 @@ status: blocked
 goal_id: GOAL-009
 role: reviewer
 dependencies: [TASK-038, TASK-039, TASK-040, TASK-041, TASK-042, TASK-043, TASK-044, TASK-045]
-revision: 3
+revision: 4
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-15T07:37:21Z
+updated_at: 2026-08-15T07:45:00Z
 approval_id: APPROVAL-004
 target_branch: goal/GOAL-009
 unblocked_by: TASK-045
@@ -44,6 +44,12 @@ verification_report_id: REPORT-049
 - GOAL-009 已获 APPROVAL-004 批准。
 - TASK-038 至 TASK-045 的全部依赖均已完成独立验收。
 - TASK-046 已尝试执行，但因当前 Windows 环境无法启动真实 Codex CLI 而进入 `blocked`；未修改真实 Codex 环境。
+
+## 独立复核
+
+- 已独立复跑只读 preflight，结果仍为 `spawn EPERM`、`canExecute: false`。
+- 相关预检与 Adapter 回归测试 19/19 通过，但未替代真实 CLI 验收。
+- 阻断结论成立；在环境恢复前不得将 TASK-046 标记为 `completed`，也不得解锁 TASK-047。
 
 ## Attempt evidence
 

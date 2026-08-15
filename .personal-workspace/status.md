@@ -1,15 +1,15 @@
 ---
 schema_version: 1
 document_type: status_snapshot
-revision: 11
-generated_at: 2026-08-15T07:20:46.515Z
-updated_at: 2026-08-15T07:20:46.515Z
+revision: 12
+generated_at: 2026-08-15T07:47:12.211Z
+updated_at: 2026-08-15T07:47:12.211Z
 source: formal_project_facts
 status: in_progress
 current_stage: 03-spec
 current_goal: GOAL-009
 current_task: TASK-046
-source_manifest_hash: 59cbd847b852b3c9b9a66f829b3419d964a951550f9ce6d53220e36c8505ad12
+source_manifest_hash: df63a4d9a29e5529aade36b13d4ddeb0d349219f4014aaddbef0336a330f5c34
 ---
 # 项目状态
 
@@ -70,13 +70,13 @@ source_manifest_hash: 59cbd847b852b3c9b9a66f829b3419d964a951550f9ce6d53220e36c85
 - TASK-045 实现执行控制台进度摘要和恢复决策界面
 
 ## 当前任务
-- TASK-046 完成真实 Codex CLI Adapter 验收 — ready
+- TASK-046 完成真实 Codex CLI Adapter 验收 — blocked
 
 ## Blocker、风险和待决策事项
 - 以正式问题、审批和决策记录为准。
 
 ## 上一步
-- 已从 111 个正式文件重建导入清单。
+- 已从 112 个正式文件重建导入清单。
 
 ## 推荐下一步
 - 由项目负责人继续处理 TASK-046。

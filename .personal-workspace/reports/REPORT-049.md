@@ -8,11 +8,14 @@ report_type: task_verification
 acceptance_state: blocked
 task_id: TASK-046
 goal_id: GOAL-009
-revision: 1
+revision: 2
 created_at: 2026-08-15T07:37:21Z
-updated_at: 2026-08-15T07:37:21Z
+updated_at: 2026-08-15T07:45:00Z
 verified_by: implementation_agent
 verified_commit: 6b80fe3
+reviewed_by: project_lead
+reviewed_at: 2026-08-15T07:45:00Z
+review_outcome: blocked_confirmed
 verification_commands:
   - npm run test:codex-cli -- preflight
   - codex.exe --version (resolved AppX executable path)
@@ -52,3 +55,9 @@ The following TASK-046 conditions remain unverified because the process cannot s
 ## Status
 
 TASK-046 remains `blocked`; TASK-047 was not executed or modified. The current workspace was clean before this governance record was created.
+
+## 独立复核结论
+
+- 独立复跑 `npm run test:codex-cli -- preflight`，结果仍为 `spawn EPERM`、`canExecute: false`；未启动真实 Codex CLI。
+- 独立运行相关预检与 Adapter 回归测试共 19 项，全部通过；这些测试不构成真实 CLI 验收证据。
+- 报告准确记录了当前 Windows 进程权限阻断和安全边界，TASK-046 保持 `blocked`，TASK-047 保持锁定。

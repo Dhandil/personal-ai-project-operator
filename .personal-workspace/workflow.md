@@ -1,9 +1,9 @@
 ---
 schema_version: 1
 document_type: workflow
-revision: 9
+revision: 10
 created_at: 2026-08-14T13:33:42.399Z
-updated_at: 2026-08-15T07:20:46.515Z
+updated_at: 2026-08-15T07:47:12.211Z
 current_stage: execution
 source_stage: 03-spec
 stages:

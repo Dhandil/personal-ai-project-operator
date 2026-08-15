@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "manifest_kind": "current",
-  "generated_at": "2026-08-15T07:20:46.515Z",
-  "source_manifest_hash": "59cbd847b852b3c9b9a66f829b3419d964a951550f9ce6d53220e36c8505ad12",
+  "generated_at": "2026-08-15T07:47:12.211Z",
+  "source_manifest_hash": "df63a4d9a29e5529aade36b13d4ddeb0d349219f4014aaddbef0336a330f5c34",
   "current_source_stage": "03-spec",
   "current_goal_id": "GOAL-009",
   "current_task_id": "TASK-046",
@@ -740,6 +740,18 @@
       "revision": 2
     },
     {
+      "relativePath": ".personal-workspace/reports/REPORT-049.md",
+      "kind": "report",
+      "hash": "b15cfc803b13e601547feab4f8717c717fd4ac59912852a6e81e3ba418383d35",
+      "id": "REPORT-049",
+      "title": "TASK-046 real Codex CLI Adapter acceptance attempt",
+      "status": "blocked",
+      "stage": null,
+      "goalId": "GOAL-009",
+      "generated": false,
+      "revision": 2
+    },
+    {
       "relativePath": ".personal-workspace/stages/01-idea/01-idea.md",
       "kind": "stage",
       "hash": "b5fcb8638dc61127da5f228a1e2a41cf36417fd9f764dafb6dfbb0c172c157e4",
@@ -1318,14 +1330,14 @@
     {
       "relativePath": ".personal-workspace/tasks/TASK-046.md",
       "kind": "task",
-      "hash": "0f299c6201aef4353cb647c86710a8806904453a6ba545410e3a57d2e0828376",
+      "hash": "74fea7a285cab6a112ec0735ba2fd79cef20520d18426358ed27387ab95e17e9",
       "id": "TASK-046",
       "title": "完成真实 Codex CLI Adapter 验收",
-      "status": "ready",
+      "status": "blocked",
       "stage": null,
       "goalId": "GOAL-009",
       "generated": false,
-      "revision": 2
+      "revision": 4
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-047.md",
