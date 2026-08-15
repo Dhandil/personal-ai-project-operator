@@ -17,6 +17,8 @@ import { GovernanceRepository } from "../files/governance-repository.js";
 import { sha256Content } from "../files/content-hash.js";
 
 export const dogfoodingManifestPath =
+  ".personal-workspace/dogfooding/current-manifest.json";
+export const historicalDogfoodingManifestPath =
   ".personal-workspace/dogfooding/TASK-031-manifest.json";
 export const dogfoodingReportDirectory = ".personal-workspace/reports";
 
@@ -75,7 +77,8 @@ export type DogfoodingImport = Readonly<{
   readonly createdFiles: readonly string[];
   readonly rebuiltFiles: readonly string[];
   readonly reportRelativePath: string;
-  readonly manifestRelativePath: typeof dogfoodingManifestPath;
+  readonly manifestRelativePath:
+    typeof dogfoodingManifestPath | typeof historicalDogfoodingManifestPath;
 }>;
 
 export type DogfoodingErrorCode =
@@ -553,6 +556,7 @@ function reportDocument(
   inventory: DogfoodingInventory,
   reportId: string,
   now: UtcIsoTimestamp,
+  manifestPath = dogfoodingManifestPath,
 ): GovernanceDocument {
   return {
     frontMatter: {
@@ -604,7 +608,7 @@ function reportDocument(
       "- 生成工作流映射：.personal-workspace/workflow.md。",
       "- 生成状态快照：.personal-workspace/status.md。",
       "- 生成兼容视图：.personal-workspace/tasks/todo.md 与 tasks/todo.md。",
-      `- 机器可读清单：${dogfoodingManifestPath}。`,
+      `- 机器可读清单：${manifestPath}。`,
       "- 专项测试验证扫描、哈希稳定性、删除后重建和未知 YAML 字段保留。",
       "",
       "## 用户验收",
@@ -641,7 +645,12 @@ function historicalReportDocument(
   createdAt: UtcIsoTimestamp,
   metadata: DogfoodingSnapshotMetadata,
 ): GovernanceDocument {
-  const document = reportDocument(inventory, reportId, now);
+  const document = reportDocument(
+    inventory,
+    reportId,
+    now,
+    historicalDogfoodingManifestPath,
+  );
   const body = document.body.trimEnd();
   return {
     frontMatter: {
@@ -797,7 +806,7 @@ export class DogfoodingService {
 
     const manifest = {
       schema_version: 1,
-      task_id: "TASK-031",
+      manifest_kind: "current",
       generated_at: now,
       source_manifest_hash: inventory.sourceManifestHash,
       current_source_stage: inventory.currentSourceStage,
@@ -962,7 +971,7 @@ export class DogfoodingService {
       ...metadata,
     };
     const manifestWritten = await writeFileAtomically(
-      resolve(this.projectRoot, dogfoodingManifestPath),
+      resolve(this.projectRoot, historicalDogfoodingManifestPath),
       `${JSON.stringify(manifest, null, 2)}\n`,
     );
     if (!manifestWritten.ok)
@@ -971,7 +980,7 @@ export class DogfoodingService {
         manifestWritten.error.message,
         manifestWritten.error.details,
       );
-    rebuiltFiles.push(dogfoodingManifestPath);
+    rebuiltFiles.push(historicalDogfoodingManifestPath);
 
     const reportRelativePath = `${dogfoodingReportDirectory}/REPORT-032.md`;
     const reportCurrent = await repository.read(reportRelativePath);
@@ -1015,7 +1024,7 @@ export class DogfoodingService {
         createdFiles,
         rebuiltFiles,
         reportRelativePath,
-        manifestRelativePath: dogfoodingManifestPath,
+        manifestRelativePath: historicalDogfoodingManifestPath,
       },
     };
   }

@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "task_id": "TASK-031",
-  "generated_at": "2026-08-15T05:07:54.397Z",
+  "manifest_kind": "current",
+  "generated_at": "2026-08-15T05:16:17.883Z",
   "source_manifest_hash": "09e17a711d525031a5e7298a5815bc6f51bd130bda960b98d421067e9b88c78b",
   "current_source_stage": "03-spec",
   "current_goal_id": "GOAL-009",

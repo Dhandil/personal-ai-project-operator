@@ -9,6 +9,7 @@ import { parseUtcIsoTimestamp } from "@personal-ai-operator/contracts";
 import {
   DogfoodingService,
   dogfoodingManifestPath,
+  historicalDogfoodingManifestPath,
   type DogfoodingHistoricalSnapshot,
 } from "../src/infrastructure/dogfooding/dogfooding-service.js";
 import {
@@ -243,7 +244,13 @@ test("dogfooding import creates V0 facts, status, views, manifest, and report", 
     );
     const manifest = JSON.parse(
       await readFile(join(fixture.root, dogfoodingManifestPath), "utf8"),
-    ) as { source_manifest_hash: string };
+    ) as {
+      manifest_kind: string;
+      task_id?: string;
+      source_manifest_hash: string;
+    };
+    assert.equal(manifest.manifest_kind, "current");
+    assert.equal(manifest.task_id, undefined);
     assert.equal(
       manifest.source_manifest_hash,
       imported.value.inventory.sourceManifestHash,
@@ -422,7 +429,10 @@ test("historical TASK-031 snapshot keeps report and generated views aligned", as
     }
 
     const manifest = JSON.parse(
-      await readFile(join(fixture.root, dogfoodingManifestPath), "utf8"),
+      await readFile(
+        join(fixture.root, historicalDogfoodingManifestPath),
+        "utf8",
+      ),
     ) as DogfoodingHistoricalSnapshot;
     assert.equal(
       manifest.source_manifest_hash,

@@ -1,9 +1,9 @@
 ---
 schema_version: 1
 document_type: status_snapshot
-revision: 7
-generated_at: 2026-08-15T05:07:54.397Z
-updated_at: 2026-08-15T05:07:54.397Z
+revision: 8
+generated_at: 2026-08-15T05:16:17.883Z
+updated_at: 2026-08-15T05:16:17.883Z
 source: formal_project_facts
 status: in_progress
 current_stage: 03-spec
