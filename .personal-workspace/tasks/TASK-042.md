@@ -2,13 +2,16 @@
 schema_version: 1
 id: TASK-042
 title: 实现执行成果差异测试和证据校验
-status: draft
+status: ready
 goal_id: GOAL-009
 role: executor
 dependencies: [TASK-033, TASK-036, TASK-039]
-revision: 1
+revision: 2
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-13T12:29:07Z
+updated_at: 2026-08-15T04:20:22Z
+approval_id: APPROVAL-004
+target_branch: goal/GOAL-009
+unblocked_by: GOAL-008
 ---
 
 # TASK-042：实现执行成果、差异、测试和证据校验

@@ -3,14 +3,16 @@ schema_version: 1
 document_type: report
 id: REPORT-044
 title: GOAL-008 Codex CLI 接入检查点报告
-status: in_review
+status: accepted
 report_type: goal_verification
-acceptance_state: pending_user_acceptance
+acceptance_state: accepted
 goal_id: GOAL-008
-revision: 1
+revision: 2
 created_at: 2026-08-15T03:59:42Z
-updated_at: 2026-08-15T03:59:42Z
+updated_at: 2026-08-15T04:20:22Z
 verified_by: project_lead
+accepted_by: user
+accepted_at: 2026-08-15T04:20:22Z
 verification_commands:
   - npm run verify
 ---
@@ -45,4 +47,4 @@ GOAL-008 的 TASK-035 至 TASK-041 已完成并通过独立验收，Codex CLI �
 
 ## 用户决策
 
-请用户验收 REPORT-044。验收通过后，GOAL-008 才登记为 `completed`；在此之前不启动 GOAL-009。
+用户已验收 REPORT-044。GOAL-008 已登记为 `completed`，并经 APPROVAL-004 批准启动 GOAL-009。
