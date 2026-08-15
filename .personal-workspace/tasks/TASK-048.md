@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-048
 title: 实现 Claude Code CLI Adapter
-status: in_review
+status: blocked
 goal_id: GOAL-009
 role: executor
 dependencies: [TASK-035, TASK-036, TASK-037, TASK-043, TASK-044, TASK-045]
-revision: 2
+revision: 3
 created_at: 2026-08-15T08:04:00Z
-updated_at: 2026-08-15T08:55:00Z
+updated_at: 2026-08-15T09:29:18Z
 approval_id: APPROVAL-004
 target_branch: goal/GOAL-009
 unblocked_by: TASK-045
@@ -30,6 +30,12 @@ verification_report_id: REPORT-050
 - TASK-048 is `in_review` and awaits independent acceptance of REPORT-050.
 - TASK-047 remains `draft` and was not executed or modified. GOAL-009 was not advanced by this task.
 - TASK-046 and REPORT-049 remain historical Codex CLI blocker records and were not rewritten.
+
+## 独立复核
+
+- Claude Code 2.1.227 的 preflight 独立复跑通过安装、登录和命令能力检查，但 provider 为 `unknown`。
+- Claude 专项回归测试 6/6 通过；真实 provider 请求仍无法在限定时间内完成，因此 TASK-048 保持 `blocked`。
+- TASK-047 继续保持 `draft`，未执行或解锁。
 
 # TASK-048：实现 Claude Code CLI Adapter
 

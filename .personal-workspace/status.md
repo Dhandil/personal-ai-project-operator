@@ -1,15 +1,15 @@
 ---
 schema_version: 1
 document_type: status_snapshot
-revision: 14
-generated_at: 2026-08-15T08:09:51.667Z
-updated_at: 2026-08-15T08:09:51.667Z
+revision: 15
+generated_at: 2026-08-15T09:30:29.770Z
+updated_at: 2026-08-15T09:30:29.770Z
 source: formal_project_facts
 status: in_progress
 current_stage: 03-spec
 current_goal: GOAL-009
 current_task: TASK-048
-source_manifest_hash: 22988e3954dfd3d3161901325545c37581492de83976c1fd3841d32d7197e206
+source_manifest_hash: f826eabb816fb5fc84ff40684f3dd270af1bd5400a077b568da25f901cceac48
 ---
 # 项目状态
 
@@ -70,13 +70,13 @@ source_manifest_hash: 22988e3954dfd3d3161901325545c37581492de83976c1fd3841d32d71
 - TASK-045 实现执行控制台进度摘要和恢复决策界面
 
 ## 当前任务
-- TASK-048 实现 Claude Code CLI Adapter — ready
+- TASK-048 实现 Claude Code CLI Adapter — blocked
 
 ## Blocker、风险和待决策事项
 - 以正式问题、审批和决策记录为准。
 
 ## 上一步
-- 已从 113 个正式文件重建导入清单。
+- 已从 114 个正式文件重建导入清单。
 
 ## 推荐下一步
 - 由项目负责人继续处理 TASK-048。
