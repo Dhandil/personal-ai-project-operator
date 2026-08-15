@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "manifest_kind": "current",
-  "generated_at": "2026-08-15T09:30:29.770Z",
-  "source_manifest_hash": "f826eabb816fb5fc84ff40684f3dd270af1bd5400a077b568da25f901cceac48",
+  "generated_at": "2026-08-15T14:00:32.904Z",
+  "source_manifest_hash": "61fa068be16cfdc321b30748505a9b6abba639d888af5a0a7bad0cdfe32ec39b",
   "current_source_stage": "03-spec",
-  "current_goal_id": "GOAL-009",
-  "current_task_id": "TASK-048",
+  "current_goal_id": "GOAL-001",
+  "current_task_id": null,
   "source_files": [
     {
       "relativePath": ".personal-workspace/approvals/APPROVAL-001.md",
@@ -754,14 +754,14 @@
     {
       "relativePath": ".personal-workspace/reports/REPORT-050.md",
       "kind": "report",
-      "hash": "9a08f5ffb2bf8898344e698ef1d0ad62cc2958831814b253fdcd735ce959d2a6",
+      "hash": "19c3447c0693e314bde08dd42ce9f9cdd2e028c5045cdb9dad6e104212a01b15",
       "id": "REPORT-050",
       "title": "TASK-048 Claude Code CLI Adapter verification",
-      "status": "blocked",
+      "status": "accepted",
       "stage": null,
       "goalId": "GOAL-009",
       "generated": false,
-      "revision": 2
+      "revision": 7
     },
     {
       "relativePath": ".personal-workspace/stages/01-idea/01-idea.md",
@@ -1366,14 +1366,14 @@
     {
       "relativePath": ".personal-workspace/tasks/TASK-048.md",
       "kind": "task",
-      "hash": "be1fdab60e01f5d4c934a87559527d8959e4784ec274885c204bb3586e017d99",
+      "hash": "dfadcb278fb07dfdbc31dfe3c31a4645535e7f0213888e542bdec230d76cc81e",
       "id": "TASK-048",
       "title": "实现 Claude Code CLI Adapter",
-      "status": "blocked",
+      "status": "completed",
       "stage": null,
       "goalId": "GOAL-009",
       "generated": false,
-      "revision": 3
+      "revision": 8
     }
   ]
 }

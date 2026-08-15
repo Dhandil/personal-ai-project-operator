@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-048
 title: 实现 Claude Code CLI Adapter
-status: in_review
+status: completed
 goal_id: GOAL-009
 role: executor
 dependencies: [TASK-035, TASK-036, TASK-037, TASK-043, TASK-044, TASK-045]
-revision: 7
+revision: 8
 created_at: 2026-08-15T08:04:00Z
-updated_at: 2026-08-15T13:41:09Z
+updated_at: 2026-08-15T13:56:29Z
 approval_id: APPROVAL-004
 target_branch: goal/GOAL-009
 unblocked_by: TASK-045
@@ -30,7 +30,7 @@ verification_report_id: REPORT-050
 
 ## Handoff
 
-- TASK-048 is `in_review` and awaits independent acceptance of REPORT-050.
+- TASK-048 is `completed` after independent acceptance of REPORT-050.
 - TASK-047 remains `draft` and was not executed or modified. GOAL-009 was not advanced by this task.
 - TASK-046 and REPORT-049 remain historical Codex CLI blocker records and were not rewritten.
 
@@ -47,7 +47,9 @@ verification_report_id: REPORT-050
 ## 独立复验交接
 
 - Claude Code 2.1.233 的 preflight 通过安装、认证和命令能力检查；配置模型为 `deepseek-v4-pro`，provider 仅作为元数据记录为 `unknown`，`canExecute: true`。
-- Claude 专项回归测试 11/11、完整 `npm run verify` 和真实 acceptance 全部通过；TASK-048 仍保持 `in_review`，等待独立复验，不由实现者自行接受。
+- Claude 专项回归测试 11/11、完整 `npm run verify` 和真实 acceptance 全部通过；独立复验已确认七个 acceptance case 全部 `passed`。
+- 独立复验使用 Claude Code 2.1.233、`deepseek-v4-pro` 和 180 秒超时；preflight 通过，真实 acceptance 退出码为 0，审核者保持只读，精确 session ID 由新 Adapter 实例成功续接，临时项目完成清理。
+- REPORT-050 已由项目负责人接受，TASK-048 标记为 `completed`；TASK-047 继续保持 `draft`，未启动。
 - TASK-047 继续保持 `draft`，未执行或解锁。
 
 # TASK-048：实现 Claude Code CLI Adapter

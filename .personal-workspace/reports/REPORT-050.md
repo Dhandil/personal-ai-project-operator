@@ -3,16 +3,20 @@ schema_version: 1
 document_type: report
 id: REPORT-050
 title: TASK-048 Claude Code CLI Adapter verification
-status: in_review
+status: accepted
 report_type: task_verification
-acceptance_state: pending
+acceptance_state: accepted
 task_id: TASK-048
 goal_id: GOAL-009
-revision: 6
+revision: 7
 created_at: 2026-08-15T08:55:00Z
-updated_at: 2026-08-15T13:41:09Z
+updated_at: 2026-08-15T13:56:29Z
 verified_by: implementation_agent
 verified_commit: b8caaba5ba71b2137851737c8514fcb5f5ce7efc
+reviewed_by: project_lead
+reviewed_at: 2026-08-15T13:56:29Z
+accepted_by: project_lead
+accepted_at: 2026-08-15T13:56:29Z
 verification_commands:
   - npm run test:claude-cli -- preflight
   - npm run test:claude-cli -- acceptance
@@ -39,7 +43,7 @@ The project lead supplied manual Claude Code + CC Switch + DeepSeek evidence for
 
 ## Conclusion
 
-The TASK-048 defect fix is implemented and submitted for independent review. Local parser, preflight, lifecycle, cleanup, full-project verification, and the real Claude Code + CC Switch + DeepSeek acceptance all passed. This report deliberately remains `in_review` with `acceptance_state: pending`; the implementation agent does not claim self-acceptance.
+The TASK-048 defect fix is implemented and independently accepted. Local parser, preflight, lifecycle, cleanup, full-project verification, and the real Claude Code + CC Switch + DeepSeek acceptance all passed. The implementation agent did not claim self-acceptance; acceptance was recorded after the independent rerun.
 
 ## Implementation evidence
 
@@ -73,16 +77,19 @@ The TASK-048 defect fix is implemented and submitted for independent review. Loc
 - TASK-047 remains `draft`; no TASK-047 or GOAL-009 follow-up work was started.
 - The temporary project and the local Node compatibility shim used for host verification were removed. No credential file was modified.
 
-## Independent acceptance suggestion
+## Independent acceptance record
 
-1. Run `npm run test:claude-cli -- preflight` and confirm Claude Code 2.1.233 remains authenticated, `deepseek-v4-pro` is configured, all capability flags are true, and `canExecute: true` without exposing credentials.
-2. Run `npm run test:claude-cli -- acceptance` and confirm all seven cases pass in the dedicated temporary project, especially structured reviewer output and exact-session resume through a new Adapter instance.
-3. Confirm the reported provider/connection mode explicitly; if the CLI continues to return `unknown`, keep DeepSeek compatibility unaccepted rather than inferring it.
-4. After successful independent acceptance, update REPORT-050 to `accepted`, TASK-048 to `completed`, and only then decide whether TASK-047 may be unlocked. Until then, keep TASK-048 pending and TASK-047 unchanged.
+1. Independent preflight confirmed Claude Code 2.1.233 remains authenticated, `deepseek-v4-pro` is configured, all capability flags are true, and `canExecute: true` without exposing credentials.
+2. Independent acceptance confirmed all seven cases pass in the dedicated temporary project, including structured reviewer output and exact-session resume through a new Adapter instance.
+3. The CLI continues to report provider metadata as `unknown`; this was retained as metadata and not used to infer native DeepSeek support.
+4. REPORT-050 is accepted and TASK-048 is completed. TASK-047 remains `draft` until separately approved and started.
 
-## 当前待独立复验状态
+## 独立验收结论
 
 - 当前专项回归测试为 11/11，完整 `npm run verify` 为 70 单元、124 集成、15 Playwright，全部通过。
 - 当前 preflight 为 Claude Code 2.1.233，认证状态 `authenticated`，配置模型 `deepseek-v4-pro`，provider 元数据 `unknown`，`canExecute: true`。
-- 当前自动 acceptance 使用 180 秒配置超时，七个 case 全部通过并以退出码 0 输出完整结构化报告；审核者保持只读，精确 session ID 由新 Adapter 实例成功续接，临时项目完成清理。
-- REPORT-050 保持 `in_review`/`pending`，TASK-048 保持 `in_review`，TASK-047 保持 `draft`。
+- 独立运行 preflight 通过：Claude Code 2.1.233 已安装并认证，配置模型为 `deepseek-v4-pro`，`canExecute: true`。
+- 独立运行真实 acceptance，退出码为 0，七个 case 全部 `passed`：executor、persistentCleanup、reviewer、ephemeralCleanup、resume、resumeCleanup、temporaryProjectCleanup。
+- 审核者结构化输出符合 Schema 且保持文件不变；精确 session ID 由新 Adapter 实例成功续接；临时项目清理成功。
+- `unrecognized_model` 仍作为非致命诊断记录，不影响成功结果。
+- 因此正式接受 REPORT-050，并将 TASK-048 标记为 `completed`；TASK-047 继续保持 `draft`，未启动。
