@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-043
 title: 实现只读审核及结构化审核报告
-status: in_review
+status: completed
 goal_id: GOAL-009
 role: reviewer
 dependencies: [TASK-037, TASK-039, TASK-042]
-revision: 3
+revision: 4
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-15T14:00:00Z
+updated_at: 2026-08-15T14:20:00Z
 approval_id: APPROVAL-004
 target_branch: goal/GOAL-009
 unblocked_by: TASK-042
@@ -60,3 +60,10 @@ Fake Adapter 审核集成测试及只读违规场景。
 - TASK-043 is `in_review` and awaits independent acceptance of REPORT-046.
 - The reviewer only produces a structured report; it does not approve the task, transition task state, commit, merge, or remediate files.
 - TASK-044 and all other later tasks were not executed or modified.
+
+## 独立验收
+
+- REPORT-046 已由项目负责人接受。
+- 独立专项测试 3/3、完整 `npm run verify` 全部通过。
+- 审核者保持 read-only；任何权限违规都会被审计并阻止生成正式报告。
+- TASK-044 依赖已满足并解锁为 `ready`，尚未执行。

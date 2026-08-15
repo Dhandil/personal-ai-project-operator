@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "manifest_kind": "current",
-  "generated_at": "2026-08-15T05:16:17.883Z",
-  "source_manifest_hash": "09e17a711d525031a5e7298a5815bc6f51bd130bda960b98d421067e9b88c78b",
+  "generated_at": "2026-08-15T06:03:13.038Z",
+  "source_manifest_hash": "95ab32ca610eed298fc1e978143f202a2de37ab285450a8058632daa40ae7be0",
   "current_source_stage": "03-spec",
   "current_goal_id": "GOAL-009",
-  "current_task_id": "TASK-043",
+  "current_task_id": "TASK-044",
   "source_files": [
     {
       "relativePath": ".personal-workspace/approvals/APPROVAL-001.md",
@@ -704,6 +704,18 @@
       "revision": 2
     },
     {
+      "relativePath": ".personal-workspace/reports/REPORT-046.md",
+      "kind": "report",
+      "hash": "8f1f51b35a18ebaabec65da4b25ab55608b17c90209e316c60702d42cb873c44",
+      "id": "REPORT-046",
+      "title": "TASK-043 read-only review and structured report",
+      "status": "accepted",
+      "stage": null,
+      "goalId": "GOAL-009",
+      "generated": false,
+      "revision": 2
+    },
+    {
       "relativePath": ".personal-workspace/stages/01-idea/01-idea.md",
       "kind": "stage",
       "hash": "b5fcb8638dc61127da5f228a1e2a41cf36417fd9f764dafb6dfbb0c172c157e4",
@@ -1246,26 +1258,26 @@
     {
       "relativePath": ".personal-workspace/tasks/TASK-043.md",
       "kind": "task",
-      "hash": "098434d19ac6318317e82ce364c50c4ac9c85a21dda317e8dfeb5c517f1c16ce",
+      "hash": "dfa101634efdaebac3f3ea67c7a1da045a42b716970f47b68be1a37ef2242c31",
       "id": "TASK-043",
       "title": "实现只读审核及结构化审核报告",
+      "status": "completed",
+      "stage": null,
+      "goalId": "GOAL-009",
+      "generated": false,
+      "revision": 4
+    },
+    {
+      "relativePath": ".personal-workspace/tasks/TASK-044.md",
+      "kind": "task",
+      "hash": "3281407a692088e596de71f3d9fd1a8f7881e6ca6d2f4c365eb3686ec48ec83e",
+      "id": "TASK-044",
+      "title": "实现返工同一审核者复审和自动下一任务",
       "status": "ready",
       "stage": null,
       "goalId": "GOAL-009",
       "generated": false,
       "revision": 2
-    },
-    {
-      "relativePath": ".personal-workspace/tasks/TASK-044.md",
-      "kind": "task",
-      "hash": "6567b0f4d2287b5d218a1d3a82ba91baf28b3e79534169f729ff796d1152fc7f",
-      "id": "TASK-044",
-      "title": "实现返工同一审核者复审和自动下一任务",
-      "status": "draft",
-      "stage": null,
-      "goalId": "GOAL-009",
-      "generated": false,
-      "revision": 1
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-045.md",
