@@ -2,16 +2,17 @@
 schema_version: 1
 id: TASK-043
 title: 实现只读审核及结构化审核报告
-status: ready
+status: in_review
 goal_id: GOAL-009
 role: reviewer
 dependencies: [TASK-037, TASK-039, TASK-042]
-revision: 2
+revision: 3
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-15T05:07:00Z
+updated_at: 2026-08-15T14:00:00Z
 approval_id: APPROVAL-004
 target_branch: goal/GOAL-009
 unblocked_by: TASK-042
+verification_report_id: REPORT-046
 ---
 
 # TASK-043：实现只读审核及结构化审核报告
@@ -42,4 +43,20 @@ Fake Adapter 审核集成测试及只读违规场景。
 
 - GOAL-009 已获 APPROVAL-004 批准。
 - TASK-037、TASK-039 和 TASK-042 依赖均已完成独立验收。
-- TASK-043 现为 `ready`，可由实现对话开始执行；尚未执行或修改实现文件。
+- TASK-043 已进入 `in_review`；实现已提交，等待 REPORT-046 独立验收。
+
+## Completion evidence
+
+- Added a read-only reviewer coordinator that builds the reviewer task package, passes the actual execution diff, files, tests, evidence, and findings context to the Agent Runtime, and re-checks the Git boundary before accepting any review output.
+- Added a strict `review_report` contract and atomic Markdown/YAML repository under `.personal-workspace/reviews/`. Reports preserve the actual task, goal, execution, diff, files, tests, evidence, findings, decision, handoff, and audit references.
+- Reviewer packages are required to use `read_only` permissions and `canModifyProjectFiles: false`; any runtime privilege event, non-empty post-review diff, or forbidden path change is audited as `privilege_violation` and cannot produce a formal review report.
+- Added POST/GET review API routes and Fake Adapter integration coverage for accepted reports, read-only violations, malformed reviewer output, and audit persistence.
+- TASK-043 specialized tests: 3/3 passed. Full `npm run verify`: 66 unit tests, 110 integration tests, 14 Playwright tests, formatting, lint, typecheck, and all builds passed.
+- Implementation report: `REPORT-046`.
+- Implementation commit: `76366f2` (`feat(review): 实现只读审核与结构化报告`, `Tasks: TASK-043`).
+
+## Handoff
+
+- TASK-043 is `in_review` and awaits independent acceptance of REPORT-046.
+- The reviewer only produces a structured report; it does not approve the task, transition task state, commit, merge, or remediate files.
+- TASK-044 and all other later tasks were not executed or modified.
