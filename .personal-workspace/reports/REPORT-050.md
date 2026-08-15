@@ -8,11 +8,11 @@ report_type: task_verification
 acceptance_state: pending
 task_id: TASK-048
 goal_id: GOAL-009
-revision: 5
+revision: 6
 created_at: 2026-08-15T08:55:00Z
-updated_at: 2026-08-15T13:02:18Z
+updated_at: 2026-08-15T13:41:09Z
 verified_by: implementation_agent
-verified_commit: 5210c98
+verified_commit: b8caaba5ba71b2137851737c8514fcb5f5ce7efc
 verification_commands:
   - npm run test:claude-cli -- preflight
   - npm run test:claude-cli -- acceptance
@@ -29,6 +29,9 @@ verification_commands:
 - `unrecognized_model` is retained as a non-fatal structured/stderr diagnostic. Only non-zero process exit, malformed output, or failed capability checks block the Runtime result.
 - Reviewer commands use `--tools Read` plus explicit denies for edit, write, notebook, Bash, and PowerShell, preventing a Windows shell-capable bypass. Executor commands include explicit non-interactive tool approval.
 - Acceptance timeout is configurable with `CLAUDE_ACCEPTANCE_TIMEOUT_MS`; the default is 120 seconds and values below 90 seconds are rejected in favor of the default.
+- A dedicated reviewer probe confirmed that Claude Code 2.1.233 emitted the first stdout line as a JSON array of event objects for `--output-format json --verbose --json-schema`. The parser now expands that envelope while strictly rejecting empty arrays and non-object members; it does not suppress malformed output.
+- Reviewer acceptance now requires the expected structured fields and verifies that the reviewed file hash-equivalent content is unchanged.
+- Resume acceptance waits for the precise session ID plus a progress event, allows the CLI to persist the conversation, cancels it, and resumes with a new Adapter instance. Missing session or persistence evidence is a failed case rather than a skipped case.
 
 ## User-provided manual compatibility evidence
 
@@ -36,7 +39,7 @@ The project lead supplied manual Claude Code + CC Switch + DeepSeek evidence for
 
 ## Conclusion
 
-The TASK-048 defect fix is implemented and submitted for independent review. Local contract, parser, preflight, lifecycle, cleanup, and full-project verification passed. The supplied manual evidence covers the real Claude Code + CC Switch + DeepSeek behavior. The final automatic acceptance used the configured model and a 90-second timeout, but the non-interactive request still did not return a final result; this report remains pending and does not claim self-acceptance.
+The TASK-048 defect fix is implemented and submitted for independent review. Local parser, preflight, lifecycle, cleanup, full-project verification, and the real Claude Code + CC Switch + DeepSeek acceptance all passed. This report deliberately remains `in_review` with `acceptance_state: pending`; the implementation agent does not claim self-acceptance.
 
 ## Implementation evidence
 
@@ -49,17 +52,18 @@ The TASK-048 defect fix is implemented and submitted for independent review. Loc
 
 ## Verification results
 
-- Claude-specific integration tests: 9/9 passed.
-- Full `npm run verify`: 70 unit tests, 122 integration tests, 15 Playwright tests, formatting, lint, typecheck, and all workspace builds passed.
+- Claude-specific integration tests: 11/11 passed, including the observed JSON event-array envelope and malformed-member rejection.
+- Full `npm run verify`: 70 unit tests, 124 integration tests, 15 Playwright tests, formatting, lint, typecheck, and all workspace builds passed.
 - Preflight using Claude Code 2.1.233: installed `true`, authentication status `authenticated`, configured model `deepseek-v4-pro`, provider metadata `unknown`, all required command capability flags `true`, `canExecute: true`.
 
 ## Real temporary-project acceptance
 
 - A dedicated temporary Git project was created under the operating system temporary directory. No real personal project was opened or changed.
-- The acceptance attempted executor write, persistent cleanup, read-only reviewer execution, ephemeral cleanup, and exact session resume. No credential content or configuration values were read or logged.
-- The final automatic acceptance used `CLAUDE_MODEL=deepseek-v4-pro` and `CLAUDE_ACCEPTANCE_TIMEOUT_MS=90000`. The executor request did not return a final result within the 90-second window and was cancelled. The safe result was `failed`, not `completed`; the expected file was absent and the following project-purge cleanup returned `cleanup_failed`.
-- The final `temporaryProjectCleanup` case passed after one removal attempt. All session result/event drains completed before the removal attempt, and the acceptance command emitted the complete structured report with exit code 1 for the failed execution case rather than throwing an unhandled `EBUSY`.
-- The safe automatic detail included `[claude-code:unrecognized_model]` for `deepseek-v4-pro`; the Adapter retained it as a non-fatal diagnostic. The blocking condition was the missing final result after the timeout, not that diagnostic.
+- The first-line probe used the same reviewer flags and observed a top-level JSON array containing standard `system`, `assistant`, and `result` event objects. Only the safe envelope shape and known temporary-project output were inspected; no credential content was read or logged.
+- The final automatic acceptance used configured model `deepseek-v4-pro` and `CLAUDE_ACCEPTANCE_TIMEOUT_MS=180000`. Its structured report returned `status: passed` and exit code 0.
+- Complete case results: `executor: passed`, `persistentCleanup: passed`, `reviewer: passed`, `ephemeralCleanup: passed`, `resume: passed`, `resumeCleanup: passed`, and `temporaryProjectCleanup: passed`.
+- The reviewer returned schema-conforming structured output while the file remained unchanged. Resume captured and persisted the exact session ID before cancellation, then resumed through a new Adapter instance. All child processes and event streams completed before temporary-directory removal.
+- `[claude-code:unrecognized_model]` for `deepseek-v4-pro` remains a recorded non-fatal diagnostic when emitted; successful output and zero exit determine execution capability, while malformed output and non-zero exit remain blocking.
 - The local CLI did not expose a recognizable DeepSeek or Anthropic provider in `auth status --json`; the report records provider metadata as `unknown` and does not infer the actual backend from `apiProvider`.
 
 ## Scope confirmation
@@ -71,14 +75,14 @@ The TASK-048 defect fix is implemented and submitted for independent review. Loc
 
 ## Independent acceptance suggestion
 
-1. In an approved environment where the existing Claude Code + DeepSeek request can complete, run `npm run test:claude-cli -- preflight` and confirm the output remains limited to safe status fields.
-2. Run `npm run test:claude-cli -- acceptance` and confirm executor creation, reviewer read-only behavior, exact session resume, cancellation, and cleanup all complete in the dedicated temporary project.
+1. Run `npm run test:claude-cli -- preflight` and confirm Claude Code 2.1.233 remains authenticated, `deepseek-v4-pro` is configured, all capability flags are true, and `canExecute: true` without exposing credentials.
+2. Run `npm run test:claude-cli -- acceptance` and confirm all seven cases pass in the dedicated temporary project, especially structured reviewer output and exact-session resume through a new Adapter instance.
 3. Confirm the reported provider/connection mode explicitly; if the CLI continues to return `unknown`, keep DeepSeek compatibility unaccepted rather than inferring it.
 4. After successful independent acceptance, update REPORT-050 to `accepted`, TASK-048 to `completed`, and only then decide whether TASK-047 may be unlocked. Until then, keep TASK-048 pending and TASK-047 unchanged.
 
-## 当前独立复核状态
+## 当前待独立复验状态
 
-- 当前专项回归测试为 9/9，完整 `npm run verify` 为 70 单元、122 集成、15 Playwright，全部通过。
+- 当前专项回归测试为 11/11，完整 `npm run verify` 为 70 单元、124 集成、15 Playwright，全部通过。
 - 当前 preflight 为 Claude Code 2.1.233，认证状态 `authenticated`，配置模型 `deepseek-v4-pro`，provider 元数据 `unknown`，`canExecute: true`。
-- 当前自动 acceptance 使用 90 秒超时；执行结果未在窗口内返回并被取消，但 `unrecognized_model` 已作为非致命诊断记录，临时项目最终清理成功并输出了完整结构化报告。
+- 当前自动 acceptance 使用 180 秒配置超时，七个 case 全部通过并以退出码 0 输出完整结构化报告；审核者保持只读，精确 session ID 由新 Adapter 实例成功续接，临时项目完成清理。
 - REPORT-050 保持 `in_review`/`pending`，TASK-048 保持 `in_review`，TASK-047 保持 `draft`。

@@ -6,9 +6,9 @@ status: in_review
 goal_id: GOAL-009
 role: executor
 dependencies: [TASK-035, TASK-036, TASK-037, TASK-043, TASK-044, TASK-045]
-revision: 6
+revision: 7
 created_at: 2026-08-15T08:04:00Z
-updated_at: 2026-08-15T13:02:18Z
+updated_at: 2026-08-15T13:41:09Z
 approval_id: APPROVAL-004
 target_branch: goal/GOAL-009
 unblocked_by: TASK-045
@@ -21,9 +21,12 @@ verification_report_id: REPORT-050
 - Executor and reviewer roles receive distinct permission modes and tool boundaries. Reviewer mode denies editing, writing, notebook editing, and shell tools; the working directory and task context remain explicit in command and result metadata.
 - Persistent sessions use the official project purge command only when explicitly enabled for a temporary project. Ephemeral sessions use `--no-session-persistence`. Cleanup failures remain structured and retryable without dropping the execution record.
 - Added preflight checks for installation, authentication, JSON/stream-JSON, resume, session persistence, permission boundaries, JSON schema, and project purge. Authentication output is reduced to safe status fields; the local CLI did not expose a recognizable provider, so provider is recorded as `unknown`.
-- Added 9 Claude-specific integration tests covering preflight, explicit model selection, executor/reviewer boundaries, JSON/stream-JSON, new-runtime resume, ephemeral persistence, non-fatal diagnostics, and project cleanup.
-- Full `npm run verify` passed: 70 unit tests, 122 integration tests, 15 Playwright tests, formatting, lint, typecheck, and all builds.
-- Real acceptance used Claude Code 2.1.233 and `deepseek-v4-pro` in a dedicated temporary Git project with a configurable 90-second timeout. The execution result timed out and was cancelled, but the temporary project cleanup completed and the script emitted a complete structured report.
+- The JSON parser now accepts both one-event objects and Claude Code's observed one-line array envelope. Every array item must still be an event object with a valid event type; malformed items remain `invalid_output`.
+- Reviewer acceptance requires valid JSON Schema output (`summary`, `verified=true`, and `provider`) and an unchanged file, in addition to a successful process result.
+- Resume acceptance waits for the exact session ID and a conversation progress event before cancellation, then uses a new Adapter instance and the persisted task context to resume that exact session.
+- Added 11 Claude-specific integration tests covering preflight, explicit model selection, executor/reviewer boundaries, JSON/stream-JSON and event-array envelopes, malformed array rejection, new-runtime resume, ephemeral persistence, non-fatal diagnostics, and project cleanup.
+- Full `npm run verify` passed: 70 unit tests, 124 integration tests, 15 Playwright tests, formatting, lint, typecheck, and all builds.
+- Real acceptance used Claude Code 2.1.233 and `deepseek-v4-pro` in a dedicated temporary Git project with a configured 180-second timeout. Executor, persistent cleanup, structured read-only reviewer, ephemeral cleanup, exact-session resume through a new Adapter, resume cleanup, and temporary-project cleanup all passed.
 
 ## Handoff
 
@@ -38,12 +41,13 @@ verification_report_id: REPORT-050
 - `unrecognized_model` from structured output or stderr is retained as a non-fatal diagnostic event. Non-zero exit, malformed output, and failed capability checks remain blocking results.
 - Reviewer commands expose only `Read` through `--tools` and explicitly deny edit, write, notebook, Bash, and PowerShell tool names. Executor commands retain explicit tool approval for non-interactive execution.
 - Acceptance timeout is configurable through `CLAUDE_ACCEPTANCE_TIMEOUT_MS`; the default is 120 seconds and the minimum accepted value is 90 seconds.
-- User-provided manual evidence confirms DeepSeek compatibility for JSON, stream JSON, JSON Schema, file write, read-only review, exact session resume, ephemeral non-resumability, and project purge. Automatic acceptance was rerun with model `deepseek-v4-pro` and a 90-second timeout; the executor still timed out, while `unrecognized_model` was recorded as non-fatal. This remains pending independent acceptance.
+- Under `--output-format json --verbose --json-schema`, the current Claude Code + DeepSeek path emitted a one-line JSON array of standard event objects. The strict parser compatibility fix preserves all events and rejects non-object members rather than ignoring invalid output.
+- User-provided manual evidence confirms DeepSeek compatibility for JSON, stream JSON, JSON Schema, file write, read-only review, exact session resume, ephemeral non-resumability, and project purge. The final automatic acceptance independently exercised the same capabilities and passed; `unrecognized_model` remained a non-fatal diagnostic.
 
-## 独立复核
+## 独立复验交接
 
-- Claude Code 2.1.233 的 preflight 独立复跑通过安装、认证和命令能力检查；配置模型为 `deepseek-v4-pro`，provider 仅作为元数据记录为 `unknown`。
-- Claude 专项回归测试 9/9 通过；自动 acceptance 已输出完整结构化报告，临时项目清理成功，TASK-048 保持 `in_review` 等待独立验收。
+- Claude Code 2.1.233 的 preflight 通过安装、认证和命令能力检查；配置模型为 `deepseek-v4-pro`，provider 仅作为元数据记录为 `unknown`，`canExecute: true`。
+- Claude 专项回归测试 11/11、完整 `npm run verify` 和真实 acceptance 全部通过；TASK-048 仍保持 `in_review`，等待独立复验，不由实现者自行接受。
 - TASK-047 继续保持 `draft`，未执行或解锁。
 
 # TASK-048：实现 Claude Code CLI Adapter
