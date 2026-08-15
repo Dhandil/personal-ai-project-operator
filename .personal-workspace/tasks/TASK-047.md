@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-047
 title: 完成 V0.2 全链路验收
-status: draft
+status: in_progress
 goal_id: GOAL-009
 role: reviewer
 dependencies: [TASK-034, TASK-048]
-revision: 2
+revision: 3
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-15T08:04:00Z
+updated_at: 2026-08-15T14:07:21Z
 approval_id: APPROVAL-004
 target_branch: goal/GOAL-009
 unblocked_by: TASK-048
@@ -26,10 +26,16 @@ unblocked_by: TASK-048
 - 未授权修改不能进入目标分支，所有异常可恢复和追溯；
 - 任务合入目标分支后，仍需用户批准才可合入 `main`。
 
+## 启动登记
+
+- 用户已批准在 REPORT-050 接受后启动 TASK-047。
+- TASK-048 已完成独立验收，作为本任务的前置适配器能力。
+- TASK-047 已进入 `in_progress`；本次仅登记启动，不代表验收已完成。
+
 ## 路线调整
 
 - 当前 V0.2 全链路验收优先使用 TASK-048 的 Claude Code CLI Adapter。
-- TASK-046 的 Codex CLI 真实验收已暂停存档，不再阻塞本任务的 Claude Code 验收路线；TASK-047 仍保持 `draft`，不会自动启动。
+- TASK-046 的 Codex CLI 真实验收已暂停存档，不再阻塞本任务的 Claude Code 验收路线。
 
 ## 验证
 

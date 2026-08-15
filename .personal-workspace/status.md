@@ -1,26 +1,26 @@
 ---
 schema_version: 1
 document_type: status_snapshot
-revision: 16
-generated_at: 2026-08-15T14:00:32.904Z
-updated_at: 2026-08-15T14:00:32.904Z
+revision: 17
+generated_at: 2026-08-15T14:08:15.659Z
+updated_at: 2026-08-15T14:08:15.659Z
 source: formal_project_facts
 status: in_progress
 current_stage: 03-spec
-current_goal: GOAL-001
-current_task: null
-source_manifest_hash: 61fa068be16cfdc321b30748505a9b6abba639d888af5a0a7bad0cdfe32ec39b
+current_goal: GOAL-009
+current_task: TASK-047
+source_manifest_hash: c18352e06581ad16136e7f66f6e088b7ed63d6c1669e579c5143cd3f08dc9c10
 ---
 # 项目状态
 
 - 项目：个人 AI 项目运营工具
 - 当前正式源阶段：03-spec
-- 当前目标：GOAL-001
-- 当前任务：无
+- 当前目标：GOAL-009
+- 当前任务：TASK-047
 - 本文件由正式项目事实自动生成，不是独立事实源。
 
 ## 当前获批短期目标
-- GOAL-001
+- GOAL-009
 
 ## 已完成成果
 - TASK-001 建立 npm Workspace 和 TypeScript 根配置
@@ -71,7 +71,7 @@ source_manifest_hash: 61fa068be16cfdc321b30748505a9b6abba639d888af5a0a7bad0cdfe3
 - TASK-048 实现 Claude Code CLI Adapter
 
 ## 当前任务
-- 无
+- TASK-047 完成 V0.2 全链路验收 — in_progress
 
 ## Blocker、风险和待决策事项
 - 以正式问题、审批和决策记录为准。
@@ -80,7 +80,7 @@ source_manifest_hash: 61fa068be16cfdc321b30748505a9b6abba639d888af5a0a7bad0cdfe3
 - 已从 114 个正式文件重建导入清单。
 
 ## 推荐下一步
-- 由项目负责人继续处理 当前就绪任务。
+- 由项目负责人继续处理 TASK-047。
 
 ## 用户待办
 - 验收 TASK-031 的 Dogfooding 报告后，再决定是否进入后续目标。
