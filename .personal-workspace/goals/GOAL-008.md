@@ -2,13 +2,14 @@
 schema_version: 1
 id: GOAL-008
 title: 接入 Codex CLI
-status: in_progress
-revision: 2
+status: in_review
+revision: 3
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-14T16:08:23Z
+updated_at: 2026-08-15T03:59:42Z
 tasks: [TASK-035, TASK-036, TASK-037, TASK-038, TASK-039, TASK-040, TASK-041]
 approval_ids: [APPROVAL-003]
 target_branch: goal/GOAL-008
+verification_report_id: REPORT-044
 ---
 
 # GOAL-008：接入 Codex CLI
@@ -30,3 +31,9 @@ target_branch: goal/GOAL-008
 - 首个建议任务为 TASK-036，尚未开始执行；
 - 后续任务仍按依赖关系和正式解锁状态推进；
 - 本目标完成后必须经过独立审核和用户验收。
+
+## 检查点
+
+- TASK-035 至 TASK-041 已全部完成并通过独立验收。
+- GOAL-008 检查点报告 REPORT-044 已生成，当前等待用户验收。
+- GOAL-009 未启动；TASK-042 及后续任务保持未解锁。

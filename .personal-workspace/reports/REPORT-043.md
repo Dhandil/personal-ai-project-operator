@@ -3,16 +3,18 @@ schema_version: 1
 document_type: report
 id: REPORT-043
 title: TASK-041 临时会话和官方删除清理验证报告
-status: in_review
+status: accepted
 report_type: task_verification
-acceptance_state: pending_user_acceptance
+acceptance_state: accepted
 task_id: TASK-041
 goal_id: GOAL-008
-revision: 3
+revision: 4
 created_at: 2026-08-14T19:31:21Z
-updated_at: 2026-08-15T03:49:51Z
+updated_at: 2026-08-15T03:59:42Z
 verified_by: implementation_agent
 verified_commit: 543ef43
+accepted_by: project_lead
+accepted_at: 2026-08-15T03:59:42Z
 verification_commands:
   - npx tsx --test apps/server/test/codex-cli-adapter.integration.test.ts apps/server/test/execution-coordinator.integration.test.ts apps/server/test/fake-agent.integration.test.ts
   - npm run verify
@@ -68,6 +70,13 @@ TASK-041 已完成实现并提交，当前进入独立用户验收。实现覆�
 ## 修复要求
 
 persistent 会话没有精确 session ID 时必须返回 `cleanup_failed`、`retryable: true`，保留执行记录并阻止运行目录清理；补充无 thread ID 回归测试后重新运行专项和完整验证。TASK-041 当前为 `changes_requested`，GOAL-009 不启动。
+
+## 修复后独立复核结果
+
+- 修复专项测试 23/23 通过，新增无 `thread.started` 回归：persistent cleanup 返回 `cleanup_failed`、`retryable: true`，不产生删除命令，运行目录保持存在，执行记录仍可用于重试。
+- 完整 `npm run verify` 通过：66 个单元测试、98 个集成测试、14 个 Chromium Playwright 测试，以及格式、Lint、类型检查和构建。
+- 原缺陷已消除，TASK-041 满足验收条件，REPORT-043 状态更新为 `accepted`。
+- GOAL-009 未启动或修改。
 
 ## 用户验收建议
 

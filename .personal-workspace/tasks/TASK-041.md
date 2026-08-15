@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-041
 title: 实现临时会话和官方删除清理
-status: in_review
+status: completed
 goal_id: GOAL-008
 role: executor
 dependencies: [TASK-039, TASK-040]
-revision: 5
+revision: 6
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-15T03:49:51Z
+updated_at: 2026-08-15T03:59:42Z
 approval_id: APPROVAL-003
 target_branch: goal/GOAL-008
 unblocked_by: TASK-040
@@ -22,6 +22,12 @@ unblocked_by: TASK-040
 - TASK-041 repair tests: 23/23 specialized tests passed; full verify passed with 66 unit, 98 integration, and 14 Playwright tests.
 - Repair commit: `543ef43` (`fix(agent-runtime): 阻止无会话 ID的清理`, `Tasks: TASK-041`).
 - GOAL-009 was not executed or modified.
+
+## 独立验收
+
+- 修复复核通过：persistent 缺少精确 session ID 时返回 `cleanup_failed`、`retryable: true`，不执行删除、不清理运行目录并保留执行记录。
+- 专项测试 23/23、完整验证 66 单元、98 集成、14 Playwright 及质量检查全部通过。
+- REPORT-043 已接受；GOAL-008 全部任务完成，检查点报告为 REPORT-044，等待用户验收。
 
 ## TASK-041 verification evidence
 
