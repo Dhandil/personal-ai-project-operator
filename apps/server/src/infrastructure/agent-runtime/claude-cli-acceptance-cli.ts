@@ -6,6 +6,7 @@ import { promisify } from "node:util";
 
 import { parseFormalId } from "@personal-ai-operator/contracts";
 import type {
+  AgentEvent,
   AgentSession,
   AgentStartRequest,
   GoalId,
@@ -20,6 +21,8 @@ const DEFAULT_ACCEPTANCE_TIMEOUT_MS = 120_000;
 const MIN_ACCEPTANCE_TIMEOUT_MS = 90_000;
 const TEMPORARY_CLEANUP_ATTEMPTS = 8;
 const TEMPORARY_CLEANUP_DELAY_MS = 250;
+const SESSION_CAPTURE_TIMEOUT_MS = 30_000;
+const SESSION_PERSISTENCE_DELAY_MS = 1_000;
 
 const execFileAsync = promisify(execFile);
 const outputSchema = {
@@ -100,11 +103,11 @@ async function collect(
   session: AgentSession,
   cancel: () => Promise<void>,
   timeoutMs = 30_000,
+  onEvent: (event: AgentEvent) => void = () => undefined,
 ): Promise<Awaited<AgentSession["result"]>> {
   const eventsTask = (async (): Promise<void> => {
     for await (const event of session.events) {
-      // The Adapter owns event projection; acceptance only needs the final result.
-      void event;
+      onEvent(event);
     }
   })();
   let timer: NodeJS.Timeout | undefined;
@@ -123,6 +126,30 @@ async function collect(
   }
   await eventsTask;
   return outcome.result;
+}
+
+async function waitForSessionId(
+  session: AgentSession,
+  timeoutMs: number,
+): Promise<string | null> {
+  const deadline = Date.now() + Math.min(timeoutMs, SESSION_CAPTURE_TIMEOUT_MS);
+  while (Date.now() < deadline) {
+    if (session.sessionId !== null) return session.sessionId;
+    await delay(100);
+  }
+  return session.sessionId;
+}
+
+function hasVerifiedStructuredOutput(
+  result: Awaited<AgentSession["result"]>,
+): boolean {
+  return (
+    result.output?.verified === true &&
+    typeof result.output.summary === "string" &&
+    result.output.summary.trim().length > 0 &&
+    typeof result.output.provider === "string" &&
+    result.output.provider.trim().length > 0
+  );
 }
 
 function resultDetail(result: Awaited<AgentSession["result"]>): string {
@@ -239,8 +266,13 @@ async function runAcceptance(
     );
     const afterReview = await readFile(outputPath, "utf8");
     cases.reviewer =
-      reviewerResult.status === "completed" && beforeReview === afterReview
-        ? { status: "passed", detail: "read-only reviewer preserved the file" }
+      reviewerResult.status === "completed" &&
+      hasVerifiedStructuredOutput(reviewerResult) &&
+      beforeReview === afterReview
+        ? {
+            status: "passed",
+            detail: "structured read-only review preserved the file",
+          }
         : {
             status: "failed",
             detail: `reviewer ${resultDetail(reviewerResult)}`,
@@ -255,15 +287,69 @@ async function runAcceptance(
     const resumeRequest = request(
       root,
       "executor",
-      "Wait for five seconds, then return structured output with summary, verified=true, and the configured provider. Do not change files.",
+      "First read claude-acceptance.txt. Then wait for thirty seconds before returning structured output with summary, verified=true, and the configured provider. Do not change files.",
     );
     const resumable = await streamAdapter.start(resumeRequest);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    const sessionId = resumable.sessionId;
-    if (sessionId !== null) {
-      await streamAdapter.cancel({ executionId: resumable.executionId });
-      await collect(resumable, async () => undefined, timeoutMs);
-      const resumed = await streamAdapter.resume({
+    let markProgress!: () => void;
+    const progressObserved = new Promise<void>((resolve) => {
+      markProgress = resolve;
+    });
+    const resumableResultTask = collect(
+      resumable,
+      async () => {
+        await streamAdapter.cancel({ executionId: resumable.executionId });
+      },
+      timeoutMs,
+      (event) => {
+        if (event.type === "progress") markProgress();
+      },
+    );
+    const sessionId = await waitForSessionId(resumable, timeoutMs);
+    const progressWasObserved =
+      sessionId === null
+        ? false
+        : await Promise.race([
+            progressObserved.then(() => true),
+            delay(SESSION_CAPTURE_TIMEOUT_MS).then(() => false),
+          ]);
+    if (sessionId !== null && progressWasObserved) {
+      await delay(SESSION_PERSISTENCE_DELAY_MS);
+      const cancellation = await streamAdapter.cancel({
+        executionId: resumable.executionId,
+      });
+      const interruptedResult = await resumableResultTask;
+      if (!cancellation.ok || interruptedResult.status !== "interrupted") {
+        cases.resume = {
+          status: "failed",
+          detail: `session_interrupt_failed: ${resultDetail(interruptedResult)}`,
+        };
+        const cleanup = await streamAdapter.cleanup({
+          executionId: resumable.executionId,
+        });
+        cases.resumeCleanup = cleanup.ok
+          ? { status: "passed", detail: "non-resumable session cleaned" }
+          : { status: "failed", detail: cleanup.code };
+        return {
+          schemaVersion: 1,
+          checkedAt: preflight.checkedAt,
+          status: "failed",
+          executable: preflight.executable,
+          version: preflight.version,
+          provider: preflight.provider,
+          configuredModel: preflight.configuredModel,
+          timeoutMs,
+          temporaryProjectCreated: true,
+          cases,
+        };
+      }
+      const resumedAdapter = new ClaudeCodeAdapter({
+        executable: preflight.executable,
+        model: preflight.configuredModel ?? DEFAULT_CLAUDE_MODEL,
+        outputFormat: "stream-json",
+        runtimeDirectoryRoot: runtimeRoot,
+        allowProjectPurge: true,
+      });
+      const resumed = await resumedAdapter.resume({
         executionId: resumable.executionId,
         sessionId,
         startRequest: resumeRequest,
@@ -271,7 +357,7 @@ async function runAcceptance(
       const resumedResult = await collect(
         resumed,
         async () => {
-          await streamAdapter.cancel({ executionId: resumed.executionId });
+          await resumedAdapter.cancel({ executionId: resumed.executionId });
         },
         timeoutMs,
       );
@@ -282,7 +368,7 @@ async function runAcceptance(
               status: "failed",
               detail: `resume ${resultDetail(resumedResult)}`,
             };
-      const cleanup = await streamAdapter.cleanup({
+      const cleanup = await resumedAdapter.cleanup({
         executionId: resumed.executionId,
       });
       cases.resumeCleanup = cleanup.ok
@@ -290,14 +376,13 @@ async function runAcceptance(
         : { status: "failed", detail: cleanup.code };
     } else {
       await streamAdapter.cancel({ executionId: resumable.executionId });
-      const canceled = await collect(
-        resumable,
-        async () => undefined,
-        timeoutMs,
-      );
+      const canceled = await resumableResultTask;
       cases.resume = {
-        status: "skipped",
-        detail: `Claude did not emit a session ID before the cancellation window (${canceled.status})`,
+        status: "failed",
+        detail:
+          sessionId === null
+            ? `session_capture_failed: Claude did not emit a precise session ID before cancellation (${canceled.status})`
+            : `session_persistence_failed: Claude emitted ${sessionId} without a progress event before cancellation (${canceled.status})`,
       };
     }
   } catch (error) {

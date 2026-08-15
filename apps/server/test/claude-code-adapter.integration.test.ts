@@ -148,6 +148,69 @@ test("Claude adapter supports one-document JSON output and read-only reviewer to
   assert.ok(command?.args.includes("Edit,Write,NotebookEdit,Bash,PowerShell"));
 });
 
+test("Claude adapter accepts the JSON event-array envelope emitted by structured review", async () => {
+  const fake = new FakeProcess();
+  const adapter = new ClaudeCodeAdapter({
+    outputFormat: "json",
+    jsonSchema: {
+      type: "object",
+      required: ["summary", "verified", "provider"],
+    },
+    processFactory: () => fake,
+  });
+  const session = await adapter.start({ ...request, role: "reviewer" });
+  fake.stdout.write(
+    JSON.stringify([
+      {
+        type: "system",
+        subtype: "init",
+        session_id: "review-array-session",
+      },
+      { type: "assistant", message: { content: "reviewing" } },
+      {
+        type: "result",
+        session_id: "review-array-session",
+        structured_output: {
+          summary: "TASK-048 Claude acceptance",
+          verified: true,
+          provider: "deepseek-v4-pro",
+        },
+      },
+    ]),
+  );
+  fake.finish();
+  const collected = await collect(session);
+
+  assert.equal(collected.result.status, "completed");
+  assert.equal(session.sessionId, "review-array-session");
+  assert.equal(collected.result.output?.verified, true);
+  assert.equal(collected.result.output?.provider, "deepseek-v4-pro");
+});
+
+test("Claude adapter rejects malformed items inside a JSON event-array envelope", async () => {
+  const fake = new FakeProcess();
+  const adapter = new ClaudeCodeAdapter({
+    outputFormat: "json",
+    processFactory: () => fake,
+  });
+  const session = await adapter.start({ ...request, role: "reviewer" });
+  fake.stdout.write(
+    JSON.stringify([
+      { type: "system", session_id: "review-array-session" },
+      "not-an-event",
+    ]),
+  );
+  fake.finish();
+  const collected = await collect(session);
+
+  assert.equal(collected.result.status, "invalid_output");
+  assert.equal(collected.result.error?.code, "malformed_output");
+  assert.match(
+    collected.result.error?.message ?? "",
+    /event array item 2 must be a JSON object/,
+  );
+});
+
 test("Claude adapter resumes a precise session in a new runtime", async () => {
   const first = new FakeProcess();
   const second = new FakeProcess();

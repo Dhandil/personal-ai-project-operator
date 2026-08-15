@@ -189,7 +189,7 @@ export class ClaudeJsonParser {
     this.buffer += this.decoder.end();
     const records = this.readCompleteLines();
     if (this.buffer.trim().length > 0) {
-      records.push(this.parseDocument(this.buffer));
+      records.push(...this.parseDocument(this.buffer));
       this.buffer = "";
     }
     return records;
@@ -201,13 +201,13 @@ export class ClaudeJsonParser {
     while (newline >= 0) {
       const line = this.buffer.slice(0, newline).replace(/\r$/, "");
       this.buffer = this.buffer.slice(newline + 1);
-      if (line.trim().length > 0) records.push(this.parseDocument(line));
+      if (line.trim().length > 0) records.push(...this.parseDocument(line));
       newline = this.buffer.indexOf("\n");
     }
     return records;
   }
 
-  private parseDocument(text: string): ClaudeJsonRecord {
+  private parseDocument(text: string): ClaudeJsonRecord[] {
     this.line += 1;
     let value: unknown;
     try {
@@ -215,9 +215,24 @@ export class ClaudeJsonParser {
     } catch {
       throw new ClaudeJsonParseError("invalid JSON", this.line);
     }
-    if (!isObject(value)) {
-      throw new ClaudeJsonParseError("event must be a JSON object", this.line);
-    }
-    return { value, line: this.line };
+    if (isObject(value)) return [{ value, line: this.line }];
+    if (!Array.isArray(value))
+      throw new ClaudeJsonParseError(
+        "event must be a JSON object or an array of event objects",
+        this.line,
+      );
+    if (value.length === 0)
+      throw new ClaudeJsonParseError(
+        "event array must contain at least one event object",
+        this.line,
+      );
+    return value.map((item, index) => {
+      if (!isObject(item))
+        throw new ClaudeJsonParseError(
+          `event array item ${index + 1} must be a JSON object`,
+          this.line,
+        );
+      return { value: item, line: this.line };
+    });
   }
 }
