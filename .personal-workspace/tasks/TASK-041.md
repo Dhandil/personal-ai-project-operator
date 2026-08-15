@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-041
 title: 实现临时会话和官方删除清理
-status: in_review
+status: changes_requested
 goal_id: GOAL-008
 role: executor
 dependencies: [TASK-039, TASK-040]
-revision: 3
+revision: 4
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-14T19:31:21Z
+updated_at: 2026-08-15T03:42:46Z
 approval_id: APPROVAL-003
 target_branch: goal/GOAL-008
 unblocked_by: TASK-040
@@ -25,6 +25,12 @@ unblocked_by: TASK-040
 - Full `npm run verify`: 66 unit tests, 97 integration tests, 14 Playwright tests, formatting, lint, typecheck, and builds all passed.
 - Implementation commit: `fafd1fd` (`feat(agent-runtime): 实现临时会话和官方清理`, `Tasks: TASK-041`).
 - GOAL-009 was not executed or modified.
+
+## 独立复核
+
+- 专项测试 22/22、完整验证 66 单元、97 集成、14 Playwright 及质量检查均通过。
+- 发现 persistent 会话若终态前没有收到 `thread.started`，`sessionId` 为 `null` 时当前 cleanup 会跳过 `codex delete` 并继续报告成功，可能遗留保存会话。
+- 修复要求：persistent 会话缺失精确 session ID 时必须返回 `cleanup_failed`、`retryable: true`，保留执行记录并阻止目录清理；补充无 thread ID 回归测试后重新复核。
 
 # TASK-041：实现临时会话和官方删除清理
 
