@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-042
 title: 实现执行成果差异测试和证据校验
-status: in_review
+status: completed
 goal_id: GOAL-009
 role: executor
 dependencies: [TASK-033, TASK-036, TASK-039]
-revision: 3
+revision: 4
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-15T04:44:06Z
+updated_at: 2026-08-15T05:07:00Z
 approval_id: APPROVAL-004
 target_branch: goal/GOAL-009
 unblocked_by: GOAL-008
@@ -29,6 +29,13 @@ verification_report_id: REPORT-045
 
 - The validator does not transition tasks or approve results; TASK-043 may consume its structured report for read-only review after TASK-042 is accepted.
 - TASK-043 and all later tasks were not executed or modified.
+
+## 独立验收
+
+- REPORT-045 已由项目负责人接受。
+- 独立专项测试 8/8、完整 `npm run verify` 全部通过。
+- 成果校验保持只读，不直接改变任务状态；缺少证据、产物、通过测试或允许范围内差异时均不会通过。
+- TASK-043 依赖已满足并解锁为 `ready`，尚未执行。
 
 # TASK-042：实现执行成果、差异、测试和证据校验
 

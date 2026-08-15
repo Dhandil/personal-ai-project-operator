@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "task_id": "TASK-031",
-  "generated_at": "2026-08-15T05:02:44.996Z",
-  "source_manifest_hash": "1eee5e78f078885761996c21f02bb7febea1b60d3aa9cb6214cf2b13c7095f45",
+  "generated_at": "2026-08-15T05:07:54.397Z",
+  "source_manifest_hash": "09e17a711d525031a5e7298a5815bc6f51bd130bda960b98d421067e9b88c78b",
   "current_source_stage": "03-spec",
   "current_goal_id": "GOAL-009",
-  "current_task_id": "TASK-042",
+  "current_task_id": "TASK-043",
   "source_files": [
     {
       "relativePath": ".personal-workspace/approvals/APPROVAL-001.md",
@@ -694,14 +694,14 @@
     {
       "relativePath": ".personal-workspace/reports/REPORT-045.md",
       "kind": "report",
-      "hash": "1ecdfd3854cc4173badd7377487e5f7d3cdd4f6498b0b1957acf5099fcc96613",
+      "hash": "d300fdc11092c6bb34f13c3846208720ce2c39048008d491eab461554e4ea01a",
       "id": "REPORT-045",
       "title": "TASK-042 execution result and evidence validation report",
-      "status": "pending_acceptance",
+      "status": "accepted",
       "stage": null,
       "goalId": "GOAL-009",
       "generated": false,
-      "revision": 1
+      "revision": 2
     },
     {
       "relativePath": ".personal-workspace/stages/01-idea/01-idea.md",
@@ -1234,26 +1234,26 @@
     {
       "relativePath": ".personal-workspace/tasks/TASK-042.md",
       "kind": "task",
-      "hash": "10895ced088be7196cb71156f107808a1bebee017b35738818c8ff75d2223ab9",
+      "hash": "a0f2ee2b738e7031f9775e2b1fc8641c91441e0d7cd00b6058198e60b81f9005",
       "id": "TASK-042",
       "title": "实现执行成果差异测试和证据校验",
-      "status": "in_review",
+      "status": "completed",
       "stage": null,
       "goalId": "GOAL-009",
       "generated": false,
-      "revision": 3
+      "revision": 4
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-043.md",
       "kind": "task",
-      "hash": "84126cec01b49d0c70e518d8047b4b4b3dad734ddb046ce4212931dc8f4c347e",
+      "hash": "098434d19ac6318317e82ce364c50c4ac9c85a21dda317e8dfeb5c517f1c16ce",
       "id": "TASK-043",
       "title": "实现只读审核及结构化审核报告",
-      "status": "draft",
+      "status": "ready",
       "stage": null,
       "goalId": "GOAL-009",
       "generated": false,
-      "revision": 1
+      "revision": 2
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-044.md",

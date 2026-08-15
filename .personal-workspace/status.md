@@ -1,22 +1,22 @@
 ---
 schema_version: 1
 document_type: status_snapshot
-revision: 6
-generated_at: 2026-08-15T05:02:44.996Z
-updated_at: 2026-08-15T05:02:44.996Z
+revision: 7
+generated_at: 2026-08-15T05:07:54.397Z
+updated_at: 2026-08-15T05:07:54.397Z
 source: formal_project_facts
 status: in_progress
 current_stage: 03-spec
 current_goal: GOAL-009
-current_task: TASK-042
-source_manifest_hash: 1eee5e78f078885761996c21f02bb7febea1b60d3aa9cb6214cf2b13c7095f45
+current_task: TASK-043
+source_manifest_hash: 09e17a711d525031a5e7298a5815bc6f51bd130bda960b98d421067e9b88c78b
 ---
 # 项目状态
 
 - 项目：个人 AI 项目运营工具
 - 当前正式源阶段：03-spec
 - 当前目标：GOAL-009
-- 当前任务：TASK-042
+- 当前任务：TASK-043
 - 本文件由正式项目事实自动生成，不是独立事实源。
 
 ## 当前获批短期目标
@@ -64,9 +64,10 @@ source_manifest_hash: 1eee5e78f078885761996c21f02bb7febea1b60d3aa9cb6214cf2b13c7
 - TASK-039 实现 codex exec 启动及 JSONL 事件解析
 - TASK-040 实现续接取消中断标记和恢复报告
 - TASK-041 实现临时会话和官方删除清理
+- TASK-042 实现执行成果差异测试和证据校验
 
 ## 当前任务
-- TASK-042 实现执行成果差异测试和证据校验 — in_review
+- TASK-043 实现只读审核及结构化审核报告 — ready
 
 ## Blocker、风险和待决策事项
 - 以正式问题、审批和决策记录为准。
@@ -75,7 +76,7 @@ source_manifest_hash: 1eee5e78f078885761996c21f02bb7febea1b60d3aa9cb6214cf2b13c7
 - 已从 108 个正式文件重建导入清单。
 
 ## 推荐下一步
-- 由项目负责人继续处理 TASK-042。
+- 由项目负责人继续处理 TASK-043。
 
 ## 用户待办
 - 验收 TASK-031 的 Dogfooding 报告后，再决定是否进入后续目标。

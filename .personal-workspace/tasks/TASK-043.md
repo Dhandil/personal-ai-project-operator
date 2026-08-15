@@ -2,13 +2,16 @@
 schema_version: 1
 id: TASK-043
 title: 实现只读审核及结构化审核报告
-status: draft
+status: ready
 goal_id: GOAL-009
 role: reviewer
 dependencies: [TASK-037, TASK-039, TASK-042]
-revision: 1
+revision: 2
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-13T12:29:07Z
+updated_at: 2026-08-15T05:07:00Z
+approval_id: APPROVAL-004
+target_branch: goal/GOAL-009
+unblocked_by: TASK-042
 ---
 
 # TASK-043：实现只读审核及结构化审核报告
@@ -34,3 +37,9 @@ Fake Adapter 审核集成测试及只读违规场景。
 ## 边界与交接
 
 审核者只能报告，不得修复。完成后交给 TASK-044。
+
+## 解锁记录
+
+- GOAL-009 已获 APPROVAL-004 批准。
+- TASK-037、TASK-039 和 TASK-042 依赖均已完成独立验收。
+- TASK-043 现为 `ready`，可由实现对话开始执行；尚未执行或修改实现文件。
