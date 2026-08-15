@@ -301,6 +301,59 @@ test("status can be deleted and rebuilt from the unchanged formal inventory", as
   }
 });
 
+test("current import rebuilds an existing workflow without historical metadata", async () => {
+  const fixture = await createFixture();
+  try {
+    const service = new DogfoodingService(fixture.root, {
+      now: () => fixedTimestamp,
+    });
+    const first = await service.importAndRebuild();
+    assert.equal(first.ok, true);
+    if (!first.ok) throw new Error(first.error.message);
+
+    const repository = new GovernanceRepository(fixture.root);
+    const task = await repository.read(".personal-workspace/tasks/TASK-031.md");
+    assert.equal(task.ok, true);
+    if (!task.ok) throw new Error(task.error.message);
+    const taskUpdated = await repository.write(
+      ".personal-workspace/tasks/TASK-031.md",
+      {
+        frontMatter: {
+          ...task.value.document.frontMatter,
+          status: "completed",
+          revision: task.value.version.revision + 1,
+        },
+        body: task.value.document.body,
+      },
+      task.value.version,
+    );
+    assert.equal(taskUpdated.ok, true);
+
+    const second = await service.importAndRebuild();
+    assert.equal(second.ok, true);
+    if (!second.ok) throw new Error(second.error.message);
+    assert.deepEqual(second.value.rebuiltFiles, [
+      ".personal-workspace/workflow.md",
+      ".personal-workspace/status.md",
+      ".personal-workspace/tasks/todo.md",
+      "tasks/todo.md",
+      dogfoodingManifestPath,
+    ]);
+
+    const workflow = await repository.read(".personal-workspace/workflow.md");
+    assert.equal(workflow.ok, true);
+    if (!workflow.ok) throw new Error(workflow.error.message);
+    assert.equal(workflow.value.version.revision, 2);
+    assert.equal(workflow.value.document.frontMatter.snapshot_kind, undefined);
+    assert.equal(
+      workflow.value.document.frontMatter.current_task_id,
+      undefined,
+    );
+  } finally {
+    await rm(fixture.root, { recursive: true, force: true });
+  }
+});
+
 test("historical TASK-031 snapshot keeps report and generated views aligned", async () => {
   const fixture = await createFixture();
   try {

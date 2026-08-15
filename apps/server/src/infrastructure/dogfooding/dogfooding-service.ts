@@ -739,13 +739,16 @@ export class DogfoodingService {
     if (!created.ok) return created;
     if (created.value) createdFiles.push(".personal-workspace/project.md");
 
-    const workflow = await this.writeIfMissing(
+    const workflow = await this.writeCurrentGenerated(
       repository,
       ".personal-workspace/workflow.md",
       workflowDocument(inventory, now),
+      now,
     );
     if (!workflow.ok) return workflow;
-    if (workflow.value) createdFiles.push(".personal-workspace/workflow.md");
+    (workflow.value === "created" ? createdFiles : rebuiltFiles).push(
+      ".personal-workspace/workflow.md",
+    );
 
     const statusCurrent = await repository.read(
       ".personal-workspace/status.md",
@@ -1038,6 +1041,55 @@ export class DogfoodingService {
         written.error.details,
       );
     return { ok: true, value: true };
+  }
+
+  private async writeCurrentGenerated(
+    repository: GovernanceRepository,
+    relativePath: string,
+    document: GovernanceDocument,
+    now: UtcIsoTimestamp,
+  ): Promise<DogfoodingResult<"created" | "rebuilt">> {
+    const current = await repository.read(relativePath);
+    if (!current.ok) {
+      if (current.error.code !== "not_found")
+        return failure(
+          "write_failed",
+          current.error.message,
+          current.error.details,
+        );
+      const written = await repository.write(relativePath, document, null);
+      if (!written.ok)
+        return failure(
+          "write_failed",
+          written.error.message,
+          written.error.details,
+        );
+      return { ok: true, value: "created" };
+    }
+
+    const nextDocument: GovernanceDocument = {
+      frontMatter: {
+        ...document.frontMatter,
+        revision: current.value.version.revision + 1,
+        created_at:
+          frontMatterString(current.value.document, "created_at") ??
+          document.frontMatter.created_at,
+        updated_at: now,
+      },
+      body: document.body,
+    };
+    const written = await repository.write(
+      relativePath,
+      nextDocument,
+      current.value.version,
+    );
+    if (!written.ok)
+      return failure(
+        "write_failed",
+        written.error.message,
+        written.error.details,
+      );
+    return { ok: true, value: "rebuilt" };
   }
 
   private async writeHistoricalGenerated(

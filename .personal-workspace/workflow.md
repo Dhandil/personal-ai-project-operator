@@ -1,9 +1,9 @@
 ---
 schema_version: 1
 document_type: workflow
-revision: 3
+revision: 4
 created_at: 2026-08-14T13:33:42.399Z
-updated_at: 2026-08-14T13:33:42.399Z
+updated_at: 2026-08-15T05:02:44.996Z
 current_stage: execution
 source_stage: 03-spec
 stages:
@@ -47,21 +47,6 @@ stages:
     title: 执行
     order: 10
     status: in_progress
-current_source_stage: 03-spec
-current_goal_id: GOAL-006
-current_task_id: TASK-031
-source_manifest_hash: 495f7982cfe5e678d79274965cf09e13f15c4aa9ea145d0a51f6a32de520da35
-source_counts:
-  stages: 3
-  goals: 9
-  tasks: 47
-  approvals: 1
-  reports: 31
-snapshot_kind: historical_task_snapshot
-snapshot_task_id: TASK-031
-snapshot_boundary: TASK-031 dogfooding 执行前、TASK-031 完成状态写回前；不包含 TASK-035 及其后续事实
-snapshot_at: 2026-08-14T12:35:37.289Z
-snapshot_label: TASK-031 首次自举导入
 ---
 # 默认工作流
 

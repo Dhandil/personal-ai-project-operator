@@ -1,17 +1,53 @@
 {
   "schema_version": 1,
   "task_id": "TASK-031",
-  "generated_at": "2026-08-14T13:33:42.399Z",
-  "source_manifest_hash": "495f7982cfe5e678d79274965cf09e13f15c4aa9ea145d0a51f6a32de520da35",
+  "generated_at": "2026-08-15T05:02:44.996Z",
+  "source_manifest_hash": "1eee5e78f078885761996c21f02bb7febea1b60d3aa9cb6214cf2b13c7095f45",
   "current_source_stage": "03-spec",
-  "current_goal_id": "GOAL-006",
-  "current_task_id": "TASK-031",
+  "current_goal_id": "GOAL-009",
+  "current_task_id": "TASK-042",
   "source_files": [
     {
       "relativePath": ".personal-workspace/approvals/APPROVAL-001.md",
       "kind": "approval",
       "hash": "9c7d322f8315c6316b05019215a1ea6fd366abb1662e6a40622d182072a50983",
       "id": "APPROVAL-001",
+      "title": null,
+      "status": "approved",
+      "stage": null,
+      "goalId": null,
+      "generated": false,
+      "revision": 1
+    },
+    {
+      "relativePath": ".personal-workspace/approvals/APPROVAL-002.md",
+      "kind": "approval",
+      "hash": "2501e2b6efc35e52bcd78d6345e2d28451e465abaf221ab444c42ff3d3daa89d",
+      "id": "APPROVAL-002",
+      "title": null,
+      "status": "approved",
+      "stage": null,
+      "goalId": null,
+      "generated": false,
+      "revision": 1
+    },
+    {
+      "relativePath": ".personal-workspace/approvals/APPROVAL-003.md",
+      "kind": "approval",
+      "hash": "0dbbb7fc090bdc480ab1bec1814c5635ef3af1bdfc3ef5012d6fec6c679fbce4",
+      "id": "APPROVAL-003",
+      "title": null,
+      "status": "approved",
+      "stage": null,
+      "goalId": null,
+      "generated": false,
+      "revision": 1
+    },
+    {
+      "relativePath": ".personal-workspace/approvals/APPROVAL-004.md",
+      "kind": "approval",
+      "hash": "bf954f296585de94b45936bd7bce86c12dbde5a85baf5d72064e7456a02f84dd",
+      "id": "APPROVAL-004",
       "title": null,
       "status": "approved",
       "stage": null,
@@ -94,38 +130,38 @@
     {
       "relativePath": ".personal-workspace/goals/GOAL-007.md",
       "kind": "goal",
-      "hash": "9ae4a481554cb7af9f90d7ca4dc09aeec2ae1afb50490b314c0e4f5638e33331",
+      "hash": "c77697a7e5e86aed5e37b51fc31edc513c4b0a249af323335053e56e89cd22f9",
       "id": "GOAL-007",
       "title": "建立 Git 执行隔离",
-      "status": "draft",
+      "status": "completed",
       "stage": null,
       "goalId": null,
       "generated": false,
-      "revision": 1
+      "revision": 4
     },
     {
       "relativePath": ".personal-workspace/goals/GOAL-008.md",
       "kind": "goal",
-      "hash": "2f00d21205cd515b76d3c9ed838794b9d710ee73137351c6b897b281e13b0443",
+      "hash": "24d213ba406fe2f6b176d15253c1682a29c422235ef2bcca9e5ef6490ad6346c",
       "id": "GOAL-008",
       "title": "接入 Codex CLI",
-      "status": "draft",
+      "status": "completed",
       "stage": null,
       "goalId": null,
       "generated": false,
-      "revision": 1
+      "revision": 4
     },
     {
       "relativePath": ".personal-workspace/goals/GOAL-009.md",
       "kind": "goal",
-      "hash": "941ff8f733b16bb7faf2aca58494392e6ec904cf82c0a0686e6a2f4cd8668f2f",
+      "hash": "7c38b14ef6e5c6ccd46efdb2101aad484b603bf146fcd5af1d98f567bcfb236f",
       "id": "GOAL-009",
       "title": "完成自动执行审核和交接",
-      "status": "draft",
+      "status": "in_progress",
       "stage": null,
       "goalId": null,
       "generated": false,
-      "revision": 1
+      "revision": 2
     },
     {
       "relativePath": ".personal-workspace/reports/REPORT-001.md",
@@ -496,6 +532,174 @@
       "status": "accepted",
       "stage": null,
       "goalId": "GOAL-006",
+      "generated": false,
+      "revision": 1
+    },
+    {
+      "relativePath": ".personal-workspace/reports/REPORT-032.md",
+      "kind": "report",
+      "hash": "eacc5bed941fc2ade14154295e8771da0d182f487eeb3e061c1ea957aa8c9c9c",
+      "id": "REPORT-032",
+      "title": "TASK-031 Dogfooding 导入与自举报告",
+      "status": "accepted",
+      "stage": null,
+      "goalId": "GOAL-006",
+      "generated": true,
+      "revision": 4
+    },
+    {
+      "relativePath": ".personal-workspace/reports/REPORT-033.md",
+      "kind": "report",
+      "hash": "d4e2a3af72f090d8238bce31f6be3ef2062f2766060b5c446e13a0a994a11e21",
+      "id": "REPORT-033",
+      "title": "TASK-035 Agent Runtime 接口和模拟 Adapter 验证报告",
+      "status": "accepted",
+      "stage": null,
+      "goalId": "GOAL-008",
+      "generated": false,
+      "revision": 2
+    },
+    {
+      "relativePath": ".personal-workspace/reports/REPORT-034.md",
+      "kind": "report",
+      "hash": "fcbc1f051d9d7e2695f295dbe6cd1f9b98ad0f33b431b3f7a3929702ac4fc6ac",
+      "id": "REPORT-034",
+      "title": "TASK-032 目标分支、任务分支和 Worktree 生命周期验证报告",
+      "status": "accepted",
+      "stage": null,
+      "goalId": "GOAL-007",
+      "generated": false,
+      "revision": 2
+    },
+    {
+      "relativePath": ".personal-workspace/reports/REPORT-035.md",
+      "kind": "report",
+      "hash": "03fc11448843b544f06963bc253dfac583ba94fed1fa38708586fe8c849b8451",
+      "id": "REPORT-035",
+      "title": "TASK-033 差异、允许路径和禁止动作验证报告",
+      "status": "accepted",
+      "stage": null,
+      "goalId": "GOAL-007",
+      "generated": false,
+      "revision": 2
+    },
+    {
+      "relativePath": ".personal-workspace/reports/REPORT-036.md",
+      "kind": "report",
+      "hash": "fe2688f453d65540c7b3381a0731dc08132b0797b47ee01f827158cd3051a043",
+      "id": "REPORT-036",
+      "title": "TASK-034 规范提交、目标分支合并和主分支审批门验证报告",
+      "status": "accepted",
+      "stage": null,
+      "goalId": "GOAL-007",
+      "generated": false,
+      "revision": 4
+    },
+    {
+      "relativePath": ".personal-workspace/reports/REPORT-037.md",
+      "kind": "report",
+      "hash": "55a6b02bcc5103956428d183192bf0726aff523d28cbe052df4d21c2753e3070",
+      "id": "REPORT-037",
+      "title": "GOAL-007 Git 执行隔离检查点报告",
+      "status": "accepted",
+      "stage": null,
+      "goalId": "GOAL-007",
+      "generated": false,
+      "revision": 2
+    },
+    {
+      "relativePath": ".personal-workspace/reports/REPORT-038.md",
+      "kind": "report",
+      "hash": "ea006cf6aa86a0407fedd33b20fea38e6e43d193754c6a8298e052b8292c52b0",
+      "id": "REPORT-038",
+      "title": "TASK-036 单执行链协调器验证报告",
+      "status": "accepted",
+      "stage": null,
+      "goalId": "GOAL-008",
+      "generated": false,
+      "revision": 1
+    },
+    {
+      "relativePath": ".personal-workspace/reports/REPORT-039.md",
+      "kind": "report",
+      "hash": "a676cd7a4377551e2b079cf60a3a6fdc0553f360954d623320a716cd37e61f8e",
+      "id": "REPORT-039",
+      "title": "TASK-037 角色任务包和结构化输出 Schema 验证报告",
+      "status": "accepted",
+      "stage": null,
+      "goalId": "GOAL-008",
+      "generated": false,
+      "revision": 1
+    },
+    {
+      "relativePath": ".personal-workspace/reports/REPORT-040.md",
+      "kind": "report",
+      "hash": "14e33c9ef9741ec92739c631887c5845ea7ecc041226a2175e96c431d02e0491",
+      "id": "REPORT-040",
+      "title": "TASK-038 Codex CLI 环境与沙箱能力检查验证报告",
+      "status": "accepted",
+      "stage": null,
+      "goalId": "GOAL-008",
+      "generated": false,
+      "revision": 4
+    },
+    {
+      "relativePath": ".personal-workspace/reports/REPORT-041.md",
+      "kind": "report",
+      "hash": "2450d006e3488665c7f540c73b2cb0456bccebd44ac951e80e64ced52a9d917e",
+      "id": "REPORT-041",
+      "title": "TASK-039 Codex exec 启动及 JSONL 事件解析验证报告",
+      "status": "accepted",
+      "stage": null,
+      "goalId": "GOAL-008",
+      "generated": false,
+      "revision": 2
+    },
+    {
+      "relativePath": ".personal-workspace/reports/REPORT-042.md",
+      "kind": "report",
+      "hash": "0366d5ff7eea38c118c17669f7f05c64424a401c27263e44150b5d93a6104f00",
+      "id": "REPORT-042",
+      "title": "TASK-040 续接取消中断标记及恢复报告验证报告",
+      "status": "accepted",
+      "stage": null,
+      "goalId": "GOAL-008",
+      "generated": false,
+      "revision": 4
+    },
+    {
+      "relativePath": ".personal-workspace/reports/REPORT-043.md",
+      "kind": "report",
+      "hash": "0c7cda291e087d87a0f73262d1e7555f92df8c6aadd306c4ca357e848e2cc368",
+      "id": "REPORT-043",
+      "title": "TASK-041 临时会话和官方删除清理验证报告",
+      "status": "accepted",
+      "stage": null,
+      "goalId": "GOAL-008",
+      "generated": false,
+      "revision": 4
+    },
+    {
+      "relativePath": ".personal-workspace/reports/REPORT-044.md",
+      "kind": "report",
+      "hash": "a3daa5a4228e1db61673d02088869e52e5a455f2ae43ef7f5a2001213fdbae9c",
+      "id": "REPORT-044",
+      "title": "GOAL-008 Codex CLI 接入检查点报告",
+      "status": "accepted",
+      "stage": null,
+      "goalId": "GOAL-008",
+      "generated": false,
+      "revision": 2
+    },
+    {
+      "relativePath": ".personal-workspace/reports/REPORT-045.md",
+      "kind": "report",
+      "hash": "1ecdfd3854cc4173badd7377487e5f7d3cdd4f6498b0b1957acf5099fcc96613",
+      "id": "REPORT-045",
+      "title": "TASK-042 execution result and evidence validation report",
+      "status": "pending_acceptance",
+      "stage": null,
+      "goalId": "GOAL-009",
       "generated": false,
       "revision": 1
     },
@@ -898,146 +1102,146 @@
     {
       "relativePath": ".personal-workspace/tasks/TASK-031.md",
       "kind": "task",
-      "hash": "5c898f01a76f3bbe8be25e088ce6614bbd715ff33815d67aed11204bd77e8986",
+      "hash": "aa163c0ab132a5d4d8bca70e71ed22e3ed0a9a5d7b7f312ccfacd4c881dcaf5c",
       "id": "TASK-031",
       "title": "使用本项目治理本项目",
-      "status": "ready",
+      "status": "completed",
       "stage": null,
       "goalId": "GOAL-006",
       "generated": false,
-      "revision": 2
+      "revision": 4
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-032.md",
       "kind": "task",
-      "hash": "5183be05acacb6cf9254cba3c3b6ed259fa6957ecb9343e6d2fdf9d8965ece23",
+      "hash": "f6305b9d615556a64546257a02ca84e011e2932452e5afc11c9ec9cf6ed6a8a7",
       "id": "TASK-032",
       "title": "实现目标分支任务分支和 Worktree 生命周期",
-      "status": "draft",
+      "status": "completed",
       "stage": null,
       "goalId": "GOAL-007",
       "generated": false,
-      "revision": 1
+      "revision": 4
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-033.md",
       "kind": "task",
-      "hash": "efaacd906ee76d9d03beb5652ec58eb65bd249ad85835b6df67a1db61fc53e13",
+      "hash": "35fda634f0584bd3aa2b05b762d2184de15053dc8318efdc4bf0462e7e4b4dfd",
       "id": "TASK-033",
       "title": "实现差异允许路径和禁止动作校验",
-      "status": "draft",
+      "status": "completed",
       "stage": null,
       "goalId": "GOAL-007",
       "generated": false,
-      "revision": 1
+      "revision": 4
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-034.md",
       "kind": "task",
-      "hash": "36930c34f246e35737dedc9dc25c56abcb0923921f4ed6819700b9c556f253e4",
+      "hash": "394a3f3d81edc5d4044a4dac8bfbb5ec0916ebd426f876f84bd484cebb415f33",
       "id": "TASK-034",
       "title": "实现规范提交目标分支合并和主分支审批门",
-      "status": "draft",
+      "status": "completed",
       "stage": null,
       "goalId": "GOAL-007",
       "generated": false,
-      "revision": 1
+      "revision": 5
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-035.md",
       "kind": "task",
-      "hash": "f037383c544c7af7e43a080deb64f8396a6ec3cb8fa17d2e7979c8cfc5969a63",
+      "hash": "83eae69ce0ed3219cb4192a5d491b7d07813b2de11cc0415dec7942a42713fed",
       "id": "TASK-035",
       "title": "定义 Agent Runtime 接口和模拟 Adapter",
-      "status": "ready",
+      "status": "completed",
       "stage": null,
       "goalId": "GOAL-008",
       "generated": false,
-      "revision": 2
+      "revision": 4
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-036.md",
       "kind": "task",
-      "hash": "bf8fa7f71bbebd6a38b929378daf3eb773134f320a2e0a7ae28d7ee7b93b11da",
+      "hash": "445e0bd3e64402be93c75db25d78613d92a9e76748a6679cc518bd9ca5a2f2dc",
       "id": "TASK-036",
       "title": "实现单执行链协调器",
-      "status": "draft",
+      "status": "completed",
       "stage": null,
       "goalId": "GOAL-008",
       "generated": false,
-      "revision": 1
+      "revision": 5
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-037.md",
       "kind": "task",
-      "hash": "5729973ba79a589b741fa3cc77fc89e55ae658e8c9dd4d3672a4cb9ba607d96c",
+      "hash": "f2a6a1cfc2f284bc316851ebbb377d15c73ca634ae641e51d95bb6fda666f7de",
       "id": "TASK-037",
       "title": "生成角色任务包和结构化输出 Schema",
-      "status": "draft",
+      "status": "completed",
       "stage": null,
       "goalId": "GOAL-008",
       "generated": false,
-      "revision": 1
+      "revision": 5
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-038.md",
       "kind": "task",
-      "hash": "92f82891916babc594450bece63debc3be0ac527c0cc214ae5d42476f2a31d27",
+      "hash": "8e8038e69092bde324af28d52efdcd3e9bd066bb410775791945e271c4aff781",
       "id": "TASK-038",
       "title": "实现 Codex CLI 环境与沙箱能力检查",
-      "status": "draft",
+      "status": "completed",
       "stage": null,
       "goalId": "GOAL-008",
       "generated": false,
-      "revision": 1
+      "revision": 7
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-039.md",
       "kind": "task",
-      "hash": "53cab442be721d847fb4a0e62e3c1e6731121c4bd15d537847ae383b60ad21ce",
+      "hash": "38d28918aa0d28906cd5fa83d8964957a470294ab266809164b42d110928b46b",
       "id": "TASK-039",
       "title": "实现 codex exec 启动及 JSONL 事件解析",
-      "status": "draft",
+      "status": "completed",
       "stage": null,
       "goalId": "GOAL-008",
       "generated": false,
-      "revision": 1
+      "revision": 4
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-040.md",
       "kind": "task",
-      "hash": "773ec5598b61a347d12b4ec8154b9c9f8e6963b438dc15e09a308f49f67c4af8",
+      "hash": "962f34aed15d305bd211ee6f558ff2ccf034ef0e248003dfd5771ecf048ad8db",
       "id": "TASK-040",
       "title": "实现续接取消中断标记和恢复报告",
-      "status": "draft",
+      "status": "completed",
       "stage": null,
       "goalId": "GOAL-008",
       "generated": false,
-      "revision": 1
+      "revision": 6
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-041.md",
       "kind": "task",
-      "hash": "35264d5ff6110c0033867c25902a615a3edc056807f3451cbfc245e97e53eb6f",
+      "hash": "912b62fbeb1082ea0a7f05122ee5d59cb86032192eda628ca8b5f80e019ce435",
       "id": "TASK-041",
       "title": "实现临时会话和官方删除清理",
-      "status": "draft",
+      "status": "completed",
       "stage": null,
       "goalId": "GOAL-008",
       "generated": false,
-      "revision": 1
+      "revision": 6
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-042.md",
       "kind": "task",
-      "hash": "7b4f741a7f45b8744d11aa3a69a7876626e9d47eaea85f1f0135ea9faebff4db",
+      "hash": "10895ced088be7196cb71156f107808a1bebee017b35738818c8ff75d2223ab9",
       "id": "TASK-042",
       "title": "实现执行成果差异测试和证据校验",
-      "status": "draft",
+      "status": "in_review",
       "stage": null,
       "goalId": "GOAL-009",
       "generated": false,
-      "revision": 1
+      "revision": 3
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-043.md",
@@ -1099,10 +1303,5 @@
       "generated": false,
       "revision": 1
     }
-  ],
-  "snapshot_kind": "historical_task_snapshot",
-  "snapshot_task_id": "TASK-031",
-  "snapshot_boundary": "TASK-031 dogfooding 执行前、TASK-031 完成状态写回前；不包含 TASK-035 及其后续事实",
-  "snapshot_at": "2026-08-14T12:35:37.289Z",
-  "snapshot_label": "TASK-031 首次自举导入"
+  ]
 }
