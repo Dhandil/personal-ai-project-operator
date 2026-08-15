@@ -18,6 +18,8 @@ import { ClaudeCliPreflightService } from "./claude-cli-preflight.js";
 
 const DEFAULT_ACCEPTANCE_TIMEOUT_MS = 120_000;
 const MIN_ACCEPTANCE_TIMEOUT_MS = 90_000;
+const TEMPORARY_CLEANUP_ATTEMPTS = 8;
+const TEMPORARY_CLEANUP_DELAY_MS = 250;
 
 const execFileAsync = promisify(execFile);
 const outputSchema = {
@@ -62,6 +64,36 @@ function configuredAcceptanceTimeout(): number {
   return Number.isFinite(value) && value >= MIN_ACCEPTANCE_TIMEOUT_MS
     ? Math.floor(value)
     : DEFAULT_ACCEPTANCE_TIMEOUT_MS;
+}
+
+function delay(milliseconds: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
+}
+
+async function cleanupTemporaryProject(root: string): Promise<CaseResult> {
+  let lastError: unknown = null;
+  for (let attempt = 1; attempt <= TEMPORARY_CLEANUP_ATTEMPTS; attempt += 1) {
+    try {
+      await rm(root, {
+        recursive: true,
+        force: true,
+        maxRetries: 1,
+        retryDelay: TEMPORARY_CLEANUP_DELAY_MS,
+      });
+      return {
+        status: "passed",
+        detail: `temporary project removed after ${attempt} attempt(s)`,
+      };
+    } catch (error) {
+      lastError = error;
+      if (attempt < TEMPORARY_CLEANUP_ATTEMPTS)
+        await delay(TEMPORARY_CLEANUP_DELAY_MS * attempt);
+    }
+  }
+  return {
+    status: "failed",
+    detail: `cleanup_failed attempts=${TEMPORARY_CLEANUP_ATTEMPTS} ${safeError(lastError)}`,
+  };
 }
 
 async function collect(
@@ -230,6 +262,7 @@ async function runAcceptance(
     const sessionId = resumable.sessionId;
     if (sessionId !== null) {
       await streamAdapter.cancel({ executionId: resumable.executionId });
+      await collect(resumable, async () => undefined, timeoutMs);
       const resumed = await streamAdapter.resume({
         executionId: resumable.executionId,
         sessionId,
@@ -256,16 +289,21 @@ async function runAcceptance(
         ? { status: "passed", detail: "resumed temporary session cleaned" }
         : { status: "failed", detail: cleanup.code };
     } else {
+      await streamAdapter.cancel({ executionId: resumable.executionId });
+      const canceled = await collect(
+        resumable,
+        async () => undefined,
+        timeoutMs,
+      );
       cases.resume = {
         status: "skipped",
-        detail:
-          "Claude did not emit a session ID before the cancellation window",
+        detail: `Claude did not emit a session ID before the cancellation window (${canceled.status})`,
       };
     }
   } catch (error) {
     cases.runtime = { status: "failed", detail: safeError(error) };
   } finally {
-    await rm(root, { recursive: true, force: true });
+    cases.temporaryProjectCleanup = await cleanupTemporaryProject(root);
   }
   const failed = Object.values(cases).some((item) => item.status === "failed");
   return {
