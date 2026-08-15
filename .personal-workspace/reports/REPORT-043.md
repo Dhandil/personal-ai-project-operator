@@ -3,20 +3,35 @@ schema_version: 1
 document_type: report
 id: REPORT-043
 title: TASK-041 临时会话和官方删除清理验证报告
-status: changes_requested
+status: in_review
 report_type: task_verification
-acceptance_state: changes_requested
+acceptance_state: pending_user_acceptance
 task_id: TASK-041
 goal_id: GOAL-008
-revision: 2
+revision: 3
 created_at: 2026-08-14T19:31:21Z
-updated_at: 2026-08-15T03:42:46Z
+updated_at: 2026-08-15T03:49:51Z
 verified_by: implementation_agent
-verified_commit: fafd1fd
+verified_commit: 543ef43
 verification_commands:
   - npx tsx --test apps/server/test/codex-cli-adapter.integration.test.ts apps/server/test/execution-coordinator.integration.test.ts apps/server/test/fake-agent.integration.test.ts
   - npm run verify
 ---
+
+## TASK-041 repair verification
+
+The persistent-session cleanup defect is fixed. When a terminal persistent execution has no precise `sessionId` from `thread.started`, `CodexCliAdapter.cleanup` now returns `cleanup_failed` with `retryable: true` before invoking `codex delete` or cleaning the application runtime directory. The in-memory execution record is retained for a later retry.
+
+Evidence:
+
+- Added regression: `persistent cleanup without thread.started fails and preserves the runtime directory`.
+- The regression confirms no deletion command is spawned, the runtime directory remains present, and a second cleanup attempt still sees the execution record.
+- Existing path-protection coverage now supplies a thread ID so it continues to test the intended boundary independently.
+- TASK-041 specialized regression set: 23/23 passed.
+- Full `npm run verify`: 66 unit tests, 98 integration tests, 14 Playwright tests, formatting, lint, typecheck, and builds all passed.
+- Repair commit: `543ef43` (`fix(agent-runtime): 阻止无会话 ID的清理`, `Tasks: TASK-041`).
+
+Scope confirmation: GOAL-009 was not executed or modified. This report is resubmitted for independent user acceptance; after acceptance, mark `REPORT-043` as `accepted` and `TASK-041` as `completed`.
 
 # REPORT-043：TASK-041 临时会话和官方删除清理验证报告
 

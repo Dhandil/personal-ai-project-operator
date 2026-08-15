@@ -2,17 +2,26 @@
 schema_version: 1
 id: TASK-041
 title: 实现临时会话和官方删除清理
-status: changes_requested
+status: in_review
 goal_id: GOAL-008
 role: executor
 dependencies: [TASK-039, TASK-040]
-revision: 4
+revision: 5
 created_at: 2026-08-13T12:29:07Z
-updated_at: 2026-08-15T03:42:46Z
+updated_at: 2026-08-15T03:49:51Z
 approval_id: APPROVAL-003
 target_branch: goal/GOAL-008
 unblocked_by: TASK-040
 ---
+
+## TASK-041 repair verification
+
+- Persistent cleanup now fails with `cleanup_failed` and `retryable: true` when no precise `thread.started` session ID was captured.
+- This failure returns before official deletion or application runtime-directory cleanup, and the execution record remains available for retry.
+- Added a regression test with a terminal result and no `thread.started`; it verifies the runtime directory and execution remain preserved.
+- TASK-041 repair tests: 23/23 specialized tests passed; full verify passed with 66 unit, 98 integration, and 14 Playwright tests.
+- Repair commit: `543ef43` (`fix(agent-runtime): 阻止无会话 ID的清理`, `Tasks: TASK-041`).
+- GOAL-009 was not executed or modified.
 
 ## TASK-041 verification evidence
 
