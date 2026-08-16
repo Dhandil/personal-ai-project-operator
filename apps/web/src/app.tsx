@@ -13,6 +13,10 @@ import { TaskPage } from "./task-page";
 import { ApprovalPage } from "./approval-page";
 import { HistoryPageView } from "./history-page";
 import { ExecutionConsolePage } from "./execution-console-page";
+import {
+  requestProjectList,
+  type ProjectOverviewItem,
+} from "./project-overview";
 
 export type AppRoute =
   | "home"
@@ -29,45 +33,62 @@ export type AppRoute =
   | "history"
   | "execution";
 
-export type NavigationGroup = Readonly<{
+export type NavigationModule =
+  "workspace" | "projects" | "execution" | "governance" | "system";
+
+export type NavigationItem = Readonly<{
   readonly label: string;
-  readonly items: readonly Readonly<{
-    readonly label: string;
-    readonly href: string;
-    readonly route: AppRoute;
-  }>[];
+  readonly href: string;
+  readonly route: AppRoute;
 }>;
 
-export const navigationGroups: readonly NavigationGroup[] = [
+export type PrimaryNavigationItem = Readonly<
+  NavigationItem & { readonly module: NavigationModule }
+>;
+
+export const primaryNavigation: readonly PrimaryNavigationItem[] = [
+  { module: "workspace", label: "工作台", href: "/", route: "home" },
+  { module: "projects", label: "项目", href: "/projects", route: "overview" },
   {
-    label: "工作区",
-    items: [
-      { label: "项目首页", href: "/", route: "home" },
-      { label: "新建项目", href: "/projects/new", route: "create" },
-      { label: "服务状态", href: "/health", route: "health" },
-    ],
+    module: "execution",
+    label: "执行",
+    href: "/projects/execution",
+    route: "execution",
   },
   {
-    label: "当前项目",
-    items: [
-      { label: "项目总览", href: "/projects", route: "overview" },
-      { label: "工作流", href: "/projects/workflow", route: "workflow" },
-      { label: "目标与任务", href: "/projects/goals", route: "goals" },
-      { label: "任务卡", href: "/projects/tasks", route: "tasks" },
-      { label: "角色", href: "/projects/roles", route: "roles" },
-    ],
+    module: "governance",
+    label: "治理",
+    href: "/projects/approvals",
+    route: "approvals",
   },
-  {
-    label: "运行与治理",
-    items: [
-      { label: "执行", href: "/projects/execution", route: "execution" },
-      { label: "审批", href: "/projects/approvals", route: "approvals" },
-      { label: "问题与决策", href: "/projects/issues", route: "issues" },
-      { label: "历史", href: "/projects/history", route: "history" },
-      { label: "报告", href: "/projects/reports", route: "reports" },
-    ],
-  },
+  { module: "system", label: "系统", href: "/health", route: "health" },
 ] as const;
+
+export const secondaryNavigation: Readonly<
+  Record<NavigationModule, readonly NavigationItem[]>
+> = {
+  workspace: [
+    { label: "项目列表", href: "/", route: "home" },
+    { label: "新建项目", href: "/projects/new", route: "create" },
+  ],
+  projects: [
+    { label: "概览", href: "/projects", route: "overview" },
+    { label: "工作流", href: "/projects/workflow", route: "workflow" },
+    { label: "目标", href: "/projects/goals", route: "goals" },
+    { label: "任务", href: "/projects/tasks", route: "tasks" },
+    { label: "角色", href: "/projects/roles", route: "roles" },
+  ],
+  execution: [
+    { label: "执行控制台", href: "/projects/execution", route: "execution" },
+    { label: "运行报告", href: "/projects/reports", route: "reports" },
+  ],
+  governance: [
+    { label: "审批", href: "/projects/approvals", route: "approvals" },
+    { label: "问题与决策", href: "/projects/issues", route: "issues" },
+    { label: "历史", href: "/projects/history", route: "history" },
+  ],
+  system: [{ label: "服务状态", href: "/health", route: "health" }],
+} as const;
 
 type HealthPayload = Readonly<{
   readonly status: "ok";
@@ -110,6 +131,57 @@ export function resolveRoute(pathname: string): AppRoute {
   return pathname === "/health" ? "health" : "home";
 }
 
+export function navigationModuleForRoute(route: AppRoute): NavigationModule {
+  if (route === "create" || route === "home") return "workspace";
+  if (
+    route === "overview" ||
+    route === "workflow" ||
+    route === "goals" ||
+    route === "tasks" ||
+    route === "roles"
+  ) {
+    return "projects";
+  }
+  if (route === "execution" || route === "reports") return "execution";
+  if (route === "approvals" || route === "issues" || route === "history") {
+    return "governance";
+  }
+  return "system";
+}
+
+type ProjectContextState =
+  | Readonly<{ readonly status: "loading" }>
+  | Readonly<{
+      readonly status: "ready";
+      readonly project: ProjectOverviewItem | null;
+    }>
+  | Readonly<{ readonly status: "unavailable" }>;
+
+function CurrentProjectContext({
+  state,
+}: Readonly<{ readonly state: ProjectContextState }>): ReactElement {
+  const name =
+    state.status === "ready"
+      ? (state.project?.name ?? "未选择项目")
+      : state.status === "loading"
+        ? "正在读取…"
+        : "项目上下文不可用";
+  const rootPath =
+    state.status === "ready" ? (state.project?.rootPath ?? "") : "";
+
+  return (
+    <div
+      className="current-project-context"
+      aria-label="当前项目上下文"
+      role="region"
+    >
+      <span className="current-project-label">当前项目</span>
+      <strong>{name}</strong>
+      {rootPath !== "" && <small title={rootPath}>{rootPath}</small>}
+    </div>
+  );
+}
+
 function isHealthPayload(value: unknown): value is HealthPayload {
   if (typeof value !== "object" || value === null) {
     return false;
@@ -122,7 +194,15 @@ function isHealthPayload(value: unknown): value is HealthPayload {
 export function App(): ReactElement {
   const [health, setHealth] = useState<HealthState>({ status: "checking" });
   const [isNavigationOpen, setIsNavigationOpen] = useState(false);
+  const [projectContext, setProjectContext] = useState<ProjectContextState>({
+    status: "loading",
+  });
   const route = resolveRoute(window.location.pathname);
+  const currentModule = navigationModuleForRoute(route);
+  const currentPrimary = primaryNavigation.find(
+    (item) => item.module === currentModule,
+  );
+  const secondaryItems = secondaryNavigation[currentModule];
 
   useEffect(() => {
     const controller = new AbortController();
@@ -150,6 +230,25 @@ export function App(): ReactElement {
     return () => controller.abort();
   }, []);
 
+  useEffect(() => {
+    let active = true;
+    void requestProjectList().then((result) => {
+      if (!active) return;
+      if (!result.ok) {
+        setProjectContext({ status: "unavailable" });
+        return;
+      }
+      const project = result.value.projects.find(
+        (item) => item.projectKey === result.value.currentProjectKey,
+      );
+      setProjectContext({ status: "ready", project: project ?? null });
+    });
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
   return (
     <div className="app-shell">
       <aside className="site-sidebar">
@@ -173,36 +272,53 @@ export function App(): ReactElement {
             <span aria-hidden="true" />
           </button>
         </header>
+        <CurrentProjectContext state={projectContext} />
         <nav
-          aria-label="主导航"
+          aria-label="一级导航"
           className={`navigation${isNavigationOpen ? " open" : ""}`}
           id="primary-navigation"
         >
-          {navigationGroups.map((group) => (
-            <section className="navigation-group" key={group.label}>
-              <h2>{group.label}</h2>
-              <div className="navigation-items">
-                {group.items.map((item) => {
-                  const isActive = route === item.route;
-                  return (
-                    <a
-                      aria-current={isActive ? "page" : undefined}
-                      className={isActive ? "active" : ""}
-                      href={item.href}
-                      key={item.route}
-                    >
-                      {item.label}
-                    </a>
-                  );
-                })}
-              </div>
-            </section>
-          ))}
+          {primaryNavigation.map((item) => {
+            const isActive = item.module === currentModule;
+            return (
+              <a
+                aria-current={isActive ? "page" : undefined}
+                className={isActive ? "active" : ""}
+                href={item.href}
+                key={item.module}
+              >
+                {item.label}
+              </a>
+            );
+          })}
         </nav>
       </aside>
 
       <div className="site-body">
         <main className="main-content">
+          <nav
+            aria-label={`${currentPrimary?.label ?? "当前模块"}二级导航`}
+            className="secondary-navigation"
+          >
+            <span className="secondary-navigation-title">
+              {currentPrimary?.label ?? "当前模块"}
+            </span>
+            <div className="secondary-navigation-items">
+              {secondaryItems.map((item) => {
+                const isActive = item.route === route;
+                return (
+                  <a
+                    aria-current={isActive ? "page" : undefined}
+                    className={isActive ? "active" : ""}
+                    href={item.href}
+                    key={item.route}
+                  >
+                    {item.label}
+                  </a>
+                );
+              })}
+            </div>
+          </nav>
           {route === "create" ? (
             <ProjectCreationWizard
               onBack={() => {

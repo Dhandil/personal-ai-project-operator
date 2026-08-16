@@ -1,6 +1,11 @@
 import { describe, expect, it } from "vitest";
 
-import { navigationGroups, resolveRoute } from "./app";
+import {
+  navigationModuleForRoute,
+  primaryNavigation,
+  resolveRoute,
+  secondaryNavigation,
+} from "./app";
 
 describe("resolveRoute", () => {
   it("keeps the home route as the default", () => {
@@ -49,33 +54,58 @@ describe("resolveRoute", () => {
   });
 });
 
-describe("navigationGroups", () => {
-  it("organizes every page into the three information architecture groups", () => {
-    expect(
-      navigationGroups.map((group) => ({
-        label: group.label,
-        items: group.items.map((item) => item.label),
-      })),
-    ).toEqual([
-      {
-        label: "工作区",
-        items: ["项目首页", "新建项目", "服务状态"],
-      },
-      {
-        label: "当前项目",
-        items: ["项目总览", "工作流", "目标与任务", "任务卡", "角色"],
-      },
-      {
-        label: "运行与治理",
-        items: ["执行", "审批", "问题与决策", "历史", "报告"],
-      },
+describe("two-level navigation", () => {
+  it("exposes exactly the five primary modules", () => {
+    expect(primaryNavigation.map((item) => item.label)).toEqual([
+      "工作台",
+      "项目",
+      "执行",
+      "治理",
+      "系统",
     ]);
   });
 
-  it("keeps every navigation route and destination unique", () => {
-    const items = navigationGroups.flatMap((group) => group.items);
+  it("maps every primary module to the required secondary pages", () => {
+    expect(
+      Object.fromEntries(
+        Object.entries(secondaryNavigation).map(([module, items]) => [
+          module,
+          items.map((item) => item.label),
+        ]),
+      ),
+    ).toEqual({
+      workspace: ["项目列表", "新建项目"],
+      projects: ["概览", "工作流", "目标", "任务", "角色"],
+      execution: ["执行控制台", "运行报告"],
+      governance: ["审批", "问题与决策", "历史"],
+      system: ["服务状态"],
+    });
+  });
 
-    expect(new Set(items.map((item) => item.route)).size).toBe(items.length);
-    expect(new Set(items.map((item) => item.href)).size).toBe(items.length);
+  it("resolves the primary module for every deep-linked route", () => {
+    expect(navigationModuleForRoute("home")).toBe("workspace");
+    expect(navigationModuleForRoute("create")).toBe("workspace");
+    expect(navigationModuleForRoute("overview")).toBe("projects");
+    expect(navigationModuleForRoute("roles")).toBe("projects");
+    expect(navigationModuleForRoute("execution")).toBe("execution");
+    expect(navigationModuleForRoute("reports")).toBe("execution");
+    expect(navigationModuleForRoute("approvals")).toBe("governance");
+    expect(navigationModuleForRoute("history")).toBe("governance");
+    expect(navigationModuleForRoute("health")).toBe("system");
+  });
+
+  it("keeps every navigation route and destination unique", () => {
+    const primaryItems = primaryNavigation;
+    const secondaryItems = Object.values(secondaryNavigation).flat();
+
+    expect(new Set(primaryItems.map((item) => item.module)).size).toBe(
+      primaryItems.length,
+    );
+    expect(new Set(primaryItems.map((item) => item.href)).size).toBe(
+      primaryItems.length,
+    );
+    expect(new Set(secondaryItems.map((item) => item.href)).size).toBe(
+      secondaryItems.length,
+    );
   });
 });

@@ -264,7 +264,9 @@ test("V0 browser flow covers a temporary project across all governance surfaces"
     await page.locator("#project-root").fill(projectRoot);
     await page.locator("#project-idea").fill("A temporary governed project");
     await page.getByRole("button", { name: /生成.*预览/ }).click();
-    await expect(page.getByText(projectRoot)).toBeVisible();
+    await expect(
+      page.getByRole("region", { name: "初始化预览" }).getByText(projectRoot),
+    ).toBeVisible();
     await page.getByRole("button", { name: /批准并创建项目/ }).click();
     await expect(page.getByText("EXEC-001")).toBeVisible();
 
