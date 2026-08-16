@@ -102,19 +102,13 @@ type StageRecord = Readonly<{
   readonly skipReason?: string;
 }>;
 
-const stageArtifactPaths: Readonly<Record<StageKey, string>> = {
+// The project currently has three formal stage artifacts. The other workflow
+// stages are sections or decisions within those documents, not upload slots.
+const stageArtifactPaths: Readonly<Partial<Record<StageKey, string>>> = {
   "idea-clarification": ".personal-workspace/stages/01-idea/01-idea.md",
   "problem-definition":
     ".personal-workspace/stages/02-discovery/02-discovery.md",
-  "user-scenarios": ".personal-workspace/stages/02-discovery/02-discovery.md",
-  "discovery-validation":
-    ".personal-workspace/stages/02-discovery/02-discovery.md",
   "product-requirements": ".personal-workspace/stages/03-spec/03-spec.md",
-  "mvp-scope": ".personal-workspace/stages/03-spec/03-spec.md",
-  "system-design": ".personal-workspace/stages/03-spec/03-spec.md",
-  "development-plan": ".personal-workspace/stages/03-spec/03-spec.md",
-  "first-short-term-goal": ".personal-workspace/stages/03-spec/03-spec.md",
-  execution: ".personal-workspace/stages/03-spec/03-spec.md",
 };
 
 function failure<Value>(
@@ -493,6 +487,12 @@ export class WorkflowService {
     const stages = await Promise.all(
       snapshot.workflow.stages.map(async (stage) => {
         const relativePath = stageArtifactPaths[stage.key];
+        if (relativePath === undefined) {
+          return {
+            ...stage,
+            artifacts: [],
+          } satisfies WorkflowStageView;
+        }
         const artifact = await new GovernanceRepository(
           snapshot.record.rootPath,
         ).read(relativePath);

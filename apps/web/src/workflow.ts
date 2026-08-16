@@ -1,7 +1,32 @@
 import type { JsonFetcher } from "./project-initialization";
 
+export type WorkflowStageKey =
+  | "idea-clarification"
+  | "problem-definition"
+  | "user-scenarios"
+  | "discovery-validation"
+  | "product-requirements"
+  | "mvp-scope"
+  | "system-design"
+  | "development-plan"
+  | "first-short-term-goal"
+  | "execution";
+
+const workflowStageKeys: readonly WorkflowStageKey[] = [
+  "idea-clarification",
+  "problem-definition",
+  "user-scenarios",
+  "discovery-validation",
+  "product-requirements",
+  "mvp-scope",
+  "system-design",
+  "development-plan",
+  "first-short-term-goal",
+  "execution",
+];
+
 export type WorkflowStage = Readonly<{
-  readonly key: string;
+  readonly key: WorkflowStageKey;
   readonly title: string;
   readonly order: number;
   readonly status: "draft" | "in_progress" | "completed" | "skipped";
@@ -16,9 +41,90 @@ export type WorkflowPayload = Readonly<{
   readonly projectKey: string;
   readonly projectRoot: string;
   readonly revision: number;
-  readonly currentStage: string | null;
+  readonly currentStage: WorkflowStageKey | null;
   readonly stages: readonly WorkflowStage[];
 }>;
+
+export type WorkflowGuide = Readonly<{
+  readonly purpose: string;
+  readonly primaryAction: string;
+  readonly readArtifacts: readonly string[];
+  readonly nextStep: string;
+  readonly nextHref?: string;
+}>;
+
+export const workflowGuides: Readonly<Record<WorkflowStageKey, WorkflowGuide>> =
+  {
+    "idea-clarification": {
+      purpose: "把项目想法收敛为清晰方向和需要继续核对的假设。",
+      primaryAction: "先阅读想法澄清材料，补充仍然模糊的方向。",
+      readArtifacts: [".personal-workspace/stages/01-idea/01-idea.md"],
+      nextStep: "确认方向后进入问题定义；不需要上传阶段文件。",
+    },
+    "problem-definition": {
+      purpose: "核对要解决的问题、边界和已有事实。",
+      primaryAction: "阅读 Discovery 材料，确认 Problem Statement 和范围。",
+      readArtifacts: [
+        ".personal-workspace/stages/01-idea/01-idea.md",
+        ".personal-workspace/stages/02-discovery/02-discovery.md",
+      ],
+      nextStep: "问题边界稳定后整理用户场景。",
+    },
+    "user-scenarios": {
+      purpose: "从已确认的问题整理用户、触发条件和期望结果。",
+      primaryAction: "在共用的 Discovery 材料中补充用户场景，不创建重复文件。",
+      readArtifacts: [
+        ".personal-workspace/stages/02-discovery/02-discovery.md",
+      ],
+      nextStep: "场景和边界核对后进入 Discovery 验证。",
+    },
+    "discovery-validation": {
+      purpose: "核对证据、未决问题和继续推进的风险。",
+      primaryAction: "阅读 Discovery 决定和验证记录，明确仍需补证的内容。",
+      readArtifacts: [
+        ".personal-workspace/stages/02-discovery/02-discovery.md",
+      ],
+      nextStep: "材料不足时由 Agent 提出跳过建议，是否跳过必须由用户决定。",
+    },
+    "product-requirements": {
+      purpose: "把已确认的问题和场景转化为正式产品需求。",
+      primaryAction: "阅读并更新正式开发 Spec 的产品行为部分。",
+      readArtifacts: [".personal-workspace/stages/03-spec/03-spec.md"],
+      nextStep: "需求边界稳定后继续核对 MVP 范围。",
+    },
+    "mvp-scope": {
+      purpose: "明确首个可验证切片的范围和明确不做的内容。",
+      primaryAction: "在正式开发 Spec 中核对 MVP 范围。",
+      readArtifacts: [".personal-workspace/stages/03-spec/03-spec.md"],
+      nextStep: "范围确定后进入系统方案。",
+    },
+    "system-design": {
+      purpose: "形成与已批准范围匹配的系统方案。",
+      primaryAction: "阅读正式 Spec，核对技术方案与约束。",
+      readArtifacts: [".personal-workspace/stages/03-spec/03-spec.md"],
+      nextStep: "方案需要承诺时保留用户审批门。",
+    },
+    "development-plan": {
+      purpose: "把方案拆成可验证、可交接的开发计划。",
+      primaryAction: "在正式 Spec 中核对开发计划、验证命令和交接要求。",
+      readArtifacts: [".personal-workspace/stages/03-spec/03-spec.md"],
+      nextStep: "计划清晰后提出第一个短期目标。",
+    },
+    "first-short-term-goal": {
+      purpose: "定义边界清晰、可审批的第一个短期目标。",
+      primaryAction: "阅读 Spec 并检查目标、角色、任务和审批边界。",
+      readArtifacts: [".personal-workspace/stages/03-spec/03-spec.md"],
+      nextStep: "批准短期目标后进入目标任务执行。",
+      nextHref: "/projects/goals",
+    },
+    execution: {
+      purpose: "在已批准的目标和任务边界内执行、审核和交接。",
+      primaryAction: "打开执行控制台，查看当前执行链和下一项恢复或审核动作。",
+      readArtifacts: [".personal-workspace/stages/03-spec/03-spec.md"],
+      nextStep: "由用户启动或恢复执行；没有真实 Agent 时不会伪装成自动执行。",
+      nextHref: "/projects/execution",
+    },
+  } as const;
 
 export type SkipExplanation = Readonly<{
   readonly material: readonly string[];
@@ -62,12 +168,19 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
+function isWorkflowStageKey(value: unknown): value is WorkflowStageKey {
+  return (
+    typeof value === "string" &&
+    workflowStageKeys.includes(value as WorkflowStageKey)
+  );
+}
+
 function isStage(value: unknown): value is WorkflowStage {
   if (!isRecord(value) || !Array.isArray(value.artifacts)) {
     return false;
   }
   return (
-    typeof value.key === "string" &&
+    isWorkflowStageKey(value.key) &&
     typeof value.title === "string" &&
     typeof value.order === "number" &&
     ["draft", "in_progress", "completed", "skipped"].includes(
@@ -90,7 +203,7 @@ export function parseWorkflowPayload(value: unknown): WorkflowPayload | null {
     typeof value.projectKey !== "string" ||
     typeof value.projectRoot !== "string" ||
     typeof value.revision !== "number" ||
-    (typeof value.currentStage !== "string" && value.currentStage !== null) ||
+    (value.currentStage !== null && !isWorkflowStageKey(value.currentStage)) ||
     !value.stages.every(isStage)
   ) {
     return null;

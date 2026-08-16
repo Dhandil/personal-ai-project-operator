@@ -33,6 +33,20 @@ const workflow = {
         },
       ],
     },
+    {
+      key: "user-scenarios",
+      title: "用户场景",
+      order: 3,
+      status: "draft",
+      artifacts: [],
+    },
+    {
+      key: "discovery-validation",
+      title: "Discovery 验证",
+      order: 4,
+      status: "draft",
+      artifacts: [],
+    },
   ],
 };
 
@@ -118,7 +132,21 @@ test("workflow page separates agent skip proposal from user decision", async ({
   await page.goto("/projects/workflow");
   await expect(page.getByRole("heading", { name: "工作流阶段" })).toBeVisible();
   await expect(
-    page.getByText(".personal-workspace/stages/01-idea/01-idea.md"),
+    page.getByRole("heading", { name: "工作流怎么推进" }),
+  ).toBeVisible();
+  await expect(page.getByText("用户无需手工上传")).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "当前阶段：想法澄清" }),
+  ).toBeVisible();
+  await expect(page.getByText("首要操作")).toBeVisible();
+  await expect(page.getByText("阶段状态").first()).toBeVisible();
+  await expect(page.getByText("文件状态").first()).toBeVisible();
+  await expect(
+    page.getByText("无独立阶段文件；使用共用正式材料，无需上传。"),
+  ).toHaveCount(2);
+  await expect(page.getByRole("link", { name: "执行控制台" })).toBeVisible();
+  await expect(
+    page.getByText(".personal-workspace/stages/01-idea/01-idea.md").first(),
   ).toBeVisible();
   await page.getByRole("button", { name: "生成跳过建议" }).click();
   await page.getByLabel("已有材料").fill("项目想法");

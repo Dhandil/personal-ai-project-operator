@@ -359,6 +359,80 @@ h2 {
   font-size: clamp(38px, 6vw, 64px);
 }
 
+.workflow-path {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  color: #7893ac;
+  font-size: 12px;
+}
+
+.workflow-path span:first-child {
+  color: #a9bacb;
+  font-weight: 700;
+}
+
+.workflow-path a {
+  color: #9ee1df;
+}
+
+.workflow-onboarding {
+  display: grid;
+  gap: 18px;
+}
+
+.workflow-onboarding .panel-heading {
+  margin-bottom: 0;
+}
+
+.workflow-onboarding-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: onboarding-step;
+}
+
+.workflow-onboarding-steps li {
+  display: grid;
+  gap: 6px;
+  padding: 15px;
+  border: 1px solid #2a425d;
+  border-radius: 12px;
+  background: #0f1e32;
+  counter-increment: onboarding-step;
+}
+
+.workflow-onboarding-steps li::before {
+  color: #65d5d2;
+  content: counter(onboarding-step, decimal-leading-zero);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.workflow-onboarding-steps strong,
+.current-stage-guide-grid strong {
+  color: #e5f0fa;
+  font-size: 13px;
+}
+
+.workflow-onboarding-steps span,
+.workflow-onboarding-note {
+  color: #aabbd0;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.workflow-onboarding-note {
+  margin: 0;
+  padding: 13px 15px;
+  border-left: 3px solid #65d5d2;
+  background: #102c39;
+}
+
 .workflow-stage-list {
   display: grid;
   gap: 10px;
@@ -406,6 +480,19 @@ h2 {
 
 .workflow-stage-content {
   min-width: 0;
+}
+
+.stage-fact-status {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 10px;
+}
+
+.stage-fact-label {
+  color: #7893ac;
+  font-size: 11px;
+  font-weight: 700;
 }
 
 .workflow-stage-heading {
@@ -467,6 +554,12 @@ h2 {
   display: grid;
   gap: 6px;
   margin-top: 11px;
+}
+
+.artifact-note {
+  color: #9bb1c6;
+  font-size: 12px;
+  line-height: 1.5;
 }
 
 .artifact-link {
@@ -580,6 +673,58 @@ h2 {
   font-size: 13px;
 }
 
+.current-stage-guide {
+  border-color: #3c777d;
+  background: #102c39;
+}
+
+.current-stage-guide .panel-heading {
+  margin-bottom: 0;
+}
+
+.current-stage-guide-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.current-stage-guide-grid > div {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid #2b5965;
+  border-radius: 12px;
+  background: rgb(15 30 50 / 62%);
+}
+
+.current-stage-guide-grid p,
+.current-stage-guide-grid ul {
+  margin: 0;
+  color: #c4d7e2;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.current-stage-guide-grid ul {
+  display: grid;
+  gap: 6px;
+  padding-left: 18px;
+}
+
+.current-stage-guide-grid code {
+  overflow-wrap: anywhere;
+  color: #9ee1df;
+  font-size: 11px;
+}
+
+.current-stage-guide-grid .button {
+  width: fit-content;
+  margin-top: 2px;
+  font-size: 12px;
+}
+
 @media (max-width: 680px) {
   .workflow-stage-heading,
   .artifact-link {
@@ -588,6 +733,11 @@ h2 {
   }
 
   .explanation-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .workflow-onboarding-steps,
+  .current-stage-guide-grid {
     grid-template-columns: 1fr;
   }
 }

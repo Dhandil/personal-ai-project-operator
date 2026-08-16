@@ -4,6 +4,7 @@ import {
   parseWorkflowPayload,
   requestSkipDecision,
   requestSkipProposal,
+  workflowGuides,
 } from "./workflow";
 
 const workflow = {
@@ -110,5 +111,18 @@ describe("workflow API contracts", () => {
       "/api/projects/workflow/skip-proposal",
       "/api/projects/workflow/skip-decision",
     ]);
+  });
+
+  it("provides guidance for every stage without treating sections as uploads", () => {
+    expect(Object.keys(workflowGuides)).toHaveLength(10);
+    expect(workflowGuides["user-scenarios"]).toMatchObject({
+      readArtifacts: [
+        ".personal-workspace/stages/02-discovery/02-discovery.md",
+      ],
+    });
+    expect(workflowGuides["discovery-validation"].nextStep).toContain(
+      "用户决定",
+    );
+    expect(workflowGuides.execution.nextHref).toBe("/projects/execution");
   });
 });

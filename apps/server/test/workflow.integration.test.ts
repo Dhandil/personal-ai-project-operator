@@ -103,7 +103,7 @@ function service(fixture: Fixture): WorkflowService {
   });
 }
 
-test("workflow API shows ordered stages and links existing/missing artifacts", async () => {
+test("workflow API distinguishes formal artifacts from workflow sections", async () => {
   const fixture = await createFixture();
   const app = buildApp({ workflowService: service(fixture) });
   try {
@@ -117,7 +117,10 @@ test("workflow API shows ordered stages and links existing/missing artifacts", a
     assert.equal(payload.value.currentStage, "idea-clarification");
     assert.equal(payload.value.stages.length, 10);
     assert.equal(payload.value.stages[0].artifacts[0].state, "available");
-    assert.equal(payload.value.stages[9].artifacts[0].state, "missing");
+    assert.equal(payload.value.stages[1].artifacts[0].state, "missing");
+    assert.deepEqual(payload.value.stages[2].artifacts, []);
+    assert.deepEqual(payload.value.stages[3].artifacts, []);
+    assert.deepEqual(payload.value.stages[9].artifacts, []);
   } finally {
     await app.close();
     await rm(fixture.cleanupRoot, { recursive: true, force: true });

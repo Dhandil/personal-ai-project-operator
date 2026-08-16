@@ -8,6 +8,7 @@ import {
   requestWorkflow,
   type SkipProposal,
   type WorkflowApiError,
+  workflowGuides,
   type WorkflowPayload,
 } from "./workflow";
 
@@ -77,18 +78,33 @@ function WorkflowStageList({
             {stage.skipReason !== undefined && (
               <p className="skip-reason">跳过理由：{stage.skipReason}</p>
             )}
-            <div className="stage-artifacts">
-              {stage.artifacts.map((artifact) => (
-                <span
-                  className={`artifact-link ${artifact.state}`}
-                  key={artifact.relativePath}
-                >
-                  <code>{artifact.relativePath}</code>
-                  <span>
-                    {artifact.state === "available" ? "已存在" : "缺失"}
-                  </span>
+            <div className="stage-fact-status">
+              <span className="stage-fact-label">阶段状态</span>
+              <span className={`stage-status ${stage.status}`}>
+                {stageStatusText(stage.status)}
+              </span>
+            </div>
+            <div className="stage-artifacts" aria-label="文件状态">
+              <span className="stage-fact-label">文件状态</span>
+              {stage.artifacts.length === 0 ? (
+                <span className="artifact-note">
+                  无独立阶段文件；使用共用正式材料，无需上传。
                 </span>
-              ))}
+              ) : (
+                stage.artifacts.map((artifact) => (
+                  <span
+                    className={`artifact-link ${artifact.state}`}
+                    key={artifact.relativePath}
+                  >
+                    <code>{artifact.relativePath}</code>
+                    <span>
+                      {artifact.state === "available"
+                        ? "已存在 · 系统已创建"
+                        : "尚未存在 · 无需上传"}
+                    </span>
+                  </span>
+                ))
+              )}
             </div>
           </div>
         </li>
@@ -230,9 +246,48 @@ export function WorkflowPage(): ReactElement {
         <p className="eyebrow">WORKFLOW</p>
         <h1 id="workflow-page-title">工作流阶段</h1>
         <p className="description">
-          查看默认阶段、正式阶段产物和当前阶段。跳过只能由用户决定并留下理由。
+          查看默认阶段、正式阶段材料和当前阶段。阶段状态与文件状态是两件事；跳过只能由用户决定并留下理由。
         </p>
       </div>
+
+      <div className="workflow-path" aria-label="工作流路径">
+        <span>工作流路径</span>
+        <a href="/">项目总览</a>
+        <span aria-hidden="true">→</span>
+        <strong>工作流</strong>
+        <span aria-hidden="true">→</span>
+        <a href="/projects/execution">执行控制台</a>
+      </div>
+
+      <section
+        className="overview-panel workflow-onboarding"
+        aria-labelledby="workflow-onboarding-title"
+      >
+        <div className="panel-heading">
+          <div>
+            <p className="eyebrow">FIRST USE GUIDE</p>
+            <h2 id="workflow-onboarding-title">工作流怎么推进</h2>
+          </div>
+          <span className="read-only-badge">无需上传阶段文件</span>
+        </div>
+        <ol className="workflow-onboarding-steps">
+          <li>
+            <strong>系统初始化</strong>
+            <span>创建项目治理文件和默认流程。</span>
+          </li>
+          <li>
+            <strong>Agent 处理</strong>
+            <span>读取正式材料，在获准边界内更新事实并交接。</span>
+          </li>
+          <li>
+            <strong>用户决策</strong>
+            <span>审批目标、范围和跳过建议；系统不会自动替你决定。</span>
+          </li>
+        </ol>
+        <p className="workflow-onboarding-note">
+          “待开始”表示阶段尚未推进；“已存在”表示系统创建的事实文件已经在项目中。文件不是上传清单，用户无需手工上传。
+        </p>
+      </section>
 
       {state.status === "loading" && (
         <div className="overview-loading" role="status">
@@ -250,6 +305,55 @@ export function WorkflowPage(): ReactElement {
       )}
       {state.status === "ready" && (
         <>
+          {currentStage !== undefined && (
+            <section
+              className="overview-panel current-stage-guide"
+              aria-labelledby="current-stage-guide-title"
+            >
+              <div className="panel-heading">
+                <div>
+                  <p className="eyebrow">RECOMMENDED NEXT STEP</p>
+                  <h2 id="current-stage-guide-title">
+                    当前阶段：{currentStage.title}
+                  </h2>
+                </div>
+                <span className={`stage-status ${currentStage.status}`}>
+                  {stageStatusText(currentStage.status)}
+                </span>
+              </div>
+              <div className="current-stage-guide-grid">
+                <div>
+                  <strong>首要操作</strong>
+                  <p>{workflowGuides[currentStage.key].primaryAction}</p>
+                </div>
+                <div>
+                  <strong>需要读取的产物</strong>
+                  <ul>
+                    {workflowGuides[currentStage.key].readArtifacts.map(
+                      (path) => (
+                        <li key={path}>
+                          <code>{path}</code>
+                        </li>
+                      ),
+                    )}
+                  </ul>
+                </div>
+                <div>
+                  <strong>推荐下一步</strong>
+                  <p>{workflowGuides[currentStage.key].nextStep}</p>
+                  {workflowGuides[currentStage.key].nextHref !== undefined && (
+                    <a
+                      className="button secondary"
+                      href={workflowGuides[currentStage.key].nextHref}
+                    >
+                      打开相关入口 →
+                    </a>
+                  )}
+                </div>
+              </div>
+            </section>
+          )}
+
           <div className="overview-panel workflow-panel">
             <div className="panel-heading">
               <div>
