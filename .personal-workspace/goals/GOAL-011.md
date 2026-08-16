@@ -2,10 +2,10 @@
 schema_version: 1
 id: GOAL-011
 title: 重构两级导航与全页面视口布局
-status: in_review
-revision: 2
+status: completed
+revision: 3
 created_at: 2026-08-16T10:15:00Z
-updated_at: 2026-08-16T12:48:38Z
+updated_at: 2026-08-16T13:00:00Z
 tasks: [TASK-053, TASK-054]
 approval_ids: [APPROVAL-006]
 target_branch: goal/GOAL-011
@@ -51,3 +51,9 @@ checkpoint_report_id: REPORT-060
 - TASK-053 为首个任务，TASK-054 在 TASK-053 独立验收通过后自动解锁；
 - 本目标不改变业务领域模型、审批语义、执行语义或 Git 安全边界；
 - 真实项目 `main` 合并仍需单独用户批准。
+
+## Completion
+
+- REPORT-058 与 REPORT-059 均已独立接受，REPORT-060 检查点验收通过；
+- TASK-053、TASK-054 均已完成；
+- 本目标完成不代表批准真实项目 `main` 合并，也不自动启动后续目标。

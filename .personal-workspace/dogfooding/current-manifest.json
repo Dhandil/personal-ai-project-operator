@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "manifest_kind": "current",
-  "generated_at": "2026-08-16T12:50:36.597Z",
-  "source_manifest_hash": "eba0bfdaecafa3c21542328856b0aaeee81cafcf59199d5b91e59d588824bb29",
+  "generated_at": "2026-08-16T13:46:39.257Z",
+  "source_manifest_hash": "9be7d658c86ea40b29fd81ed289ec961d25f17d42c0094bfce4e8afe7714457a",
   "current_source_stage": "03-spec",
   "current_goal_id": "GOAL-011",
-  "current_task_id": "TASK-054",
+  "current_task_id": null,
   "source_files": [
     {
       "relativePath": ".personal-workspace/approvals/APPROVAL-001.md",
@@ -202,14 +202,14 @@
     {
       "relativePath": ".personal-workspace/goals/GOAL-011.md",
       "kind": "goal",
-      "hash": "086c8d4b35d6c1552e58855951098d9e1f7c8de2971b36dbf83ecabb6c15a6b6",
+      "hash": "28db796047ec1a527b76d3c59a83604a2ebb83a89ca9cc44a00272e09b65af4b",
       "id": "GOAL-011",
       "title": "重构两级导航与全页面视口布局",
-      "status": "in_review",
+      "status": "completed",
       "stage": null,
       "goalId": null,
       "generated": false,
-      "revision": 2
+      "revision": 3
     },
     {
       "relativePath": ".personal-workspace/reports/REPORT-001.md",
@@ -910,26 +910,26 @@
     {
       "relativePath": ".personal-workspace/reports/REPORT-059.md",
       "kind": "report",
-      "hash": "588700c88f864365664775ea80c90f4b39ff27035274da5ab14dd761c21b5b24",
+      "hash": "253064725e07c9b57e15ea1b5bcc6cdbde70a41e005119f0403812c520ac53ad",
       "id": "REPORT-059",
       "title": "TASK-054 全页面视口布局与滚动边界验收报告",
-      "status": "pending_acceptance",
+      "status": "accepted",
       "stage": null,
       "goalId": "GOAL-011",
       "generated": false,
-      "revision": 1
+      "revision": 2
     },
     {
       "relativePath": ".personal-workspace/reports/REPORT-060.md",
       "kind": "report",
-      "hash": "00c44963f593031c1cdfb21eceaaa24970f914e2d14b2bddd999d189ab2d97e2",
+      "hash": "9438faf33f6a3961a951eb3733741d77b03cfce44916fd5f1b76392ca20ef3e0",
       "id": "REPORT-060",
       "title": "GOAL-011 两级导航与全页面视口布局检查点报告",
-      "status": "pending_acceptance",
+      "status": "accepted",
       "stage": null,
       "goalId": "GOAL-011",
       "generated": false,
-      "revision": 1
+      "revision": 2
     },
     {
       "relativePath": ".personal-workspace/stages/01-idea/01-idea.md",
@@ -1606,14 +1606,14 @@
     {
       "relativePath": ".personal-workspace/tasks/TASK-054.md",
       "kind": "task",
-      "hash": "f9699d33d6de9e1265b3dd2fcf37a7c0e0a22f8d0dd2173ed3607e4f1d8fed1a",
+      "hash": "9acc25e7582bb7c4c50ed156b25a9782fcac23db8c04251a6eeb743360f6be5f",
       "id": "TASK-054",
       "title": "统一全页面视口布局与滚动边界",
-      "status": "in_review",
+      "status": "completed",
       "stage": null,
       "goalId": "GOAL-011",
       "generated": false,
-      "revision": 3
+      "revision": 4
     }
   ]
 }

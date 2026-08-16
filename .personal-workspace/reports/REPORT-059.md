@@ -3,16 +3,18 @@ schema_version: 1
 document_type: report
 id: REPORT-059
 title: TASK-054 全页面视口布局与滚动边界验收报告
-status: pending_acceptance
+status: accepted
 report_type: task_verification
-acceptance_state: pending
+acceptance_state: accepted
 task_id: TASK-054
 goal_id: GOAL-011
-revision: 1
+revision: 2
 created_at: 2026-08-16T12:48:38Z
-updated_at: 2026-08-16T12:48:38Z
+updated_at: 2026-08-16T13:00:00Z
 verified_by: implementation_agent
 verified_commit: ddd4ddc98fd21067bee62560d5f338bc32556155
+accepted_by: project_owner
+accepted_at: 2026-08-16T13:00:00Z
 verification_commands:
   - npx playwright test e2e/viewport.spec.ts e2e/layout.spec.ts --config=playwright.config.ts
   - npm run verify
@@ -53,4 +55,5 @@ TASK-054 已完成实现和验证，提交项目负责人独立验收。桌面�
 
 ## 独立验收结果
 
-- 尚未由项目负责人验收；实现者不得将本报告标记为 `accepted`。
+- 页面与布局专项独立复跑：4/4 通过，覆盖桌面视口边界、长列表局部滚动、窄屏无横向溢出和键盘焦点。
+- 验收结论：通过，接受 REPORT-059；未执行其他任务。
