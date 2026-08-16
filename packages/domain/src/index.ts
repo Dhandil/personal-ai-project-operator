@@ -14,3 +14,4 @@ export * from "./issue-impact-policy.js";
 export * from "./completion-policy.js";
 export * from "./task.js";
 export * from "./stage-run.js";
+export * from "./stage-task-package.js";
