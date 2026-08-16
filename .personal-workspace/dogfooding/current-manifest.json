@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "manifest_kind": "current",
-  "generated_at": "2026-08-15T14:55:08.539Z",
-  "source_manifest_hash": "eb581c1ea4d51c39935c9cd41c39508cb962e56447e2927aa39f47393cd8dabc",
+  "generated_at": "2026-08-16T06:51:12.519Z",
+  "source_manifest_hash": "1119f90edcfc5547c46fd39ec60ef6a8681b9ce0254f15d03411a17f49a57b33",
   "current_source_stage": "03-spec",
-  "current_goal_id": "GOAL-001",
-  "current_task_id": null,
+  "current_goal_id": "GOAL-010",
+  "current_task_id": "TASK-049",
   "source_files": [
     {
       "relativePath": ".personal-workspace/approvals/APPROVAL-001.md",
@@ -48,6 +48,18 @@
       "kind": "approval",
       "hash": "bf954f296585de94b45936bd7bce86c12dbde5a85baf5d72064e7456a02f84dd",
       "id": "APPROVAL-004",
+      "title": null,
+      "status": "approved",
+      "stage": null,
+      "goalId": null,
+      "generated": false,
+      "revision": 1
+    },
+    {
+      "relativePath": ".personal-workspace/approvals/APPROVAL-005.md",
+      "kind": "approval",
+      "hash": "11c0782e1294d375f1ed10319429f89adc8af7268592dc7a31886281aa297c27",
+      "id": "APPROVAL-005",
       "title": null,
       "status": "approved",
       "stage": null,
@@ -162,6 +174,18 @@
       "goalId": null,
       "generated": false,
       "revision": 3
+    },
+    {
+      "relativePath": ".personal-workspace/goals/GOAL-010.md",
+      "kind": "goal",
+      "hash": "111ffc56274afdac1ea28aff9f64e9ada75b21ff2b3c2c4249bdf3750a175277",
+      "id": "GOAL-010",
+      "title": "工作台基础可用性改进",
+      "status": "in_progress",
+      "stage": null,
+      "goalId": null,
+      "generated": false,
+      "revision": 1
     },
     {
       "relativePath": ".personal-workspace/reports/REPORT-001.md",
@@ -1398,6 +1422,54 @@
       "goalId": "GOAL-009",
       "generated": false,
       "revision": 8
+    },
+    {
+      "relativePath": ".personal-workspace/tasks/TASK-049.md",
+      "kind": "task",
+      "hash": "fc5c1b9ab5be160c0fd3abfc98810e5ba918a268295eadc8bc6ec22cb06a8ec9",
+      "id": "TASK-049",
+      "title": "重构左侧导航与信息架构",
+      "status": "ready",
+      "stage": null,
+      "goalId": "GOAL-010",
+      "generated": false,
+      "revision": 1
+    },
+    {
+      "relativePath": ".personal-workspace/tasks/TASK-050.md",
+      "kind": "task",
+      "hash": "361273f61c9f259cff2e6a3d53ef58e33467a683af6efbc6cb76f0b6c8f4f1e8",
+      "id": "TASK-050",
+      "title": "明确项目创建后的工作流引导",
+      "status": "draft",
+      "stage": null,
+      "goalId": "GOAL-010",
+      "generated": false,
+      "revision": 1
+    },
+    {
+      "relativePath": ".personal-workspace/tasks/TASK-051.md",
+      "kind": "task",
+      "hash": "7e5ae4a9a3a14eadb0f94f49a990843b23aee2398945fa8e32cd449f5509cbb8",
+      "id": "TASK-051",
+      "title": "增加本机项目目录选择器",
+      "status": "draft",
+      "stage": null,
+      "goalId": "GOAL-010",
+      "generated": false,
+      "revision": 1
+    },
+    {
+      "relativePath": ".personal-workspace/tasks/TASK-052.md",
+      "kind": "task",
+      "hash": "62f2c7287df478b2fccfb7cf73ab4cdff7432441169dc046a4a0747c4f65d097",
+      "id": "TASK-052",
+      "title": "优化页面布局和滚动体验",
+      "status": "draft",
+      "stage": null,
+      "goalId": "GOAL-010",
+      "generated": false,
+      "revision": 1
     }
   ]
 }
