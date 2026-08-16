@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "manifest_kind": "current",
-  "generated_at": "2026-08-16T09:48:13.667Z",
-  "source_manifest_hash": "160f15f552f5e1a80cd87cd0c9c0daa6c046bab07eedaa0f3357e6850b30a341",
+  "generated_at": "2026-08-16T12:12:45.081Z",
+  "source_manifest_hash": "81449c97aff3234ffb5970d27fff5e73efbb62cad115ab84e517b259f7b7ab7d",
   "current_source_stage": "03-spec",
-  "current_goal_id": "GOAL-010",
-  "current_task_id": null,
+  "current_goal_id": "GOAL-011",
+  "current_task_id": "TASK-053",
   "source_files": [
     {
       "relativePath": ".personal-workspace/approvals/APPROVAL-001.md",
@@ -66,6 +66,18 @@
       "goalId": null,
       "generated": false,
       "revision": 2
+    },
+    {
+      "relativePath": ".personal-workspace/approvals/APPROVAL-006.md",
+      "kind": "approval",
+      "hash": "7a13c74e540ac76ae2927e2db9a1b9322a86773060557e5830e2ed88dc6b1494",
+      "id": "APPROVAL-006",
+      "title": null,
+      "status": "approved",
+      "stage": null,
+      "goalId": null,
+      "generated": false,
+      "revision": 1
     },
     {
       "relativePath": ".personal-workspace/goals/GOAL-001.md",
@@ -186,6 +198,18 @@
       "goalId": null,
       "generated": false,
       "revision": 3
+    },
+    {
+      "relativePath": ".personal-workspace/goals/GOAL-011.md",
+      "kind": "goal",
+      "hash": "7b39297155105e416ff03255ae85d3fe38807c53dcf725eca0149498eb6a43de",
+      "id": "GOAL-011",
+      "title": "重构两级导航与全页面视口布局",
+      "status": "in_progress",
+      "stage": null,
+      "goalId": null,
+      "generated": false,
+      "revision": 1
     },
     {
       "relativePath": ".personal-workspace/reports/REPORT-001.md",
@@ -1530,6 +1554,30 @@
       "goalId": "GOAL-010",
       "generated": false,
       "revision": 4
+    },
+    {
+      "relativePath": ".personal-workspace/tasks/TASK-053.md",
+      "kind": "task",
+      "hash": "ee423356a2841ecc7e21930d5aec827d4f1d9820d942a6fcab71484dfab089bb",
+      "id": "TASK-053",
+      "title": "实现一级侧栏与二级页签导航",
+      "status": "ready",
+      "stage": null,
+      "goalId": "GOAL-011",
+      "generated": false,
+      "revision": 1
+    },
+    {
+      "relativePath": ".personal-workspace/tasks/TASK-054.md",
+      "kind": "task",
+      "hash": "c11f7336ff138746f9275493ab324becc0f7eeb84ee8d6bbfb054a8d10dc48bb",
+      "id": "TASK-054",
+      "title": "统一全页面视口布局与滚动边界",
+      "status": "draft",
+      "stage": null,
+      "goalId": "GOAL-011",
+      "generated": false,
+      "revision": 1
     }
   ]
 }
