@@ -2,16 +2,17 @@
 schema_version: 1
 id: TASK-050
 title: 明确项目创建后的工作流引导
-status: ready
+status: in_review
 goal_id: GOAL-010
 role: executor
 dependencies: [TASK-049]
-revision: 2
+revision: 3
 created_at: 2026-08-16T06:48:35Z
-updated_at: 2026-08-16T07:16:00Z
+updated_at: 2026-08-16T07:42:24Z
 approval_id: APPROVAL-005
 target_branch: goal/GOAL-010
 unblocked_by: TASK-049
+verification_report_id: REPORT-054
 ---
 
 # TASK-050：明确项目创建后的工作流引导
@@ -40,3 +41,18 @@ unblocked_by: TASK-049
 
 - TASK-050 已由用户批准解锁，当前为 `ready`，尚未开始执行。
 - TASK-051、TASK-052 继续保持 `draft`。
+
+## Completion evidence
+
+- 工作流页面新增首次使用引导，明确系统初始化治理文件、Agent 读取并更新正式材料、用户负责审批目标/范围/跳过建议；明确阶段文件不是上传清单。
+- 每个阶段分别显示“阶段状态”和“文件状态”。“待开始”只表示阶段尚未推进；独立文件缺失显示为“尚未存在 · 无需上传”，无独立文件的流程段落显示为共用正式材料。
+- 当前阶段显示首要操作、需要读取的产物和推荐下一步；工作流路径从项目总览进入工作流并可到执行控制台，执行阶段另提供目标/执行入口。
+- 工作流服务只将正式 `01-idea`、`02-discovery`、`03-spec` 文件作为独立产物链接；用户场景、Discovery 验证及其他 Spec 内流程段不再重复伪装为独立上传文件。跳过仍保持 Agent 只能建议、用户必须填写理由并决定。
+- 新增工作流引导和正式产物映射回归测试；修正首页 E2E 健康状态选择器，避免与项目列表加载状态产生严格匹配冲突。
+- TASK-050 专项测试：前端工作流断言 3/3、后端工作流集成 3/3、Chromium 工作流场景 1/1；完整 `npm run verify`：74 个单元测试、125 个集成测试、17 个 Playwright 测试，以及格式、Lint、类型检查和全部构建通过。
+- Implementation commit: `32220e0` (`feat(workflow): 明确项目创建后的工作流引导`, `Tasks: TASK-050`).
+
+## Handoff
+
+- TASK-050 现为 `in_review`，等待项目负责人独立验收 REPORT-054。
+- TASK-051、TASK-052 未执行、未修改，继续保持 `draft`；TASK-051 只有在 TASK-050 验收通过后才可解锁。

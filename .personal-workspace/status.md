@@ -1,15 +1,15 @@
 ---
 schema_version: 1
 document_type: status_snapshot
-revision: 26
-generated_at: 2026-08-16T07:16:58.354Z
-updated_at: 2026-08-16T07:16:58.354Z
+revision: 27
+generated_at: 2026-08-16T07:45:04.104Z
+updated_at: 2026-08-16T07:45:04.104Z
 source: formal_project_facts
 status: in_progress
 current_stage: 03-spec
 current_goal: GOAL-010
 current_task: TASK-050
-source_manifest_hash: bff88cf88afb4feeb61a58ca078f2b3b28e73145986607435bae52f487de9021
+source_manifest_hash: aaa71a2b3f45bd2acfa6f2cbf2f30870241fcfb65cc7358d51d24ccfa3a2d60f
 ---
 # 项目状态
 
@@ -73,13 +73,13 @@ source_manifest_hash: bff88cf88afb4feeb61a58ca078f2b3b28e73145986607435bae52f487
 - TASK-049 重构左侧导航与信息架构
 
 ## 当前任务
-- TASK-050 明确项目创建后的工作流引导 — ready
+- TASK-050 明确项目创建后的工作流引导 — in_review
 
 ## Blocker、风险和待决策事项
 - 以正式问题、审批和决策记录为准。
 
 ## 上一步
-- 已从 123 个正式文件重建导入清单。
+- 已从 124 个正式文件重建导入清单。
 
 ## 推荐下一步
 - 由项目负责人继续处理 TASK-050。

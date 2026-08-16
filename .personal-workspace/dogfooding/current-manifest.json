@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "manifest_kind": "current",
-  "generated_at": "2026-08-16T07:16:58.354Z",
-  "source_manifest_hash": "bff88cf88afb4feeb61a58ca078f2b3b28e73145986607435bae52f487de9021",
+  "generated_at": "2026-08-16T07:45:04.104Z",
+  "source_manifest_hash": "aaa71a2b3f45bd2acfa6f2cbf2f30870241fcfb65cc7358d51d24ccfa3a2d60f",
   "current_source_stage": "03-spec",
   "current_goal_id": "GOAL-010",
   "current_task_id": "TASK-050",
@@ -824,6 +824,18 @@
       "revision": 2
     },
     {
+      "relativePath": ".personal-workspace/reports/REPORT-054.md",
+      "kind": "report",
+      "hash": "4da7a4862ad106233b78ecf6d05bbcd8773e5995ea5b2fff82be1a0801a0859f",
+      "id": "REPORT-054",
+      "title": "TASK-050 工作流使用引导验收报告",
+      "status": "pending_acceptance",
+      "stage": null,
+      "goalId": "GOAL-010",
+      "generated": false,
+      "revision": 1
+    },
+    {
       "relativePath": ".personal-workspace/stages/01-idea/01-idea.md",
       "kind": "stage",
       "hash": "b5fcb8638dc61127da5f228a1e2a41cf36417fd9f764dafb6dfbb0c172c157e4",
@@ -1450,14 +1462,14 @@
     {
       "relativePath": ".personal-workspace/tasks/TASK-050.md",
       "kind": "task",
-      "hash": "0bac560add84fa932ddd0f98ce86eb93daa6739d47d3f324329d5e94a4e7fa4c",
+      "hash": "4637cc5fd5bafb11b96347a7c59728ff23fa2d70354532aaf4b2032a3a5da7e0",
       "id": "TASK-050",
       "title": "明确项目创建后的工作流引导",
-      "status": "ready",
+      "status": "in_review",
       "stage": null,
       "goalId": "GOAL-010",
       "generated": false,
-      "revision": 2
+      "revision": 3
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-051.md",
