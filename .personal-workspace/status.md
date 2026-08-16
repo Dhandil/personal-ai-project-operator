@@ -1,15 +1,15 @@
 ---
 schema_version: 1
 document_type: status_snapshot
-revision: 37
-generated_at: 2026-08-16T12:35:45.977Z
-updated_at: 2026-08-16T12:35:45.977Z
+revision: 38
+generated_at: 2026-08-16T12:50:36.597Z
+updated_at: 2026-08-16T12:50:36.597Z
 source: formal_project_facts
 status: in_progress
 current_stage: 03-spec
 current_goal: GOAL-011
 current_task: TASK-054
-source_manifest_hash: 5fec37abfcd28f51f719d9451a4eed9e035cf2a8df683a52c29b30af0138685c
+source_manifest_hash: eba0bfdaecafa3c21542328856b0aaeee81cafcf59199d5b91e59d588824bb29
 ---
 # 项目状态
 
@@ -77,13 +77,13 @@ source_manifest_hash: 5fec37abfcd28f51f719d9451a4eed9e035cf2a8df683a52c29b30af01
 - TASK-053 实现一级侧栏与二级页签导航
 
 ## 当前任务
-- TASK-054 统一全页面视口布局与滚动边界 — ready
+- TASK-054 统一全页面视口布局与滚动边界 — in_review
 
 ## Blocker、风险和待决策事项
 - 以正式问题、审批和决策记录为准。
 
 ## 上一步
-- 已从 132 个正式文件重建导入清单。
+- 已从 134 个正式文件重建导入清单。
 
 ## 推荐下一步
 - 由项目负责人继续处理 TASK-054。

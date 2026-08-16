@@ -2,16 +2,17 @@
 schema_version: 1
 id: TASK-054
 title: 统一全页面视口布局与滚动边界
-status: ready
+status: in_review
 goal_id: GOAL-011
 role: executor
 dependencies: [TASK-053]
-revision: 2
+revision: 3
 created_at: 2026-08-16T10:15:00Z
-updated_at: 2026-08-16T12:40:00Z
+updated_at: 2026-08-16T12:48:38Z
 approval_id: APPROVAL-006
 target_branch: goal/GOAL-011
 unblocked_by: TASK-053
+verification_report_id: REPORT-059
 ---
 
 # TASK-054：统一全页面视口布局与滚动边界
@@ -40,4 +41,14 @@ unblocked_by: TASK-053
 
 ## Handoff
 
-- TASK-054 已在 TASK-053 独立验收通过后按 APPROVAL-006 自动解锁，当前为 `ready`，尚未开始执行。
+- TASK-054 已完成实现，状态为 `in_review`；REPORT-059 等待项目负责人独立验收。
+- 应用外壳在桌面端使用固定视口高度和内容区滚动；主要页面的长列表与编辑区域使用局部滚动，窄屏恢复自然纵向流。
+- `/health` 的 HTML 导航与健康接口请求保持区分，服务状态深链接可直接渲染；未改变健康接口、业务 API 或任何治理语义。
+- 已生成 GOAL-011 检查点报告 REPORT-060，等待项目负责人验收后再登记 TASK-054 和 GOAL-011 完成。
+
+## 完成证据
+
+- 实现提交：`ddd4ddc98fd21067bee62560d5f338bc32556155`。
+- 页面专项：4/4 通过，覆盖 1280×800 桌面页面首屏与文档边界、审批/历史局部滚动、480px 窄屏无横向溢出和键盘焦点可达。
+- 全量 `npm run verify`：78 个单元测试、129 个集成测试、22 个 Playwright 测试全部通过；格式、Lint、类型检查和 contracts/domain/server/web 构建全部通过。
+- 浏览器检查确认桌面任务页标题在首屏、编辑面板保留局部滚动；480px 页面允许自然纵向滚动且文档宽度小于视口宽度。

@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "manifest_kind": "current",
-  "generated_at": "2026-08-16T12:35:45.977Z",
-  "source_manifest_hash": "5fec37abfcd28f51f719d9451a4eed9e035cf2a8df683a52c29b30af0138685c",
+  "generated_at": "2026-08-16T12:50:36.597Z",
+  "source_manifest_hash": "eba0bfdaecafa3c21542328856b0aaeee81cafcf59199d5b91e59d588824bb29",
   "current_source_stage": "03-spec",
   "current_goal_id": "GOAL-011",
   "current_task_id": "TASK-054",
@@ -202,14 +202,14 @@
     {
       "relativePath": ".personal-workspace/goals/GOAL-011.md",
       "kind": "goal",
-      "hash": "7b39297155105e416ff03255ae85d3fe38807c53dcf725eca0149498eb6a43de",
+      "hash": "086c8d4b35d6c1552e58855951098d9e1f7c8de2971b36dbf83ecabb6c15a6b6",
       "id": "GOAL-011",
       "title": "重构两级导航与全页面视口布局",
-      "status": "in_progress",
+      "status": "in_review",
       "stage": null,
       "goalId": null,
       "generated": false,
-      "revision": 1
+      "revision": 2
     },
     {
       "relativePath": ".personal-workspace/reports/REPORT-001.md",
@@ -908,6 +908,30 @@
       "revision": 2
     },
     {
+      "relativePath": ".personal-workspace/reports/REPORT-059.md",
+      "kind": "report",
+      "hash": "588700c88f864365664775ea80c90f4b39ff27035274da5ab14dd761c21b5b24",
+      "id": "REPORT-059",
+      "title": "TASK-054 全页面视口布局与滚动边界验收报告",
+      "status": "pending_acceptance",
+      "stage": null,
+      "goalId": "GOAL-011",
+      "generated": false,
+      "revision": 1
+    },
+    {
+      "relativePath": ".personal-workspace/reports/REPORT-060.md",
+      "kind": "report",
+      "hash": "00c44963f593031c1cdfb21eceaaa24970f914e2d14b2bddd999d189ab2d97e2",
+      "id": "REPORT-060",
+      "title": "GOAL-011 两级导航与全页面视口布局检查点报告",
+      "status": "pending_acceptance",
+      "stage": null,
+      "goalId": "GOAL-011",
+      "generated": false,
+      "revision": 1
+    },
+    {
       "relativePath": ".personal-workspace/stages/01-idea/01-idea.md",
       "kind": "stage",
       "hash": "b5fcb8638dc61127da5f228a1e2a41cf36417fd9f764dafb6dfbb0c172c157e4",
@@ -1582,14 +1606,14 @@
     {
       "relativePath": ".personal-workspace/tasks/TASK-054.md",
       "kind": "task",
-      "hash": "f03ee76d48bc9830bc95525dba8d58b8612645efa9bcf56ba130f288a00466d2",
+      "hash": "f9699d33d6de9e1265b3dd2fcf37a7c0e0a22f8d0dd2173ed3607e4f1d8fed1a",
       "id": "TASK-054",
       "title": "统一全页面视口布局与滚动边界",
-      "status": "ready",
+      "status": "in_review",
       "stage": null,
       "goalId": "GOAL-011",
       "generated": false,
-      "revision": 2
+      "revision": 3
     }
   ]
 }

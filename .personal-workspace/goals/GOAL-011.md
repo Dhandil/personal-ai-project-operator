@@ -2,15 +2,16 @@
 schema_version: 1
 id: GOAL-011
 title: 重构两级导航与全页面视口布局
-status: in_progress
-revision: 1
+status: in_review
+revision: 2
 created_at: 2026-08-16T10:15:00Z
-updated_at: 2026-08-16T10:15:00Z
+updated_at: 2026-08-16T12:48:38Z
 tasks: [TASK-053, TASK-054]
 approval_ids: [APPROVAL-006]
 target_branch: goal/GOAL-011
 unblocked_by: GOAL-010
 first_task_id: TASK-053
+checkpoint_report_id: REPORT-060
 ---
 
 # GOAL-011：重构两级导航与全页面视口布局
