@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-051
 title: 增加本机项目目录选择器
-status: draft
+status: ready
 goal_id: GOAL-010
 role: executor
 dependencies: [TASK-050]
-revision: 1
+revision: 2
 created_at: 2026-08-16T06:48:35Z
-updated_at: 2026-08-16T06:48:35Z
+updated_at: 2026-08-16T08:00:00Z
 approval_id: APPROVAL-005
 target_branch: goal/GOAL-010
 unblocked_by: TASK-050
@@ -35,3 +35,8 @@ unblocked_by: TASK-050
 - 不读取所选目录之外的内容；
 - 不因选择目录自动批准项目初始化；
 - 完成并验收后再执行 TASK-052。
+
+## Handoff
+
+- TASK-051 已由用户持续授权解锁，当前为 `ready`，尚未开始执行。
+- TASK-052 继续保持 `draft`，将在 TASK-051 独立验收通过后自动解锁。

@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "manifest_kind": "current",
-  "generated_at": "2026-08-16T07:50:02.184Z",
-  "source_manifest_hash": "6c865b37d0a78f41a435a8f12ceac7607f4281ad949f48f9c83352ad7427f2f1",
+  "generated_at": "2026-08-16T07:53:58.700Z",
+  "source_manifest_hash": "a4a622f2fd280a24637999688951020ce3be9398eb731ffdb4db108acc2b5d97",
   "current_source_stage": "03-spec",
   "current_goal_id": "GOAL-010",
-  "current_task_id": null,
+  "current_task_id": "TASK-051",
   "source_files": [
     {
       "relativePath": ".personal-workspace/approvals/APPROVAL-001.md",
@@ -58,14 +58,14 @@
     {
       "relativePath": ".personal-workspace/approvals/APPROVAL-005.md",
       "kind": "approval",
-      "hash": "11c0782e1294d375f1ed10319429f89adc8af7268592dc7a31886281aa297c27",
+      "hash": "315c716444b96a8356814f591af99e92443b5c9f39bbf5209327f00003e658a6",
       "id": "APPROVAL-005",
       "title": null,
       "status": "approved",
       "stage": null,
       "goalId": null,
       "generated": false,
-      "revision": 1
+      "revision": 2
     },
     {
       "relativePath": ".personal-workspace/goals/GOAL-001.md",
@@ -1474,14 +1474,14 @@
     {
       "relativePath": ".personal-workspace/tasks/TASK-051.md",
       "kind": "task",
-      "hash": "7e5ae4a9a3a14eadb0f94f49a990843b23aee2398945fa8e32cd449f5509cbb8",
+      "hash": "993c81d93587404ebf497fd10b059ca82d8fc628a57f383acf50d984e84956ac",
       "id": "TASK-051",
       "title": "增加本机项目目录选择器",
-      "status": "draft",
+      "status": "ready",
       "stage": null,
       "goalId": "GOAL-010",
       "generated": false,
-      "revision": 1
+      "revision": 2
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-052.md",

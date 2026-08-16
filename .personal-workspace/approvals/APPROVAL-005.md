@@ -5,10 +5,10 @@ approval_type: goal_start
 subject_id: GOAL-010
 decision: approved
 status: approved
-revision: 1
+revision: 2
 decided_by: user
 created_at: 2026-08-16T06:48:35Z
-updated_at: 2026-08-16T06:48:35Z
+updated_at: 2026-08-16T08:00:00Z
 baseline_commit: ae787b38e65afa250a6df3fd778915482d7fcbcf
 target_branch: goal/GOAL-010
 approved_tasks: [TASK-049, TASK-050, TASK-051, TASK-052]
@@ -26,4 +26,5 @@ approved_tasks: [TASK-049, TASK-050, TASK-051, TASK-052]
 - 允许增加实现上述改进所必需的本地后端接口与测试；
 - 不改变既有项目治理事实模型、审批门和 Git 安全边界；
 - 不执行真实项目 `main` 合并；
-- 每个任务完成后提交独立验收报告，再解锁后续任务。
+- 每个任务完成后提交独立验收报告；同一目标内，前一任务独立验收通过后自动解锁下一任务，无需再次询问用户。
+- 自动解锁不等于自动执行：每个任务仍需独立验收；不得越过目标级审批、跳过审批门或真实项目 `main` 合并审批。

@@ -1,22 +1,22 @@
 ---
 schema_version: 1
 document_type: status_snapshot
-revision: 28
-generated_at: 2026-08-16T07:50:02.184Z
-updated_at: 2026-08-16T07:50:02.184Z
+revision: 29
+generated_at: 2026-08-16T07:53:58.700Z
+updated_at: 2026-08-16T07:53:58.700Z
 source: formal_project_facts
 status: in_progress
 current_stage: 03-spec
 current_goal: GOAL-010
-current_task: null
-source_manifest_hash: 6c865b37d0a78f41a435a8f12ceac7607f4281ad949f48f9c83352ad7427f2f1
+current_task: TASK-051
+source_manifest_hash: a4a622f2fd280a24637999688951020ce3be9398eb731ffdb4db108acc2b5d97
 ---
 # 项目状态
 
 - 项目：个人 AI 项目运营工具
 - 当前正式源阶段：03-spec
 - 当前目标：GOAL-010
-- 当前任务：无
+- 当前任务：TASK-051
 - 本文件由正式项目事实自动生成，不是独立事实源。
 
 ## 当前获批短期目标
@@ -74,7 +74,7 @@ source_manifest_hash: 6c865b37d0a78f41a435a8f12ceac7607f4281ad949f48f9c83352ad74
 - TASK-050 明确项目创建后的工作流引导
 
 ## 当前任务
-- 无
+- TASK-051 增加本机项目目录选择器 — ready
 
 ## Blocker、风险和待决策事项
 - 以正式问题、审批和决策记录为准。
@@ -83,7 +83,7 @@ source_manifest_hash: 6c865b37d0a78f41a435a8f12ceac7607f4281ad949f48f9c83352ad74
 - 已从 124 个正式文件重建导入清单。
 
 ## 推荐下一步
-- 由项目负责人继续处理 当前就绪任务。
+- 由项目负责人继续处理 TASK-051。
 
 ## 用户待办
-- 决定是否批准真实项目的 main 合并，或进入下一目标。
+- 继续处理 TASK-051。
