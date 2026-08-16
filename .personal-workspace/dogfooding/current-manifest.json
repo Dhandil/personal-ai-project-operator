@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "manifest_kind": "current",
-  "generated_at": "2026-08-16T08:09:05.656Z",
-  "source_manifest_hash": "854a53e3cf6caedc1f0cec73a99e9f94bcd14941c4fadcda2f9772426a6289cd",
+  "generated_at": "2026-08-16T08:12:44.089Z",
+  "source_manifest_hash": "88aa4c386a202848ed44745cf0309273452059945d08270909e3a110c342f97d",
   "current_source_stage": "03-spec",
   "current_goal_id": "GOAL-010",
-  "current_task_id": "TASK-051",
+  "current_task_id": "TASK-052",
   "source_files": [
     {
       "relativePath": ".personal-workspace/approvals/APPROVAL-001.md",
@@ -838,14 +838,14 @@
     {
       "relativePath": ".personal-workspace/reports/REPORT-055.md",
       "kind": "report",
-      "hash": "260885dfa6a32607f4e3d020c4b08106f505e227e258b804f5f766dbc7aa73d3",
+      "hash": "e01bdf949fc7c1520e15d85dab8c1e85cb2036837a2d34534aaa447871cbbb73",
       "id": "REPORT-055",
       "title": "TASK-051 本机项目目录选择器验收报告",
-      "status": "pending_acceptance",
+      "status": "accepted",
       "stage": null,
       "goalId": "GOAL-010",
       "generated": false,
-      "revision": 1
+      "revision": 2
     },
     {
       "relativePath": ".personal-workspace/stages/01-idea/01-idea.md",
@@ -1486,26 +1486,26 @@
     {
       "relativePath": ".personal-workspace/tasks/TASK-051.md",
       "kind": "task",
-      "hash": "e585cf0b4af59180580c9de6e93307f370cbeb7dd351f829435603b02880aadf",
+      "hash": "7f28484db54c42f409927d4749ad2e403ca90d7430efd01ab1cf90aa90ba3159",
       "id": "TASK-051",
       "title": "增加本机项目目录选择器",
-      "status": "in_review",
+      "status": "completed",
       "stage": null,
       "goalId": "GOAL-010",
       "generated": false,
-      "revision": 3
+      "revision": 4
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-052.md",
       "kind": "task",
-      "hash": "62f2c7287df478b2fccfb7cf73ab4cdff7432441169dc046a4a0747c4f65d097",
+      "hash": "4c1c3b56c5c26617498c2b6319c2a60996f5b2ed0ac8fc83ce63572ef655e589",
       "id": "TASK-052",
       "title": "优化页面布局和滚动体验",
-      "status": "draft",
+      "status": "ready",
       "stage": null,
       "goalId": "GOAL-010",
       "generated": false,
-      "revision": 1
+      "revision": 2
     }
   ]
 }

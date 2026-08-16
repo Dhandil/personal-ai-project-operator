@@ -1,22 +1,22 @@
 ---
 schema_version: 1
 document_type: status_snapshot
-revision: 30
-generated_at: 2026-08-16T08:09:05.656Z
-updated_at: 2026-08-16T08:09:05.656Z
+revision: 31
+generated_at: 2026-08-16T08:12:44.089Z
+updated_at: 2026-08-16T08:12:44.089Z
 source: formal_project_facts
 status: in_progress
 current_stage: 03-spec
 current_goal: GOAL-010
-current_task: TASK-051
-source_manifest_hash: 854a53e3cf6caedc1f0cec73a99e9f94bcd14941c4fadcda2f9772426a6289cd
+current_task: TASK-052
+source_manifest_hash: 88aa4c386a202848ed44745cf0309273452059945d08270909e3a110c342f97d
 ---
 # 项目状态
 
 - 项目：个人 AI 项目运营工具
 - 当前正式源阶段：03-spec
 - 当前目标：GOAL-010
-- 当前任务：TASK-051
+- 当前任务：TASK-052
 - 本文件由正式项目事实自动生成，不是独立事实源。
 
 ## 当前获批短期目标
@@ -72,9 +72,10 @@ source_manifest_hash: 854a53e3cf6caedc1f0cec73a99e9f94bcd14941c4fadcda2f9772426a
 - TASK-048 实现 Claude Code CLI Adapter
 - TASK-049 重构左侧导航与信息架构
 - TASK-050 明确项目创建后的工作流引导
+- TASK-051 增加本机项目目录选择器
 
 ## 当前任务
-- TASK-051 增加本机项目目录选择器 — in_review
+- TASK-052 优化页面布局和滚动体验 — ready
 
 ## Blocker、风险和待决策事项
 - 以正式问题、审批和决策记录为准。
@@ -83,7 +84,7 @@ source_manifest_hash: 854a53e3cf6caedc1f0cec73a99e9f94bcd14941c4fadcda2f9772426a
 - 已从 125 个正式文件重建导入清单。
 
 ## 推荐下一步
-- 由项目负责人继续处理 TASK-051。
+- 由项目负责人继续处理 TASK-052。
 
 ## 用户待办
-- 继续处理 TASK-051。
+- 继续处理 TASK-052。

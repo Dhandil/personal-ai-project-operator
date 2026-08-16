@@ -3,16 +3,18 @@ schema_version: 1
 document_type: report
 id: REPORT-055
 title: TASK-051 本机项目目录选择器验收报告
-status: pending_acceptance
+status: accepted
 report_type: task_verification
-acceptance_state: pending
+acceptance_state: accepted
 task_id: TASK-051
 goal_id: GOAL-010
-revision: 1
+revision: 2
 created_at: 2026-08-16T08:06:41Z
-updated_at: 2026-08-16T08:06:41Z
+updated_at: 2026-08-16T08:18:00Z
 verified_by: implementation_agent
 verified_commit: 6eaec6ad55144d173bbef20b2e2baa312feee633
+accepted_by: project_owner
+accepted_at: 2026-08-16T08:18:00Z
 verification_commands:
   - npx tsx --test apps/server/test/local-directory-picker.integration.test.ts
   - npx vitest run --config apps/web/vitest.config.ts apps/web/src/project-initialization.test.ts
@@ -57,3 +59,10 @@ TASK-051 已完成实现和验证，提交项目负责人独立验收。Windows 
 ## 独立验收结果
 
 - 尚未由项目负责人验收；实现者不得将本报告标记为 `accepted`。
+
+## 独立验收结果
+
+- 服务器目录选择专项：4/4 通过。
+- 前端目录选择专项：5/5 通过。
+- Chromium 创建向导场景：1/1 通过，确认选择结果仍进入预览，未批准不产生副作用。
+- 验收结论：通过，接受 REPORT-055；TASK-052 已按持续授权自动解锁。

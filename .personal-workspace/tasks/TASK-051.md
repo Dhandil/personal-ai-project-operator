@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-051
 title: 增加本机项目目录选择器
-status: in_review
+status: completed
 goal_id: GOAL-010
 role: executor
 dependencies: [TASK-050]
-revision: 3
+revision: 4
 created_at: 2026-08-16T06:48:35Z
-updated_at: 2026-08-16T08:06:41Z
+updated_at: 2026-08-16T08:18:00Z
 approval_id: APPROVAL-005
 target_branch: goal/GOAL-010
 unblocked_by: TASK-050
@@ -45,5 +45,10 @@ verification_report_id: REPORT-055
 
 ## Handoff
 
-- TASK-051 已完成实现和验证，当前为 `in_review`，等待项目负责人独立验收 REPORT-055。
-- TASK-052 未执行、未修改，继续保持 `draft`；TASK-052 仅在 TASK-051 独立验收通过后解锁。
+- TASK-051 已通过项目负责人独立验收，状态为 `completed`；REPORT-055 已接受。
+- TASK-052 未执行、未修改，已按用户持续授权自动解锁为 `ready`。
+
+## Acceptance
+
+- 独立验收通过：服务器专项 4/4、前端专项 5/5、Chromium 创建向导场景 1/1。
+- 验收范围仅覆盖 TASK-051；TASK-052 仅完成解锁，未开始执行。

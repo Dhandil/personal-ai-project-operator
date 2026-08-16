@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-052
 title: 优化页面布局和滚动体验
-status: draft
+status: ready
 goal_id: GOAL-010
 role: executor
 dependencies: [TASK-049, TASK-050, TASK-051]
-revision: 1
+revision: 2
 created_at: 2026-08-16T06:48:35Z
-updated_at: 2026-08-16T06:48:35Z
+updated_at: 2026-08-16T08:18:00Z
 approval_id: APPROVAL-005
 target_branch: goal/GOAL-010
 unblocked_by: TASK-051
@@ -34,3 +34,7 @@ unblocked_by: TASK-051
 - 不删除治理事实、风险、审批理由或审计信息；
 - 不改变任务状态和审批语义；
 - 完成后生成 GOAL-010 检查点报告，等待用户验收。
+
+## Handoff
+
+- TASK-052 已在 TASK-051 独立验收通过后按持续授权自动解锁，当前为 `ready`，尚未开始执行。
