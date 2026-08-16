@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "manifest_kind": "current",
-  "generated_at": "2026-08-16T15:07:44.870Z",
-  "source_manifest_hash": "b1f8e9717f096f922fae703507896a55654658ebce622952711c6a9d22d12a25",
+  "generated_at": "2026-08-16T15:12:19.037Z",
+  "source_manifest_hash": "997e5080b6de92653c824fb2ff1275af3d51cd62dae3f68d5d2ac33d4a72254d",
   "current_source_stage": "03-spec",
   "current_goal_id": "GOAL-012",
-  "current_task_id": "TASK-056",
+  "current_task_id": "TASK-057",
   "source_files": [
     {
       "relativePath": ".personal-workspace/approvals/APPROVAL-001.md",
@@ -1006,14 +1006,14 @@
     {
       "relativePath": ".personal-workspace/reports/REPORT-062.md",
       "kind": "report",
-      "hash": "ff7a4191caa191a044a952b6d0b893199862c38b46c5a1fdfe567bc759f26aa7",
+      "hash": "15f5196638ebf7e9ad4f61f152c30517424a7cdffe6f00ea5bc59493f1986360",
       "id": "REPORT-062",
       "title": "TASK-056 前期角色模板与阶段任务包验收报告",
-      "status": "pending_acceptance",
+      "status": "accepted",
       "stage": null,
       "goalId": "GOAL-012",
       "generated": false,
-      "revision": 1
+      "revision": 2
     },
     {
       "relativePath": ".personal-workspace/stages/01-idea/01-idea.md",
@@ -1738,26 +1738,26 @@
     {
       "relativePath": ".personal-workspace/tasks/TASK-056.md",
       "kind": "task",
-      "hash": "04ef2f5877f44ace40c375e86a3507bc48266ccd5c9470a2b689987a1a5f173f",
+      "hash": "1ba467eb79b28f8512e242ae36c0868895839fbaa0089cfc9c8232293d4dd751",
       "id": "TASK-056",
       "title": "定义前期角色模板与阶段任务包",
-      "status": "in_review",
+      "status": "completed",
       "stage": null,
       "goalId": "GOAL-012",
       "generated": false,
-      "revision": 3
+      "revision": 4
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-057.md",
       "kind": "task",
-      "hash": "af74543fc38a0fefb23aabda306b2534f92d934aef3bedb02f7f5e5e7e6168ae",
+      "hash": "0ec60889f2773fa295541b54ce6670063f1864106282499ca17cd29fbf2af72c",
       "id": "TASK-057",
       "title": "实现阶段产物校验与批准写入",
-      "status": "draft",
+      "status": "ready",
       "stage": null,
       "goalId": "GOAL-012",
       "generated": false,
-      "revision": 1
+      "revision": 2
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-058.md",

@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-057
 title: 实现阶段产物校验与批准写入
-status: draft
+status: ready
 goal_id: GOAL-012
 role: executor
 dependencies: [TASK-055, TASK-056]
-revision: 1
+revision: 2
 created_at: 2026-08-16T14:00:00Z
-updated_at: 2026-08-16T14:00:00Z
+updated_at: 2026-08-16T15:20:00Z
 target_branch: goal/GOAL-012
 unblocked_by: TASK-056
 ---

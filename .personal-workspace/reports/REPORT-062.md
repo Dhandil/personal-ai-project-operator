@@ -3,16 +3,18 @@ schema_version: 1
 document_type: report
 id: REPORT-062
 title: TASK-056 前期角色模板与阶段任务包验收报告
-status: pending_acceptance
+status: accepted
 report_type: task_verification
-acceptance_state: pending
+acceptance_state: accepted
 task_id: TASK-056
 goal_id: GOAL-012
-revision: 1
+revision: 2
 created_at: 2026-08-16T15:06:31Z
-updated_at: 2026-08-16T15:06:31Z
+updated_at: 2026-08-16T15:20:00Z
 verified_by: implementation_agent
 verified_commit: ea0d425612279b4afbebcca5a119cd65642d515b
+accepted_by: project_owner
+accepted_at: 2026-08-16T15:20:00Z
 verification_commands:
   - npx vitest run packages/domain/src/stage-task-package.test.ts packages/domain/src/role.test.ts packages/domain/src/stage-run.test.ts --config vitest.config.ts
   - npm run verify
@@ -53,4 +55,7 @@ TASK-056 已完成领域实现和验证，当前任务保持 `in_review`，本�
 
 ## 独立验收结果
 
-- 尚未由项目负责人验收；实现者不得将本报告标记为 `accepted`。
+- 项目负责人独立检查了五类前期角色模板、阶段任务包、批准产物引用、输出 Schema 和审核只读边界。
+- 独立重跑专项及相关回归：17/17 通过。
+- 独立重跑完整 `npm run verify`：93 个单元测试、129 个集成测试、22 个 Playwright 测试，以及格式、Lint、类型检查和构建全部通过。
+- 验收结论：通过，接受 REPORT-062；TASK-056 可标记为 `completed`，TASK-057 按既定依赖规则解锁。

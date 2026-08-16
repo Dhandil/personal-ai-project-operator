@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-056
 title: 定义前期角色模板与阶段任务包
-status: in_review
+status: completed
 goal_id: GOAL-012
 role: executor
 dependencies: [TASK-055]
-revision: 3
+revision: 4
 created_at: 2026-08-16T14:00:00Z
-updated_at: 2026-08-16T15:06:31Z
+updated_at: 2026-08-16T15:20:00Z
 target_branch: goal/GOAL-012
 unblocked_by: TASK-055
 verification_report_id: REPORT-062
@@ -34,9 +34,9 @@ verification_report_id: REPORT-062
 
 ## 边界与交接
 
-- 前期角色模板、阶段任务包和结构化输出规则已完成，当前状态为 `in_review`；REPORT-062 等待项目负责人独立验收。
+- 前期角色模板、阶段任务包和结构化输出规则已完成，REPORT-062 已通过项目负责人独立验收。
 - 不执行 Agent，不复制聊天历史，不把 Skill 全文写入项目事实；未执行 TASK-057 或其他后续任务。
-- 独立验收通过后，TASK-057 才可申请解锁。
+- TASK-057 已按目标级批准和依赖规则解锁；未执行其他后续任务。
 
 ## 完成证据
 
