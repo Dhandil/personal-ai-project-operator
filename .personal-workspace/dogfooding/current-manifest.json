@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "manifest_kind": "current",
-  "generated_at": "2026-08-16T06:51:12.519Z",
-  "source_manifest_hash": "1119f90edcfc5547c46fd39ec60ef6a8681b9ce0254f15d03411a17f49a57b33",
+  "generated_at": "2026-08-16T07:07:24.284Z",
+  "source_manifest_hash": "4823f5211e94c9f3473e692c2bad599c12a1cc4d8b2449ca5102069d0274d57e",
   "current_source_stage": "03-spec",
   "current_goal_id": "GOAL-010",
   "current_task_id": "TASK-049",
@@ -812,6 +812,18 @@
       "revision": 2
     },
     {
+      "relativePath": ".personal-workspace/reports/REPORT-053.md",
+      "kind": "report",
+      "hash": "e3102cb370934efac3681a735d2c7b2931e0f81e204a19c8698489e233f2f438",
+      "id": "REPORT-053",
+      "title": "TASK-049 左侧导航与信息架构验收报告",
+      "status": "pending_acceptance",
+      "stage": null,
+      "goalId": "GOAL-010",
+      "generated": false,
+      "revision": 1
+    },
+    {
       "relativePath": ".personal-workspace/stages/01-idea/01-idea.md",
       "kind": "stage",
       "hash": "b5fcb8638dc61127da5f228a1e2a41cf36417fd9f764dafb6dfbb0c172c157e4",
@@ -1426,14 +1438,14 @@
     {
       "relativePath": ".personal-workspace/tasks/TASK-049.md",
       "kind": "task",
-      "hash": "fc5c1b9ab5be160c0fd3abfc98810e5ba918a268295eadc8bc6ec22cb06a8ec9",
+      "hash": "d2c22486b2011f41a15c7b875a40c183c0530ddf1b7f7d0c21866ea51e0885cf",
       "id": "TASK-049",
       "title": "重构左侧导航与信息架构",
-      "status": "ready",
+      "status": "in_review",
       "stage": null,
       "goalId": "GOAL-010",
       "generated": false,
-      "revision": 1
+      "revision": 2
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-050.md",

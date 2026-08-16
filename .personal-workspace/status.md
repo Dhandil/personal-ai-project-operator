@@ -1,15 +1,15 @@
 ---
 schema_version: 1
 document_type: status_snapshot
-revision: 22
-generated_at: 2026-08-16T06:51:12.519Z
-updated_at: 2026-08-16T06:51:12.519Z
+revision: 23
+generated_at: 2026-08-16T07:07:24.284Z
+updated_at: 2026-08-16T07:07:24.284Z
 source: formal_project_facts
 status: in_progress
 current_stage: 03-spec
 current_goal: GOAL-010
 current_task: TASK-049
-source_manifest_hash: 1119f90edcfc5547c46fd39ec60ef6a8681b9ce0254f15d03411a17f49a57b33
+source_manifest_hash: 4823f5211e94c9f3473e692c2bad599c12a1cc4d8b2449ca5102069d0274d57e
 ---
 # 项目状态
 
@@ -72,13 +72,13 @@ source_manifest_hash: 1119f90edcfc5547c46fd39ec60ef6a8681b9ce0254f15d03411a17f49
 - TASK-048 实现 Claude Code CLI Adapter
 
 ## 当前任务
-- TASK-049 重构左侧导航与信息架构 — ready
+- TASK-049 重构左侧导航与信息架构 — in_review
 
 ## Blocker、风险和待决策事项
 - 以正式问题、审批和决策记录为准。
 
 ## 上一步
-- 已从 122 个正式文件重建导入清单。
+- 已从 123 个正式文件重建导入清单。
 
 ## 推荐下一步
 - 由项目负责人继续处理 TASK-049。
