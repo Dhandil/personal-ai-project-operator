@@ -2,16 +2,17 @@
 schema_version: 1
 id: TASK-053
 title: 实现一级侧栏与二级页签导航
-status: ready
+status: in_review
 goal_id: GOAL-011
 role: executor
 dependencies: [TASK-052]
-revision: 1
+revision: 2
 created_at: 2026-08-16T10:15:00Z
-updated_at: 2026-08-16T10:15:00Z
+updated_at: 2026-08-16T12:30:00Z
 approval_id: APPROVAL-006
 target_branch: goal/GOAL-011
 unblocked_by: TASK-052
+verification_report_id: REPORT-058
 ---
 
 # TASK-053：实现一级侧栏与二级页签导航
@@ -42,5 +43,15 @@ unblocked_by: TASK-052
 
 ## Handoff
 
-- TASK-053 已获批准并处于 `ready`，可由实现对话立即执行；
-- TASK-054 保持 `draft`，不得提前执行。
+- TASK-053 已完成实现，状态为 `in_review`；REPORT-058 等待项目负责人独立验收。
+- 一级侧栏只保留工作台、项目、执行、治理、系统；顶部二级页签按模块提供既有页面入口。
+- 当前项目上下文在应用外壳持续可见；既有路由、深链接、刷新恢复和业务页面内容未改写。
+- TASK-054 保持 `draft`，未执行、未修改。
+
+## 完成证据
+
+- 实现提交：`e88f0cca0bf857c2316b0475e30c41aea3de4846`。
+- 导航模型专项：15/15 通过；覆盖五个一级模块、二级页签映射、深链接模块归属和同层路由唯一性。
+- Playwright 导航专项：3/3 通过；覆盖桌面选中态与模块切换、窄屏一级导航收起、二级页签完整可达和无横向溢出。
+- 完整 `npm run verify`：78 个单元测试、129 个集成测试、19 个 Playwright 测试全部通过；格式、Lint、类型检查和 contracts/domain/server/web 构建全部通过。
+- 既有项目概览和 V0 浏览器断言仅做区域限定，以适配新增的持久项目上下文；未改变业务行为或断言目标。

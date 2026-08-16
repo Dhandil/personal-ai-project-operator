@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "manifest_kind": "current",
-  "generated_at": "2026-08-16T12:12:45.081Z",
-  "source_manifest_hash": "81449c97aff3234ffb5970d27fff5e73efbb62cad115ab84e517b259f7b7ab7d",
+  "generated_at": "2026-08-16T12:31:17.517Z",
+  "source_manifest_hash": "a1c20abc8c89d603df267e1f302043d478ffb510c4e4371be9fb430d2102bb21",
   "current_source_stage": "03-spec",
   "current_goal_id": "GOAL-011",
   "current_task_id": "TASK-053",
@@ -896,6 +896,18 @@
       "revision": 2
     },
     {
+      "relativePath": ".personal-workspace/reports/REPORT-058.md",
+      "kind": "report",
+      "hash": "b9cbb5ea6ae4aa918bc52c5d99176415ca8d8803437df90e13b63049a62bc23a",
+      "id": "REPORT-058",
+      "title": "TASK-053 一级侧栏与二级页签导航验收报告",
+      "status": "pending_acceptance",
+      "stage": null,
+      "goalId": "GOAL-011",
+      "generated": false,
+      "revision": 1
+    },
+    {
       "relativePath": ".personal-workspace/stages/01-idea/01-idea.md",
       "kind": "stage",
       "hash": "b5fcb8638dc61127da5f228a1e2a41cf36417fd9f764dafb6dfbb0c172c157e4",
@@ -1558,14 +1570,14 @@
     {
       "relativePath": ".personal-workspace/tasks/TASK-053.md",
       "kind": "task",
-      "hash": "ee423356a2841ecc7e21930d5aec827d4f1d9820d942a6fcab71484dfab089bb",
+      "hash": "97bc948fe8da54513f55f51065452708b7a4ae9670a46c2d944348570a7dddf4",
       "id": "TASK-053",
       "title": "实现一级侧栏与二级页签导航",
-      "status": "ready",
+      "status": "in_review",
       "stage": null,
       "goalId": "GOAL-011",
       "generated": false,
-      "revision": 1
+      "revision": 2
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-054.md",

@@ -1,15 +1,15 @@
 ---
 schema_version: 1
 document_type: status_snapshot
-revision: 35
-generated_at: 2026-08-16T12:12:45.081Z
-updated_at: 2026-08-16T12:12:45.081Z
+revision: 36
+generated_at: 2026-08-16T12:31:17.517Z
+updated_at: 2026-08-16T12:31:17.517Z
 source: formal_project_facts
 status: in_progress
 current_stage: 03-spec
 current_goal: GOAL-011
 current_task: TASK-053
-source_manifest_hash: 81449c97aff3234ffb5970d27fff5e73efbb62cad115ab84e517b259f7b7ab7d
+source_manifest_hash: a1c20abc8c89d603df267e1f302043d478ffb510c4e4371be9fb430d2102bb21
 ---
 # 项目状态
 
@@ -76,13 +76,13 @@ source_manifest_hash: 81449c97aff3234ffb5970d27fff5e73efbb62cad115ab84e517b259f7
 - TASK-052 优化页面布局和滚动体验
 
 ## 当前任务
-- TASK-053 实现一级侧栏与二级页签导航 — ready
+- TASK-053 实现一级侧栏与二级页签导航 — in_review
 
 ## Blocker、风险和待决策事项
 - 以正式问题、审批和决策记录为准。
 
 ## 上一步
-- 已从 131 个正式文件重建导入清单。
+- 已从 132 个正式文件重建导入清单。
 
 ## 推荐下一步
 - 由项目负责人继续处理 TASK-053。
