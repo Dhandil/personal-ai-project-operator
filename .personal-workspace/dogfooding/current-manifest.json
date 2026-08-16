@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "manifest_kind": "current",
-  "generated_at": "2026-08-16T07:14:20.731Z",
-  "source_manifest_hash": "995cc92d4afd9ecefdfe8723fa8db5cbf7ead922f93c345f03383c556f357192",
+  "generated_at": "2026-08-16T07:16:58.354Z",
+  "source_manifest_hash": "bff88cf88afb4feeb61a58ca078f2b3b28e73145986607435bae52f487de9021",
   "current_source_stage": "03-spec",
   "current_goal_id": "GOAL-010",
-  "current_task_id": null,
+  "current_task_id": "TASK-050",
   "source_files": [
     {
       "relativePath": ".personal-workspace/approvals/APPROVAL-001.md",
@@ -1450,14 +1450,14 @@
     {
       "relativePath": ".personal-workspace/tasks/TASK-050.md",
       "kind": "task",
-      "hash": "361273f61c9f259cff2e6a3d53ef58e33467a683af6efbc6cb76f0b6c8f4f1e8",
+      "hash": "0bac560add84fa932ddd0f98ce86eb93daa6739d47d3f324329d5e94a4e7fa4c",
       "id": "TASK-050",
       "title": "明确项目创建后的工作流引导",
-      "status": "draft",
+      "status": "ready",
       "stage": null,
       "goalId": "GOAL-010",
       "generated": false,
-      "revision": 1
+      "revision": 2
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-051.md",

@@ -1,22 +1,22 @@
 ---
 schema_version: 1
 document_type: status_snapshot
-revision: 25
-generated_at: 2026-08-16T07:14:20.731Z
-updated_at: 2026-08-16T07:14:20.731Z
+revision: 26
+generated_at: 2026-08-16T07:16:58.354Z
+updated_at: 2026-08-16T07:16:58.354Z
 source: formal_project_facts
 status: in_progress
 current_stage: 03-spec
 current_goal: GOAL-010
-current_task: null
-source_manifest_hash: 995cc92d4afd9ecefdfe8723fa8db5cbf7ead922f93c345f03383c556f357192
+current_task: TASK-050
+source_manifest_hash: bff88cf88afb4feeb61a58ca078f2b3b28e73145986607435bae52f487de9021
 ---
 # 项目状态
 
 - 项目：个人 AI 项目运营工具
 - 当前正式源阶段：03-spec
 - 当前目标：GOAL-010
-- 当前任务：无
+- 当前任务：TASK-050
 - 本文件由正式项目事实自动生成，不是独立事实源。
 
 ## 当前获批短期目标
@@ -73,7 +73,7 @@ source_manifest_hash: 995cc92d4afd9ecefdfe8723fa8db5cbf7ead922f93c345f03383c556f
 - TASK-049 重构左侧导航与信息架构
 
 ## 当前任务
-- 无
+- TASK-050 明确项目创建后的工作流引导 — ready
 
 ## Blocker、风险和待决策事项
 - 以正式问题、审批和决策记录为准。
@@ -82,7 +82,7 @@ source_manifest_hash: 995cc92d4afd9ecefdfe8723fa8db5cbf7ead922f93c345f03383c556f
 - 已从 123 个正式文件重建导入清单。
 
 ## 推荐下一步
-- 由项目负责人继续处理 当前就绪任务。
+- 由项目负责人继续处理 TASK-050。
 
 ## 用户待办
-- 决定是否批准真实项目的 main 合并，或进入下一目标。
+- 继续处理 TASK-050。

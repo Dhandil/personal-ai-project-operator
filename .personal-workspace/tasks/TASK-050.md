@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-050
 title: 明确项目创建后的工作流引导
-status: draft
+status: ready
 goal_id: GOAL-010
 role: executor
 dependencies: [TASK-049]
-revision: 1
+revision: 2
 created_at: 2026-08-16T06:48:35Z
-updated_at: 2026-08-16T06:48:35Z
+updated_at: 2026-08-16T07:16:00Z
 approval_id: APPROVAL-005
 target_branch: goal/GOAL-010
 unblocked_by: TASK-049
@@ -35,3 +35,8 @@ unblocked_by: TASK-049
 - 不要求用户上传系统已经创建的阶段文件；
 - 若当前版本尚不能直接启动 Agent，必须明确提示现状和可执行入口，不伪装为自动执行；
 - 完成并验收后再执行 TASK-051。
+
+## Handoff
+
+- TASK-050 已由用户批准解锁，当前为 `ready`，尚未开始执行。
+- TASK-051、TASK-052 继续保持 `draft`。
