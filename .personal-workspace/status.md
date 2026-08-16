@@ -1,15 +1,15 @@
 ---
 schema_version: 1
 document_type: status_snapshot
-revision: 43
-generated_at: 2026-08-16T14:33:58.505Z
-updated_at: 2026-08-16T14:33:58.505Z
+revision: 44
+generated_at: 2026-08-16T14:44:45.108Z
+updated_at: 2026-08-16T14:44:45.108Z
 source: formal_project_facts
 status: in_progress
 current_stage: 03-spec
 current_goal: GOAL-012
 current_task: TASK-055
-source_manifest_hash: f9bfef22dc3622536a0715ed0814c0b8a5be1c06a371edefb645deeefa7a66fb
+source_manifest_hash: 708061dae4502a4515206eb7f865c91e8c8d1b281093d59a749406505552f02c
 ---
 # 项目状态
 
@@ -78,13 +78,13 @@ source_manifest_hash: f9bfef22dc3622536a0715ed0814c0b8a5be1c06a371edefb645deeefa
 - TASK-054 统一全页面视口布局与滚动边界
 
 ## 当前任务
-- TASK-055 定义前期阶段运行与审批状态模型 — ready
+- TASK-055 定义前期阶段运行与审批状态模型 — in_review
 
 ## Blocker、风险和待决策事项
 - 以正式问题、审批和决策记录为准。
 
 ## 上一步
-- 已从 171 个正式文件重建导入清单。
+- 已从 172 个正式文件重建导入清单。
 
 ## 推荐下一步
 - 由项目负责人继续处理 TASK-055。

@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "manifest_kind": "current",
-  "generated_at": "2026-08-16T14:33:58.505Z",
-  "source_manifest_hash": "f9bfef22dc3622536a0715ed0814c0b8a5be1c06a371edefb645deeefa7a66fb",
+  "generated_at": "2026-08-16T14:44:45.108Z",
+  "source_manifest_hash": "708061dae4502a4515206eb7f865c91e8c8d1b281093d59a749406505552f02c",
   "current_source_stage": "03-spec",
   "current_goal_id": "GOAL-012",
   "current_task_id": "TASK-055",
@@ -992,6 +992,18 @@
       "revision": 2
     },
     {
+      "relativePath": ".personal-workspace/reports/REPORT-061.md",
+      "kind": "report",
+      "hash": "5d117775cf7fb97859753a4c7ecd967213718c7ae8d0a3e2842cddfb5fa86efc",
+      "id": "REPORT-061",
+      "title": "TASK-055 前期阶段运行与审批状态模型验收报告",
+      "status": "pending_acceptance",
+      "stage": null,
+      "goalId": "GOAL-012",
+      "generated": false,
+      "revision": 1
+    },
+    {
       "relativePath": ".personal-workspace/stages/01-idea/01-idea.md",
       "kind": "stage",
       "hash": "b5fcb8638dc61127da5f228a1e2a41cf36417fd9f764dafb6dfbb0c172c157e4",
@@ -1702,14 +1714,14 @@
     {
       "relativePath": ".personal-workspace/tasks/TASK-055.md",
       "kind": "task",
-      "hash": "cca5679bde0f67d914c87ba1813f430555732cd026169941834a6b7383eaf4f0",
+      "hash": "1696ece2105a379df50fe5040b6c049b920d741509e0e04d26212ee4a324a03d",
       "id": "TASK-055",
       "title": "定义前期阶段运行与审批状态模型",
-      "status": "ready",
+      "status": "in_review",
       "stage": null,
       "goalId": "GOAL-012",
       "generated": false,
-      "revision": 2
+      "revision": 3
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-056.md",
