@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-054
 title: 统一全页面视口布局与滚动边界
-status: draft
+status: ready
 goal_id: GOAL-011
 role: executor
 dependencies: [TASK-053]
-revision: 1
+revision: 2
 created_at: 2026-08-16T10:15:00Z
-updated_at: 2026-08-16T10:15:00Z
+updated_at: 2026-08-16T12:40:00Z
 approval_id: APPROVAL-006
 target_branch: goal/GOAL-011
 unblocked_by: TASK-053
@@ -40,4 +40,4 @@ unblocked_by: TASK-053
 
 ## Handoff
 
-- TASK-054 当前为 `draft`；只有 TASK-053 独立验收通过后才能自动解锁为 `ready`。
+- TASK-054 已在 TASK-053 独立验收通过后按 APPROVAL-006 自动解锁，当前为 `ready`，尚未开始执行。

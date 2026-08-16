@@ -3,16 +3,18 @@ schema_version: 1
 document_type: report
 id: REPORT-058
 title: TASK-053 一级侧栏与二级页签导航验收报告
-status: pending_acceptance
+status: accepted
 report_type: task_verification
-acceptance_state: pending
+acceptance_state: accepted
 task_id: TASK-053
 goal_id: GOAL-011
-revision: 1
+revision: 2
 created_at: 2026-08-16T12:30:00Z
-updated_at: 2026-08-16T12:30:00Z
+updated_at: 2026-08-16T12:40:00Z
 verified_by: implementation_agent
 verified_commit: e88f0cca0bf857c2316b0475e30c41aea3de4846
+accepted_by: project_owner
+accepted_at: 2026-08-16T12:40:00Z
 verification_commands:
   - npx vitest run --config apps/web/vitest.config.ts apps/web/src/app.test.ts
   - npx playwright test e2e/navigation.spec.ts --config=playwright.config.ts
@@ -56,4 +58,6 @@ TASK-053 已完成实现和验证，提交项目负责人独立验收。应用�
 
 ## 独立验收结果
 
-- 尚未由项目负责人验收；实现者不得将本报告标记为 `accepted`。
+- 导航模型专项独立复跑：15/15 通过。
+- Playwright 导航场景独立复跑：3/3 通过，覆盖桌面模块/页签选中、模块切换和窄屏无横向溢出。
+- 验收结论：通过，接受 REPORT-058；TASK-054 已按 APPROVAL-006 自动解锁。

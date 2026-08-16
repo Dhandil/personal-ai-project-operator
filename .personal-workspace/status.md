@@ -1,22 +1,22 @@
 ---
 schema_version: 1
 document_type: status_snapshot
-revision: 36
-generated_at: 2026-08-16T12:31:17.517Z
-updated_at: 2026-08-16T12:31:17.517Z
+revision: 37
+generated_at: 2026-08-16T12:35:45.977Z
+updated_at: 2026-08-16T12:35:45.977Z
 source: formal_project_facts
 status: in_progress
 current_stage: 03-spec
 current_goal: GOAL-011
-current_task: TASK-053
-source_manifest_hash: a1c20abc8c89d603df267e1f302043d478ffb510c4e4371be9fb430d2102bb21
+current_task: TASK-054
+source_manifest_hash: 5fec37abfcd28f51f719d9451a4eed9e035cf2a8df683a52c29b30af0138685c
 ---
 # 项目状态
 
 - 项目：个人 AI 项目运营工具
 - 当前正式源阶段：03-spec
 - 当前目标：GOAL-011
-- 当前任务：TASK-053
+- 当前任务：TASK-054
 - 本文件由正式项目事实自动生成，不是独立事实源。
 
 ## 当前获批短期目标
@@ -74,9 +74,10 @@ source_manifest_hash: a1c20abc8c89d603df267e1f302043d478ffb510c4e4371be9fb430d21
 - TASK-050 明确项目创建后的工作流引导
 - TASK-051 增加本机项目目录选择器
 - TASK-052 优化页面布局和滚动体验
+- TASK-053 实现一级侧栏与二级页签导航
 
 ## 当前任务
-- TASK-053 实现一级侧栏与二级页签导航 — in_review
+- TASK-054 统一全页面视口布局与滚动边界 — ready
 
 ## Blocker、风险和待决策事项
 - 以正式问题、审批和决策记录为准。
@@ -85,7 +86,7 @@ source_manifest_hash: a1c20abc8c89d603df267e1f302043d478ffb510c4e4371be9fb430d21
 - 已从 132 个正式文件重建导入清单。
 
 ## 推荐下一步
-- 由项目负责人继续处理 TASK-053。
+- 由项目负责人继续处理 TASK-054。
 
 ## 用户待办
-- 继续处理 TASK-053。
+- 继续处理 TASK-054。
