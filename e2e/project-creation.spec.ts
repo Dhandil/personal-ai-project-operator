@@ -39,6 +39,16 @@ const preview = {
 test("project creation keeps preview and approved creation as separate actions", async ({
   page,
 }) => {
+  await page.route("**/api/projects/select-directory", async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({
+        ok: true,
+        value: { projectRoot: "D:\\Projects\\selected" },
+      }),
+    });
+  });
   await page.route("**/api/projects/preview", async (route) => {
     await route.fulfill({
       status: 200,
@@ -68,7 +78,10 @@ test("project creation keeps preview and approved creation as separate actions",
   await expect(
     page.getByRole("heading", { name: "创建一个受治理的项目" }),
   ).toBeVisible();
-  await page.getByLabel(/项目目录/).fill("D:\\Projects\\demo");
+  await page.getByRole("button", { name: "选择本机目录" }).click();
+  await expect(page.getByLabel(/项目目录/)).toHaveValue(
+    "D:\\Projects\\selected",
+  );
   await page.getByLabel(/项目想法/).fill("A governed project");
   await page.getByRole("button", { name: /生成初始化预览/ }).click();
 

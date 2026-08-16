@@ -3,6 +3,7 @@ import { useState } from "react";
 
 import {
   requestProjectInitialization,
+  requestProjectDirectorySelection,
   requestProjectPreview,
   validateProjectCreationForm,
   type InitializationError,
@@ -193,6 +194,7 @@ export function ProjectCreationWizard({
     null,
   );
   const [busy, setBusy] = useState(false);
+  const [directoryPickerBusy, setDirectoryPickerBusy] = useState(false);
 
   function updateField(field: keyof ProjectCreationForm, value: string): void {
     setForm((current) => ({ ...current, [field]: value }));
@@ -218,6 +220,21 @@ export function ProjectCreationWizard({
       return;
     }
     setPreview(result.value);
+  }
+
+  async function handleDirectorySelection(): Promise<void> {
+    setDirectoryPickerBusy(true);
+    setError(null);
+    const result = await requestProjectDirectorySelection();
+    setDirectoryPickerBusy(false);
+    if (!result.ok) {
+      if (result.error.code === "cancelled") {
+        return;
+      }
+      setError(result.error);
+      return;
+    }
+    updateField("projectRoot", result.value.projectRoot);
   }
 
   async function handleApprove(): Promise<void> {
@@ -279,19 +296,34 @@ export function ProjectCreationWizard({
           <label htmlFor="project-root">
             项目目录 <span>*</span>
           </label>
-          <input
-            id="project-root"
-            name="projectRoot"
-            value={form.projectRoot}
-            onChange={(event) => updateField("projectRoot", event.target.value)}
-            placeholder="例如：D:\\Projects\\my-project"
-            aria-invalid={formErrors.projectRoot !== undefined}
-            aria-describedby={
-              formErrors.projectRoot !== undefined
-                ? "project-root-error"
-                : undefined
-            }
-          />
+          <div className="directory-input-row">
+            <input
+              id="project-root"
+              name="projectRoot"
+              value={form.projectRoot}
+              onChange={(event) =>
+                updateField("projectRoot", event.target.value)
+              }
+              placeholder="例如：D:\\Projects\\my-project"
+              aria-invalid={formErrors.projectRoot !== undefined}
+              aria-describedby={
+                formErrors.projectRoot !== undefined
+                  ? "project-root-error"
+                  : undefined
+              }
+            />
+            <button
+              className="button secondary directory-picker-button"
+              type="button"
+              onClick={() => void handleDirectorySelection()}
+              disabled={busy || directoryPickerBusy}
+            >
+              {directoryPickerBusy ? "正在打开…" : "选择本机目录"}
+            </button>
+          </div>
+          <p className="muted-note">
+            Windows 用户可打开本机目录选择器；也可以继续手动输入绝对路径。
+          </p>
           {formErrors.projectRoot !== undefined && (
             <p className="field-error" id="project-root-error">
               {formErrors.projectRoot}

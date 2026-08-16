@@ -50,6 +50,10 @@ export type InitializationExecution = Readonly<{
   readonly git: Readonly<Record<string, unknown>>;
 }>;
 
+export type ProjectDirectorySelection = Readonly<{
+  readonly projectRoot: string;
+}>;
+
 type ApiResult<Value> =
   | Readonly<{ readonly ok: true; readonly value: Value }>
   | Readonly<{ readonly ok: false; readonly error: InitializationError }>;
@@ -112,6 +116,12 @@ function isInitializationError(value: unknown): value is InitializationError {
   );
 }
 
+function isDirectorySelection(
+  value: unknown,
+): value is ProjectDirectorySelection {
+  return isRecord(value) && typeof value.projectRoot === "string";
+}
+
 function isExecution(value: unknown): value is InitializationExecution {
   return (
     isRecord(value) &&
@@ -158,6 +168,37 @@ export function validateProjectCreationForm(
     errors.idea = "请输入项目想法。";
   }
   return errors;
+}
+
+export async function requestProjectDirectorySelection(
+  fetcher: JsonFetcher = fetch,
+): Promise<ApiResult<ProjectDirectorySelection>> {
+  try {
+    const response = await fetcher("/api/projects/select-directory", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({}),
+    });
+    const payload = await readJson(response);
+    if (
+      !response.ok ||
+      !isRecord(payload) ||
+      payload.ok !== true ||
+      !isDirectorySelection(payload.value)
+    ) {
+      return { ok: false, error: errorFromPayload(payload, response.status) };
+    }
+    return { ok: true, value: payload.value };
+  } catch (error: unknown) {
+    return {
+      ok: false,
+      error: {
+        code: "network_error",
+        message: "无法连接本机目录选择服务，请改为手动输入路径。",
+        details: [error instanceof Error ? error.message : String(error)],
+      },
+    };
+  }
 }
 
 export async function requestProjectPreview(

@@ -7,6 +7,10 @@ import {
 } from "./infrastructure/initialization/project-init-preview.js";
 import { ProjectInitializationService } from "./infrastructure/initialization/project-initialization.js";
 import {
+  isLoopbackAddress,
+  LocalDirectoryPickerService,
+} from "./infrastructure/initialization/local-directory-picker.js";
+import {
   ProjectQueryService,
   ProjectStartupService,
 } from "./infrastructure/projects/project-startup.js";
@@ -40,6 +44,7 @@ export type HealthResponse = Readonly<{
 
 export type AppOptions = Readonly<{
   readonly projectInitializationService?: ProjectInitializationService;
+  readonly localDirectoryPickerService?: LocalDirectoryPickerService;
   readonly projectQueryService?: ProjectQueryService;
   readonly projectStartupService?: ProjectStartupService;
   readonly workflowService?: WorkflowService;
@@ -74,6 +79,24 @@ export function buildApp(options: AppOptions = {}): FastifyInstance {
       return reply.code(result.ok ? 200 : 400).send(result);
     },
   );
+
+  const localDirectoryPickerService =
+    options.localDirectoryPickerService ?? new LocalDirectoryPickerService();
+  app.post("/api/projects/select-directory", async (request, reply) => {
+    const remoteAddress = request.raw.socket.remoteAddress ?? request.ip;
+    if (!isLoopbackAddress(remoteAddress)) {
+      return reply.code(403).send({
+        ok: false,
+        error: {
+          code: "local_only",
+          message: "本机目录选择器只接受本机用户请求。",
+          details: [],
+        },
+      });
+    }
+    const result = await localDirectoryPickerService.select();
+    return reply.code(result.ok ? 200 : 400).send(result);
+  });
 
   const initializationService =
     options.projectInitializationService ?? new ProjectInitializationService();

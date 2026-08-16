@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   requestProjectInitialization,
+  requestProjectDirectorySelection,
   requestProjectPreview,
   validateProjectCreationForm,
   type JsonFetcher,
@@ -63,6 +64,25 @@ describe("project creation form", () => {
 });
 
 describe("project creation API client", () => {
+  it("requests a local directory without changing project state", async () => {
+    let requestBody = "";
+    const fetcher: JsonFetcher = async (_input, init) => {
+      requestBody = String(init?.body);
+      return response({
+        ok: true,
+        value: { projectRoot: "D:\\Projects\\selected" },
+      });
+    };
+
+    const result = await requestProjectDirectorySelection(fetcher);
+
+    expect(result).toEqual({
+      ok: true,
+      value: { projectRoot: "D:\\Projects\\selected" },
+    });
+    expect(JSON.parse(requestBody)).toEqual({});
+  });
+
   it("posts the form and accepts a preview response", async () => {
     let requestBody = "";
     const fetcher: JsonFetcher = async (_input, init) => {
@@ -118,5 +138,30 @@ describe("project creation API client", () => {
         createdFiles: ["project.md"],
       });
     }
+  });
+
+  it("returns a structured picker error when the local service cannot be used", async () => {
+    const result = await requestProjectDirectorySelection(async () =>
+      response(
+        {
+          ok: false,
+          error: {
+            code: "unsupported_platform",
+            message: "本机目录选择器目前只支持 Windows。",
+            details: [],
+          },
+        },
+        400,
+      ),
+    );
+
+    expect(result).toEqual({
+      ok: false,
+      error: {
+        code: "unsupported_platform",
+        message: "本机目录选择器目前只支持 Windows。",
+        details: [],
+      },
+    });
   });
 });
