@@ -14,10 +14,11 @@ import { ApprovalPage } from "./approval-page";
 import { HistoryPageView } from "./history-page";
 import { ExecutionConsolePage } from "./execution-console-page";
 
-type AppRoute =
+export type AppRoute =
   | "home"
   | "health"
   | "create"
+  | "overview"
   | "workflow"
   | "goals"
   | "roles"
@@ -27,6 +28,46 @@ type AppRoute =
   | "approvals"
   | "history"
   | "execution";
+
+export type NavigationGroup = Readonly<{
+  readonly label: string;
+  readonly items: readonly Readonly<{
+    readonly label: string;
+    readonly href: string;
+    readonly route: AppRoute;
+  }>[];
+}>;
+
+export const navigationGroups: readonly NavigationGroup[] = [
+  {
+    label: "工作区",
+    items: [
+      { label: "项目首页", href: "/", route: "home" },
+      { label: "新建项目", href: "/projects/new", route: "create" },
+      { label: "服务状态", href: "/health", route: "health" },
+    ],
+  },
+  {
+    label: "当前项目",
+    items: [
+      { label: "项目总览", href: "/projects", route: "overview" },
+      { label: "工作流", href: "/projects/workflow", route: "workflow" },
+      { label: "目标与任务", href: "/projects/goals", route: "goals" },
+      { label: "任务卡", href: "/projects/tasks", route: "tasks" },
+      { label: "角色", href: "/projects/roles", route: "roles" },
+    ],
+  },
+  {
+    label: "运行与治理",
+    items: [
+      { label: "执行", href: "/projects/execution", route: "execution" },
+      { label: "审批", href: "/projects/approvals", route: "approvals" },
+      { label: "问题与决策", href: "/projects/issues", route: "issues" },
+      { label: "历史", href: "/projects/history", route: "history" },
+      { label: "报告", href: "/projects/reports", route: "reports" },
+    ],
+  },
+] as const;
 
 type HealthPayload = Readonly<{
   readonly status: "ok";
@@ -41,6 +82,9 @@ type HealthState =
 export function resolveRoute(pathname: string): AppRoute {
   if (pathname === "/projects/new") {
     return "create";
+  }
+  if (pathname === "/projects") {
+    return "overview";
   }
   if (pathname === "/projects/workflow") {
     return "workflow";
@@ -77,6 +121,7 @@ function isHealthPayload(value: unknown): value is HealthPayload {
 
 export function App(): ReactElement {
   const [health, setHealth] = useState<HealthState>({ status: "checking" });
+  const [isNavigationOpen, setIsNavigationOpen] = useState(false);
   const route = resolveRoute(window.location.pathname);
 
   useEffect(() => {
@@ -107,119 +152,129 @@ export function App(): ReactElement {
 
   return (
     <div className="app-shell">
-      <header className="site-header">
-        <a className="brand" href="/">
-          <span className="brand-mark" aria-hidden="true">
-            AI
-          </span>
-          <span>{strings.productName}</span>
-        </a>
-        <nav aria-label="主导航" className="navigation">
-          <a className={route === "home" ? "active" : ""} href="/">
-            {strings.navigation.home}
+      <aside className="site-sidebar">
+        <header className="site-header">
+          <a className="brand" href="/">
+            <span className="brand-mark" aria-hidden="true">
+              AI
+            </span>
+            <span>{strings.productName}</span>
           </a>
-          <a className={route === "health" ? "active" : ""} href="/health">
-            {strings.navigation.health}
-          </a>
-          <a
-            className={route === "create" ? "active" : ""}
-            href="/projects/new"
+          <button
+            aria-controls="primary-navigation"
+            aria-expanded={isNavigationOpen}
+            aria-label={isNavigationOpen ? "收起导航" : "打开导航"}
+            className="navigation-toggle"
+            onClick={() => setIsNavigationOpen((open) => !open)}
+            type="button"
           >
-            新建项目
-          </a>
-          <a
-            className={route === "workflow" ? "active" : ""}
-            href="/projects/workflow"
-          >
-            工作流
-          </a>
-          <a
-            className={route === "approvals" ? "active" : ""}
-            href="/projects/approvals"
-          >
-            审批
-          </a>
-          <a
-            className={route === "history" ? "active" : ""}
-            href="/projects/history"
-          >
-            历史
-          </a>
-          <a
-            className={route === "execution" ? "active" : ""}
-            href="/projects/execution"
-          >
-            执行
-          </a>
+            <span aria-hidden="true" />
+            <span aria-hidden="true" />
+            <span aria-hidden="true" />
+          </button>
+        </header>
+        <nav
+          aria-label="主导航"
+          className={`navigation${isNavigationOpen ? " open" : ""}`}
+          id="primary-navigation"
+        >
+          {navigationGroups.map((group) => (
+            <section className="navigation-group" key={group.label}>
+              <h2>{group.label}</h2>
+              <div className="navigation-items">
+                {group.items.map((item) => {
+                  const isActive = route === item.route;
+                  return (
+                    <a
+                      aria-current={isActive ? "page" : undefined}
+                      className={isActive ? "active" : ""}
+                      href={item.href}
+                      key={item.route}
+                    >
+                      {item.label}
+                    </a>
+                  );
+                })}
+              </div>
+            </section>
+          ))}
         </nav>
-      </header>
+      </aside>
 
-      <main className="main-content">
-        {route === "create" ? (
-          <ProjectCreationWizard
-            onBack={() => {
-              window.location.href = "/";
-            }}
-          />
-        ) : route === "workflow" ? (
-          <WorkflowPage />
-        ) : route === "goals" ? (
-          <GoalPage />
-        ) : route === "roles" ? (
-          <RolePage />
-        ) : route === "issues" ? (
-          <IssuePage />
-        ) : route === "reports" ? (
-          <ReportPage />
-        ) : route === "tasks" ? (
-          <TaskPage />
-        ) : route === "approvals" ? (
-          <ApprovalPage />
-        ) : route === "history" ? (
-          <HistoryPageView />
-        ) : route === "execution" ? (
-          <ExecutionConsolePage />
-        ) : (
-          <>
+      <div className="site-body">
+        <main className="main-content">
+          {route === "create" ? (
+            <ProjectCreationWizard
+              onBack={() => {
+                window.location.href = "/";
+              }}
+            />
+          ) : route === "overview" ? (
             <ProjectOverview
               onCreate={() => {
                 window.location.href = "/projects/new";
               }}
             />
-            <section className="hero-card" aria-labelledby="page-title">
-              <p className="eyebrow">{strings.home.eyebrow}</p>
-              <h1 id="page-title">{strings.home.title}</h1>
-              <p className="tagline">{strings.tagline}</p>
-              <p className="description">{strings.home.description}</p>
-              <a className="button primary hero-action" href="/projects/new">
-                新建项目 →
-              </a>
-            </section>
+          ) : route === "workflow" ? (
+            <WorkflowPage />
+          ) : route === "goals" ? (
+            <GoalPage />
+          ) : route === "roles" ? (
+            <RolePage />
+          ) : route === "issues" ? (
+            <IssuePage />
+          ) : route === "reports" ? (
+            <ReportPage />
+          ) : route === "tasks" ? (
+            <TaskPage />
+          ) : route === "approvals" ? (
+            <ApprovalPage />
+          ) : route === "history" ? (
+            <HistoryPageView />
+          ) : route === "execution" ? (
+            <ExecutionConsolePage />
+          ) : (
+            <>
+              <ProjectOverview
+                onCreate={() => {
+                  window.location.href = "/projects/new";
+                }}
+              />
+              <section className="hero-card" aria-labelledby="page-title">
+                <p className="eyebrow">{strings.home.eyebrow}</p>
+                <h1 id="page-title">{strings.home.title}</h1>
+                <p className="tagline">{strings.tagline}</p>
+                <p className="description">{strings.home.description}</p>
+                <a className="button primary hero-action" href="/projects/new">
+                  新建项目 →
+                </a>
+              </section>
 
-            <section className="status-card" aria-labelledby="health-title">
-              <div>
-                <p className="eyebrow">
-                  {route === "health" ? "HEALTH" : "SYSTEM"}
-                </p>
-                <h2 id="health-title">{strings.health.title}</h2>
-                <p className="description">{strings.health.endpoint}</p>
-              </div>
-              <div className={`health-state ${health.status}`} role="status">
-                <span className="status-dot" aria-hidden="true" />
-                <span>
-                  {health.status === "checking" && strings.health.checking}
-                  {health.status === "connected" &&
-                    `${strings.health.connected} 路 ${health.service}`}
-                  {health.status === "unavailable" &&
-                    strings.health.unavailable}
-                </span>
-              </div>
-            </section>
-          </>
-        )}
-      </main>
+              <section className="status-card" aria-labelledby="health-title">
+                <div>
+                  <p className="eyebrow">
+                    {route === "health" ? "HEALTH" : "SYSTEM"}
+                  </p>
+                  <h2 id="health-title">{strings.health.title}</h2>
+                  <p className="description">{strings.health.endpoint}</p>
+                </div>
+                <div className={`health-state ${health.status}`} role="status">
+                  <span className="status-dot" aria-hidden="true" />
+                  <span>
+                    {health.status === "checking" && strings.health.checking}
+                    {health.status === "connected" &&
+                      `${strings.health.connected} 路 ${health.service}`}
+                    {health.status === "unavailable" &&
+                      strings.health.unavailable}
+                  </span>
+                </div>
+              </section>
+            </>
+          )}
+        </main>
 
-      <footer className="site-footer">{strings.footer}</footer>
+        <footer className="site-footer">{strings.footer}</footer>
+      </div>
     </div>
   );
 }
