@@ -13,3 +13,4 @@ export * from "./approval-policy.js";
 export * from "./issue-impact-policy.js";
 export * from "./completion-policy.js";
 export * from "./task.js";
+export * from "./stage-run.js";
