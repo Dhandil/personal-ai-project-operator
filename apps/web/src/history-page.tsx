@@ -21,13 +21,16 @@ export function HistoryPageView(): ReactElement {
     });
   }, []);
   return (
-    <section className="overview-panel" aria-labelledby="history-title">
+    <section
+      className="overview-panel compact-records-page"
+      aria-labelledby="history-title"
+    >
       <p className="eyebrow">RECOVERY HISTORY</p>
       <h1 id="history-title">重启恢复与历史查看</h1>
       <p className="description">事实、生成快照和追加式审计事件分开显示。</p>
       {message !== "" && <p role="status">{message}</p>}
       {page !== null && (
-        <div className="stack-list">
+        <div className="stack-list" aria-label="历史记录列表">
           {page.entries.map((entry) => (
             <article
               className="list-card"

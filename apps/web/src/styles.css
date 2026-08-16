@@ -36,7 +36,7 @@ a {
 
 .main-content,
 .site-footer {
-  width: min(1080px, calc(100% - 48px));
+  width: min(1160px, calc(100% - 48px));
   margin: 0 auto;
 }
 
@@ -168,9 +168,9 @@ a {
 .main-content {
   display: grid;
   flex: 1;
-  align-content: center;
-  gap: 20px;
-  padding: 72px 0;
+  align-content: start;
+  gap: 16px;
+  padding: 32px 0 48px;
 }
 
 .hero-card,
@@ -325,7 +325,7 @@ h2 {
   }
 
   .main-content {
-    padding: 32px 0;
+    padding: 24px 0 36px;
   }
 
   .status-card {
@@ -340,18 +340,22 @@ h2 {
     grid-template-columns: 1fr;
     gap: 20px;
   }
+
+  .overview-panel {
+    padding: 20px;
+  }
 }
 
 .workflow-page {
   display: grid;
-  width: min(1080px, 100%);
-  gap: 20px;
+  width: min(1160px, 100%);
+  gap: 14px;
   margin: 0 auto;
 }
 
 .workflow-page-intro {
   max-width: 740px;
-  padding: 20px 0 8px;
+  padding: 8px 0 2px;
 }
 
 .workflow-page-intro h1 {
@@ -436,9 +440,14 @@ h2 {
 .workflow-stage-list {
   display: grid;
   gap: 10px;
+  max-height: min(520px, calc(100vh - 270px));
+  overflow-y: auto;
+  overscroll-behavior: contain;
   margin: 0;
-  padding: 0;
+  padding: 0 6px 0 0;
   list-style: none;
+  scrollbar-color: #41627e #0b192b;
+  scrollbar-width: thin;
 }
 
 .workflow-stage {
@@ -1174,7 +1183,7 @@ button:disabled {
 
 .overview-intro {
   max-width: 720px;
-  padding: 28px 0 8px;
+  padding: 8px 0 2px;
 }
 
 .overview-intro h1 {
@@ -1184,14 +1193,14 @@ button:disabled {
 
 .overview-panel {
   border: 1px solid #263a55;
-  border-radius: 24px;
+  border-radius: 18px;
   background: rgb(18 31 50 / 92%);
   box-shadow: 0 24px 80px rgb(0 0 0 / 18%);
-  padding: clamp(24px, 4vw, 40px);
+  padding: clamp(20px, 2.8vw, 32px);
 }
 
 .overview-panel .panel-heading {
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
 .overview-panel .panel-heading h2 {
@@ -1203,9 +1212,14 @@ button:disabled {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 12px;
+  max-height: min(400px, calc(100vh - 300px));
+  overflow-y: auto;
+  overscroll-behavior: contain;
   margin: 0;
-  padding: 0;
+  padding: 0 6px 0 0;
   list-style: none;
+  scrollbar-color: #41627e #0b192b;
+  scrollbar-width: thin;
 }
 
 .project-card {
@@ -1823,9 +1837,14 @@ button:disabled {
 .execution-timeline {
   display: grid;
   gap: 12px;
+  max-height: min(440px, calc(100vh - 320px));
+  overflow-y: auto;
+  overscroll-behavior: contain;
   margin: 0;
-  padding: 0;
+  padding: 0 6px 0 0;
   list-style: none;
+  scrollbar-color: #41627e #0b192b;
+  scrollbar-width: thin;
 }
 
 .execution-timeline-item {
@@ -1853,6 +1872,58 @@ button:disabled {
 .execution-timeline-item small {
   color: #7893ac;
   font-size: 11px;
+}
+
+.compact-records-page {
+  display: grid;
+  gap: 14px;
+}
+
+.compact-records-page > h1 {
+  margin-bottom: 0;
+  font-size: clamp(32px, 5vw, 48px);
+}
+
+.stack-list {
+  display: grid;
+  max-height: min(520px, calc(100vh - 300px));
+  gap: 10px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0 6px 0 0;
+  scrollbar-color: #41627e #0b192b;
+  scrollbar-width: thin;
+}
+
+.list-card {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  padding: 14px 16px;
+  border: 1px solid #2b4564;
+  border-radius: 12px;
+  background: #0f1e32;
+  color: #b6c7d9;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.list-card strong,
+.list-card span {
+  overflow-wrap: anywhere;
+}
+
+.list-card strong {
+  color: #e7f0f8;
+}
+
+@media (max-width: 680px) {
+  .workflow-stage-list,
+  .project-list,
+  .stack-list,
+  .execution-timeline {
+    max-height: min(520px, calc(100vh - 260px));
+  }
 }
 
 @media (max-width: 760px) {

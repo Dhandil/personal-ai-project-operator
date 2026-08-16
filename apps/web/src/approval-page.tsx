@@ -21,7 +21,10 @@ export function ApprovalPage(): ReactElement {
     });
   }, []);
   return (
-    <section className="overview-panel" aria-labelledby="approvals-title">
+    <section
+      className="overview-panel compact-records-page"
+      aria-labelledby="approvals-title"
+    >
       <p className="eyebrow">APPROVAL HISTORY</p>
       <h1 id="approvals-title">审批记录与目标验收</h1>
       <p className="description">
@@ -29,7 +32,7 @@ export function ApprovalPage(): ReactElement {
       </p>
       {message !== "" && <p role="status">{message}</p>}
       {page !== null && (
-        <div className="stack-list">
+        <div className="stack-list" aria-label="审批记录列表">
           {page.approvals.length === 0 ? (
             <p>暂无审批记录。</p>
           ) : (
