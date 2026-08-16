@@ -3,16 +3,18 @@ schema_version: 1
 document_type: report
 id: REPORT-053
 title: TASK-049 左侧导航与信息架构验收报告
-status: pending_acceptance
+status: accepted
 report_type: task_verification
-acceptance_state: pending
+acceptance_state: accepted
 task_id: TASK-049
 goal_id: GOAL-010
-revision: 1
+revision: 2
 created_at: 2026-08-16T07:05:51Z
-updated_at: 2026-08-16T07:05:51Z
+updated_at: 2026-08-16T07:12:00Z
 verified_by: implementation_agent
 verified_commit: b1571ef3727236a515fbbb7e540861b08102b1f6
+accepted_by: project_owner
+accepted_at: 2026-08-16T07:12:00Z
 verification_commands:
   - npx vitest run --config apps/web/vitest.config.ts apps/web/src/app.test.ts
   - npx playwright test e2e/navigation.spec.ts --config=playwright.config.ts
@@ -52,3 +54,9 @@ TASK-049 已完成实现和验证，提交独立验收。工作台已由顶部�
 2. 在桌面窗口打开 `/projects/tasks`，确认左栏三组完整、“任务卡”为当前项，并可从“角色”跳转到 `/projects/roles`。
 3. 将窗口缩窄至 480px，确认导航默认收起，按钮可展开/收起全部入口且无横向滚动。
 4. 复跑 `npm run verify`；通过后将 REPORT-053 标记为 `accepted`、TASK-049 标记为 `completed`，再单独决定是否解锁 TASK-050。
+
+## 独立验收结果
+
+- 已独立复跑导航模型专项测试：13/13 通过。
+- 已独立复跑 Chromium 导航场景：2/2 通过，覆盖桌面分组与当前路由、480px 窄屏菜单展开/收起及无横向溢出。
+- 验收结论：通过，接受 REPORT-053；未执行 TASK-050、TASK-051 或 TASK-052。

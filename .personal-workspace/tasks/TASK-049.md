@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-049
 title: 重构左侧导航与信息架构
-status: in_review
+status: completed
 goal_id: GOAL-010
 role: executor
 dependencies: [TASK-047]
-revision: 2
+revision: 3
 created_at: 2026-08-16T06:48:35Z
-updated_at: 2026-08-16T07:05:51Z
+updated_at: 2026-08-16T07:12:00Z
 approval_id: APPROVAL-005
 target_branch: goal/GOAL-010
 unblocked_by: TASK-047
@@ -47,5 +47,10 @@ verification_report_id: REPORT-053
 
 ## Handoff
 
-- TASK-049 现为 `in_review`，等待项目负责人独立验收 REPORT-053。
+- TASK-049 已通过项目负责人独立验收，状态为 `completed`；REPORT-053 已接受。
 - TASK-050、TASK-051、TASK-052 未执行、未修改，继续保持 `draft`；只有 TASK-049 验收通过后才可决定是否解锁 TASK-050。
+
+## Acceptance
+
+- 独立验收通过：导航模型专项测试 13/13，Chromium 导航场景 2/2。
+- 验收范围仅覆盖 TASK-049；未执行 TASK-050、TASK-051 或 TASK-052。
