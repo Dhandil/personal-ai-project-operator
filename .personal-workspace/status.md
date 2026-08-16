@@ -1,26 +1,26 @@
 ---
 schema_version: 1
 document_type: status_snapshot
-revision: 42
-generated_at: 2026-08-16T14:31:35.849Z
-updated_at: 2026-08-16T14:31:35.849Z
+revision: 43
+generated_at: 2026-08-16T14:33:58.505Z
+updated_at: 2026-08-16T14:33:58.505Z
 source: formal_project_facts
 status: in_progress
 current_stage: 03-spec
-current_goal: GOAL-011
-current_task: null
-source_manifest_hash: 5eb8d780c45b775c25e61f2bcd6317aec5701acc143baaf6d4546b991481eba1
+current_goal: GOAL-012
+current_task: TASK-055
+source_manifest_hash: f9bfef22dc3622536a0715ed0814c0b8a5be1c06a371edefb645deeefa7a66fb
 ---
 # 项目状态
 
 - 项目：个人 AI 项目运营工具
 - 当前正式源阶段：03-spec
-- 当前目标：GOAL-011
-- 当前任务：无
+- 当前目标：GOAL-012
+- 当前任务：TASK-055
 - 本文件由正式项目事实自动生成，不是独立事实源。
 
 ## 当前获批短期目标
-- GOAL-011
+- GOAL-012
 
 ## 已完成成果
 - TASK-001 建立 npm Workspace 和 TypeScript 根配置
@@ -78,16 +78,16 @@ source_manifest_hash: 5eb8d780c45b775c25e61f2bcd6317aec5701acc143baaf6d4546b9914
 - TASK-054 统一全页面视口布局与滚动边界
 
 ## 当前任务
-- 无
+- TASK-055 定义前期阶段运行与审批状态模型 — ready
 
 ## Blocker、风险和待决策事项
 - 以正式问题、审批和决策记录为准。
 
 ## 上一步
-- 已从 170 个正式文件重建导入清单。
+- 已从 171 个正式文件重建导入清单。
 
 ## 推荐下一步
-- 由项目负责人继续处理 当前就绪任务。
+- 由项目负责人继续处理 TASK-055。
 
 ## 用户待办
-- 决定是否批准真实项目的 main 合并，或进入下一目标。
+- 继续处理 TASK-055。

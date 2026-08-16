@@ -2,12 +2,15 @@
 schema_version: 1
 id: GOAL-012
 title: V0.3 完成项目前期 Agent 编排
-status: draft
-revision: 1
+status: in_progress
+revision: 2
 created_at: 2026-08-16T14:00:00Z
-updated_at: 2026-08-16T14:00:00Z
+updated_at: 2026-08-16T14:40:00Z
 tasks: [TASK-055, TASK-056, TASK-057, TASK-058, TASK-059, TASK-060, TASK-061]
+approval_ids: [APPROVAL-007]
+target_branch: goal/GOAL-012
 unblocked_by: GOAL-011
+first_task_id: TASK-055
 ---
 
 # GOAL-012：V0.3 完成项目前期 Agent 编排
@@ -25,5 +28,6 @@ unblocked_by: GOAL-011
 
 ## 状态
 
-- 本目标为路线草案，尚未批准或启动；
-- 启动前必须确定首个真实阶段 Adapter 和验收用量边界。
+- 用户已批准启动本目标；
+- TASK-055 已解锁，后续任务必须遵守依赖、独立验收和既有自动解锁约定；
+- 真实阶段 Agent 的 Runtime 选择、用量与运行边界由后续相关任务定义，TASK-055 不启动真实 Agent。

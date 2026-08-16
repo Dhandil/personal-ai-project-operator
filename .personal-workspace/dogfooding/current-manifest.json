@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "manifest_kind": "current",
-  "generated_at": "2026-08-16T14:31:35.849Z",
-  "source_manifest_hash": "5eb8d780c45b775c25e61f2bcd6317aec5701acc143baaf6d4546b991481eba1",
+  "generated_at": "2026-08-16T14:33:58.505Z",
+  "source_manifest_hash": "f9bfef22dc3622536a0715ed0814c0b8a5be1c06a371edefb645deeefa7a66fb",
   "current_source_stage": "03-spec",
-  "current_goal_id": "GOAL-011",
-  "current_task_id": null,
+  "current_goal_id": "GOAL-012",
+  "current_task_id": "TASK-055",
   "source_files": [
     {
       "relativePath": ".personal-workspace/approvals/APPROVAL-001.md",
@@ -72,6 +72,18 @@
       "kind": "approval",
       "hash": "7a13c74e540ac76ae2927e2db9a1b9322a86773060557e5830e2ed88dc6b1494",
       "id": "APPROVAL-006",
+      "title": null,
+      "status": "approved",
+      "stage": null,
+      "goalId": null,
+      "generated": false,
+      "revision": 1
+    },
+    {
+      "relativePath": ".personal-workspace/approvals/APPROVAL-007.md",
+      "kind": "approval",
+      "hash": "e71b50d97dc265427cb480af8ed317c0ca49c9f817310b654a1b7ee9d77daafa",
+      "id": "APPROVAL-007",
       "title": null,
       "status": "approved",
       "stage": null,
@@ -214,14 +226,14 @@
     {
       "relativePath": ".personal-workspace/goals/GOAL-012.md",
       "kind": "goal",
-      "hash": "a955775cb1fb85f0205214a14a28d4ad457ab4a1f8c4695e11de52ddc91d43a3",
+      "hash": "99b6bc42357ac591985dffe51b696e0ac51cb3b83b8d9603bd633ab042e5c928",
       "id": "GOAL-012",
       "title": "V0.3 完成项目前期 Agent 编排",
-      "status": "draft",
+      "status": "in_progress",
       "stage": null,
       "goalId": null,
       "generated": false,
-      "revision": 1
+      "revision": 2
     },
     {
       "relativePath": ".personal-workspace/goals/GOAL-013.md",
@@ -1690,14 +1702,14 @@
     {
       "relativePath": ".personal-workspace/tasks/TASK-055.md",
       "kind": "task",
-      "hash": "b399a8de8b9650d1a4138888d1eea160f968fd7e99ea72eee1a9005404176939",
+      "hash": "cca5679bde0f67d914c87ba1813f430555732cd026169941834a6b7383eaf4f0",
       "id": "TASK-055",
       "title": "定义前期阶段运行与审批状态模型",
-      "status": "draft",
+      "status": "ready",
       "stage": null,
       "goalId": "GOAL-012",
       "generated": false,
-      "revision": 1
+      "revision": 2
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-056.md",

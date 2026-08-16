@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-055
 title: 定义前期阶段运行与审批状态模型
-status: draft
+status: ready
 goal_id: GOAL-012
 role: executor
 dependencies: [TASK-054]
-revision: 1
+revision: 2
 created_at: 2026-08-16T14:00:00Z
-updated_at: 2026-08-16T14:00:00Z
+updated_at: 2026-08-16T14:40:00Z
 target_branch: goal/GOAL-012
 unblocked_by: GOAL-011
 ---
