@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "manifest_kind": "current",
-  "generated_at": "2026-08-16T08:12:44.089Z",
-  "source_manifest_hash": "88aa4c386a202848ed44745cf0309273452059945d08270909e3a110c342f97d",
+  "generated_at": "2026-08-16T09:40:38.680Z",
+  "source_manifest_hash": "820d0c69c72f05f86dd3f67134e331e0fac34331c619cd46d972cdb271c31ec7",
   "current_source_stage": "03-spec",
   "current_goal_id": "GOAL-010",
   "current_task_id": "TASK-052",
@@ -178,14 +178,14 @@
     {
       "relativePath": ".personal-workspace/goals/GOAL-010.md",
       "kind": "goal",
-      "hash": "111ffc56274afdac1ea28aff9f64e9ada75b21ff2b3c2c4249bdf3750a175277",
+      "hash": "dc00fa7f114614ddf8f540d3a06c4133add7076c3a58248584745089f6431c14",
       "id": "GOAL-010",
       "title": "工作台基础可用性改进",
-      "status": "in_progress",
+      "status": "in_review",
       "stage": null,
       "goalId": null,
       "generated": false,
-      "revision": 1
+      "revision": 2
     },
     {
       "relativePath": ".personal-workspace/reports/REPORT-001.md",
@@ -848,6 +848,30 @@
       "revision": 2
     },
     {
+      "relativePath": ".personal-workspace/reports/REPORT-056.md",
+      "kind": "report",
+      "hash": "ce9d6c646d985ffa97a6842acd7fc827e05f89b9ed19e1b9065f1f41f16569b6",
+      "id": "REPORT-056",
+      "title": "TASK-052 页面布局和滚动体验验收报告",
+      "status": "pending_acceptance",
+      "stage": null,
+      "goalId": "GOAL-010",
+      "generated": false,
+      "revision": 1
+    },
+    {
+      "relativePath": ".personal-workspace/reports/REPORT-057.md",
+      "kind": "report",
+      "hash": "e2a055ccb33ee56c9df6a5a12bf67d5c7e2c644da2bc485449703ff1a67d0b31",
+      "id": "REPORT-057",
+      "title": "GOAL-010 工作台基础可用性检查点报告",
+      "status": "pending_acceptance",
+      "stage": null,
+      "goalId": "GOAL-010",
+      "generated": false,
+      "revision": 1
+    },
+    {
       "relativePath": ".personal-workspace/stages/01-idea/01-idea.md",
       "kind": "stage",
       "hash": "b5fcb8638dc61127da5f228a1e2a41cf36417fd9f764dafb6dfbb0c172c157e4",
@@ -1498,14 +1522,14 @@
     {
       "relativePath": ".personal-workspace/tasks/TASK-052.md",
       "kind": "task",
-      "hash": "4c1c3b56c5c26617498c2b6319c2a60996f5b2ed0ac8fc83ce63572ef655e589",
+      "hash": "8d659030084597a59f8e5ccc7f19b5429c8eaf40a27bb75fcc382a2a8a1f7f8b",
       "id": "TASK-052",
       "title": "优化页面布局和滚动体验",
-      "status": "ready",
+      "status": "in_review",
       "stage": null,
       "goalId": "GOAL-010",
       "generated": false,
-      "revision": 2
+      "revision": 3
     }
   ]
 }

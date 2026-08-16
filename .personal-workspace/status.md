@@ -1,15 +1,15 @@
 ---
 schema_version: 1
 document_type: status_snapshot
-revision: 31
-generated_at: 2026-08-16T08:12:44.089Z
-updated_at: 2026-08-16T08:12:44.089Z
+revision: 32
+generated_at: 2026-08-16T09:40:38.680Z
+updated_at: 2026-08-16T09:40:38.680Z
 source: formal_project_facts
 status: in_progress
 current_stage: 03-spec
 current_goal: GOAL-010
 current_task: TASK-052
-source_manifest_hash: 88aa4c386a202848ed44745cf0309273452059945d08270909e3a110c342f97d
+source_manifest_hash: 820d0c69c72f05f86dd3f67134e331e0fac34331c619cd46d972cdb271c31ec7
 ---
 # 项目状态
 
@@ -75,13 +75,13 @@ source_manifest_hash: 88aa4c386a202848ed44745cf0309273452059945d08270909e3a110c3
 - TASK-051 增加本机项目目录选择器
 
 ## 当前任务
-- TASK-052 优化页面布局和滚动体验 — ready
+- TASK-052 优化页面布局和滚动体验 — in_review
 
 ## Blocker、风险和待决策事项
 - 以正式问题、审批和决策记录为准。
 
 ## 上一步
-- 已从 125 个正式文件重建导入清单。
+- 已从 127 个正式文件重建导入清单。
 
 ## 推荐下一步
 - 由项目负责人继续处理 TASK-052。

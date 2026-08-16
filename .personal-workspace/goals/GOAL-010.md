@@ -2,15 +2,16 @@
 schema_version: 1
 id: GOAL-010
 title: 工作台基础可用性改进
-status: in_progress
-revision: 1
+status: in_review
+revision: 2
 created_at: 2026-08-16T06:48:35Z
-updated_at: 2026-08-16T06:48:35Z
+updated_at: 2026-08-16T09:37:30Z
 tasks: [TASK-049, TASK-050, TASK-051, TASK-052]
 approval_ids: [APPROVAL-005]
 target_branch: goal/GOAL-010
 unblocked_by: GOAL-009
 first_task_id: TASK-049
+checkpoint_report_id: REPORT-057
 ---
 
 # GOAL-010：工作台基础可用性改进
