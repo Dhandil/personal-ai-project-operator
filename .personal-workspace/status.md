@@ -1,15 +1,15 @@
 ---
 schema_version: 1
 document_type: status_snapshot
-revision: 39
-generated_at: 2026-08-16T13:46:39.257Z
-updated_at: 2026-08-16T13:46:39.257Z
+revision: 42
+generated_at: 2026-08-16T14:31:35.849Z
+updated_at: 2026-08-16T14:31:35.849Z
 source: formal_project_facts
 status: in_progress
 current_stage: 03-spec
 current_goal: GOAL-011
 current_task: null
-source_manifest_hash: 9be7d658c86ea40b29fd81ed289ec961d25f17d42c0094bfce4e8afe7714457a
+source_manifest_hash: 5eb8d780c45b775c25e61f2bcd6317aec5701acc143baaf6d4546b991481eba1
 ---
 # 项目状态
 
@@ -84,7 +84,7 @@ source_manifest_hash: 9be7d658c86ea40b29fd81ed289ec961d25f17d42c0094bfce4e8afe77
 - 以正式问题、审批和决策记录为准。
 
 ## 上一步
-- 已从 134 个正式文件重建导入清单。
+- 已从 170 个正式文件重建导入清单。
 
 ## 推荐下一步
 - 由项目负责人继续处理 当前就绪任务。
