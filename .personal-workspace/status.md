@@ -1,15 +1,15 @@
 ---
 schema_version: 1
 document_type: status_snapshot
-revision: 45
-generated_at: 2026-08-16T14:55:54.163Z
-updated_at: 2026-08-16T14:55:54.163Z
+revision: 46
+generated_at: 2026-08-16T15:07:44.870Z
+updated_at: 2026-08-16T15:07:44.870Z
 source: formal_project_facts
 status: in_progress
 current_stage: 03-spec
 current_goal: GOAL-012
 current_task: TASK-056
-source_manifest_hash: 37460ad8a057208710e88289019269da4b5a6f5561266ad310c286b7885deed8
+source_manifest_hash: b1f8e9717f096f922fae703507896a55654658ebce622952711c6a9d22d12a25
 ---
 # 项目状态
 
@@ -79,13 +79,13 @@ source_manifest_hash: 37460ad8a057208710e88289019269da4b5a6f5561266ad310c286b788
 - TASK-055 定义前期阶段运行与审批状态模型
 
 ## 当前任务
-- TASK-056 定义前期角色模板与阶段任务包 — ready
+- TASK-056 定义前期角色模板与阶段任务包 — in_review
 
 ## Blocker、风险和待决策事项
 - 以正式问题、审批和决策记录为准。
 
 ## 上一步
-- 已从 172 个正式文件重建导入清单。
+- 已从 173 个正式文件重建导入清单。
 
 ## 推荐下一步
 - 由项目负责人继续处理 TASK-056。

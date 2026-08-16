@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "manifest_kind": "current",
-  "generated_at": "2026-08-16T14:55:54.163Z",
-  "source_manifest_hash": "37460ad8a057208710e88289019269da4b5a6f5561266ad310c286b7885deed8",
+  "generated_at": "2026-08-16T15:07:44.870Z",
+  "source_manifest_hash": "b1f8e9717f096f922fae703507896a55654658ebce622952711c6a9d22d12a25",
   "current_source_stage": "03-spec",
   "current_goal_id": "GOAL-012",
   "current_task_id": "TASK-056",
@@ -1004,6 +1004,18 @@
       "revision": 2
     },
     {
+      "relativePath": ".personal-workspace/reports/REPORT-062.md",
+      "kind": "report",
+      "hash": "ff7a4191caa191a044a952b6d0b893199862c38b46c5a1fdfe567bc759f26aa7",
+      "id": "REPORT-062",
+      "title": "TASK-056 前期角色模板与阶段任务包验收报告",
+      "status": "pending_acceptance",
+      "stage": null,
+      "goalId": "GOAL-012",
+      "generated": false,
+      "revision": 1
+    },
+    {
       "relativePath": ".personal-workspace/stages/01-idea/01-idea.md",
       "kind": "stage",
       "hash": "b5fcb8638dc61127da5f228a1e2a41cf36417fd9f764dafb6dfbb0c172c157e4",
@@ -1726,14 +1738,14 @@
     {
       "relativePath": ".personal-workspace/tasks/TASK-056.md",
       "kind": "task",
-      "hash": "78fc54a91596a730c012383b0c476a1d4ecb4553317346c87e9e2ad4fd8d85e7",
+      "hash": "04ef2f5877f44ace40c375e86a3507bc48266ccd5c9470a2b689987a1a5f173f",
       "id": "TASK-056",
       "title": "定义前期角色模板与阶段任务包",
-      "status": "ready",
+      "status": "in_review",
       "stage": null,
       "goalId": "GOAL-012",
       "generated": false,
-      "revision": 2
+      "revision": 3
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-057.md",
