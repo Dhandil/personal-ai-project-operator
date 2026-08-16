@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "manifest_kind": "current",
-  "generated_at": "2026-08-16T14:44:45.108Z",
-  "source_manifest_hash": "708061dae4502a4515206eb7f865c91e8c8d1b281093d59a749406505552f02c",
+  "generated_at": "2026-08-16T14:55:54.163Z",
+  "source_manifest_hash": "37460ad8a057208710e88289019269da4b5a6f5561266ad310c286b7885deed8",
   "current_source_stage": "03-spec",
   "current_goal_id": "GOAL-012",
-  "current_task_id": "TASK-055",
+  "current_task_id": "TASK-056",
   "source_files": [
     {
       "relativePath": ".personal-workspace/approvals/APPROVAL-001.md",
@@ -994,14 +994,14 @@
     {
       "relativePath": ".personal-workspace/reports/REPORT-061.md",
       "kind": "report",
-      "hash": "5d117775cf7fb97859753a4c7ecd967213718c7ae8d0a3e2842cddfb5fa86efc",
+      "hash": "b838a378679daf28a22490d45c040e4b030ac2c0b4e41c417cf4f49deb9f6dd1",
       "id": "REPORT-061",
       "title": "TASK-055 前期阶段运行与审批状态模型验收报告",
-      "status": "pending_acceptance",
+      "status": "accepted",
       "stage": null,
       "goalId": "GOAL-012",
       "generated": false,
-      "revision": 1
+      "revision": 2
     },
     {
       "relativePath": ".personal-workspace/stages/01-idea/01-idea.md",
@@ -1714,26 +1714,26 @@
     {
       "relativePath": ".personal-workspace/tasks/TASK-055.md",
       "kind": "task",
-      "hash": "1696ece2105a379df50fe5040b6c049b920d741509e0e04d26212ee4a324a03d",
+      "hash": "af339073bb856d58b57b81ded65572948e2d8cc42dc61fed45719ee8870debad",
       "id": "TASK-055",
       "title": "定义前期阶段运行与审批状态模型",
-      "status": "in_review",
+      "status": "completed",
       "stage": null,
       "goalId": "GOAL-012",
       "generated": false,
-      "revision": 3
+      "revision": 4
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-056.md",
       "kind": "task",
-      "hash": "ee9b7a86c6a495b1df64fdd7f556302249e131844925d6a823b6e6492dc7f913",
+      "hash": "78fc54a91596a730c012383b0c476a1d4ecb4553317346c87e9e2ad4fd8d85e7",
       "id": "TASK-056",
       "title": "定义前期角色模板与阶段任务包",
-      "status": "draft",
+      "status": "ready",
       "stage": null,
       "goalId": "GOAL-012",
       "generated": false,
-      "revision": 1
+      "revision": 2
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-057.md",

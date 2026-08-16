@@ -1,22 +1,22 @@
 ---
 schema_version: 1
 document_type: status_snapshot
-revision: 44
-generated_at: 2026-08-16T14:44:45.108Z
-updated_at: 2026-08-16T14:44:45.108Z
+revision: 45
+generated_at: 2026-08-16T14:55:54.163Z
+updated_at: 2026-08-16T14:55:54.163Z
 source: formal_project_facts
 status: in_progress
 current_stage: 03-spec
 current_goal: GOAL-012
-current_task: TASK-055
-source_manifest_hash: 708061dae4502a4515206eb7f865c91e8c8d1b281093d59a749406505552f02c
+current_task: TASK-056
+source_manifest_hash: 37460ad8a057208710e88289019269da4b5a6f5561266ad310c286b7885deed8
 ---
 # 项目状态
 
 - 项目：个人 AI 项目运营工具
 - 当前正式源阶段：03-spec
 - 当前目标：GOAL-012
-- 当前任务：TASK-055
+- 当前任务：TASK-056
 - 本文件由正式项目事实自动生成，不是独立事实源。
 
 ## 当前获批短期目标
@@ -76,9 +76,10 @@ source_manifest_hash: 708061dae4502a4515206eb7f865c91e8c8d1b281093d59a7494065055
 - TASK-052 优化页面布局和滚动体验
 - TASK-053 实现一级侧栏与二级页签导航
 - TASK-054 统一全页面视口布局与滚动边界
+- TASK-055 定义前期阶段运行与审批状态模型
 
 ## 当前任务
-- TASK-055 定义前期阶段运行与审批状态模型 — in_review
+- TASK-056 定义前期角色模板与阶段任务包 — ready
 
 ## Blocker、风险和待决策事项
 - 以正式问题、审批和决策记录为准。
@@ -87,7 +88,7 @@ source_manifest_hash: 708061dae4502a4515206eb7f865c91e8c8d1b281093d59a7494065055
 - 已从 172 个正式文件重建导入清单。
 
 ## 推荐下一步
-- 由项目负责人继续处理 TASK-055。
+- 由项目负责人继续处理 TASK-056。
 
 ## 用户待办
-- 继续处理 TASK-055。
+- 继续处理 TASK-056。

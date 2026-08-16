@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-055
 title: 定义前期阶段运行与审批状态模型
-status: in_review
+status: completed
 goal_id: GOAL-012
 role: executor
 dependencies: [TASK-054]
-revision: 3
+revision: 4
 created_at: 2026-08-16T14:00:00Z
-updated_at: 2026-08-16T14:43:27Z
+updated_at: 2026-08-16T14:55:00Z
 target_branch: goal/GOAL-012
 unblocked_by: GOAL-011
 verification_report_id: REPORT-061
@@ -34,9 +34,9 @@ verification_report_id: REPORT-061
 
 ## 边界与交接
 
-- 阶段运行模型已完成，当前状态为 `in_review`；REPORT-061 等待项目负责人独立验收。
+- 阶段运行模型已完成，REPORT-061 已通过项目负责人独立验收。
 - 不启动真实 Agent、不修改 UI、不自动批准阶段，也未执行 TASK-056 或其他后续任务。
-- 独立验收通过后，TASK-056 才可申请解锁。
+- TASK-056 已按目标级批准和依赖规则解锁；未执行其他后续任务。
 
 ## 完成证据
 

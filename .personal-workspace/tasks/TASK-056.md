@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-056
 title: 定义前期角色模板与阶段任务包
-status: draft
+status: ready
 goal_id: GOAL-012
 role: executor
 dependencies: [TASK-055]
-revision: 1
+revision: 2
 created_at: 2026-08-16T14:00:00Z
-updated_at: 2026-08-16T14:00:00Z
+updated_at: 2026-08-16T14:55:00Z
 target_branch: goal/GOAL-012
 unblocked_by: TASK-055
 ---

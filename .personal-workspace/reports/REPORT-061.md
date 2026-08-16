@@ -3,16 +3,18 @@ schema_version: 1
 document_type: report
 id: REPORT-061
 title: TASK-055 前期阶段运行与审批状态模型验收报告
-status: pending_acceptance
+status: accepted
 report_type: task_verification
-acceptance_state: pending
+acceptance_state: accepted
 task_id: TASK-055
 goal_id: GOAL-012
-revision: 1
+revision: 2
 created_at: 2026-08-16T14:43:27Z
-updated_at: 2026-08-16T14:43:27Z
+updated_at: 2026-08-16T14:55:00Z
 verified_by: implementation_agent
 verified_commit: c34c9079cd51e820349f4ff305aa9c425eea14eb
+accepted_by: project_owner
+accepted_at: 2026-08-16T14:55:00Z
 verification_commands:
   - npx vitest run packages/domain/src/stage-run.test.ts --config vitest.config.ts
   - npm run verify
@@ -52,4 +54,7 @@ TASK-055 已完成领域模型实现和验证，当前任务保持 `in_review`�
 
 ## 独立验收结果
 
-- 尚未由项目负责人验收；实现者不得将本报告标记为 `accepted`。
+- 项目负责人独立检查了任务卡、实现提交和领域测试；阶段运行模型与任务边界一致。
+- 独立重跑阶段专项：7/7 通过。
+- 独立重跑完整 `npm run verify`：85 个单元测试、129 个集成测试、22 个 Playwright 测试，以及格式、Lint、类型检查和构建全部通过。
+- 验收结论：通过，接受 REPORT-061；TASK-055 可标记为 `completed`，TASK-056 按既定依赖规则解锁。
