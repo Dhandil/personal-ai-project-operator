@@ -185,17 +185,28 @@ a {
 
 .site-body {
   display: flex;
+  height: 100vh;
   min-width: 0;
-  min-height: 100vh;
+  min-height: 0;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .main-content {
   display: grid;
   flex: 1;
+  min-height: 0;
   align-content: start;
   gap: 16px;
+  overflow-y: auto;
   padding: 32px 0 48px;
+  scrollbar-color: #41627e #0b192b;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+}
+
+.main-content > * {
+  min-width: 0;
 }
 
 .secondary-navigation {
@@ -341,6 +352,7 @@ h2 {
 }
 
 .site-footer {
+  flex: 0 0 auto;
   padding: 24px 0 32px;
   color: #6e829a;
   font-size: 13px;
@@ -360,6 +372,17 @@ h2 {
     border-right: 0;
     border-bottom: 1px solid #263a55;
     box-shadow: 0 12px 32px rgb(0 0 0 / 18%);
+  }
+
+  .site-body {
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+  }
+
+  .main-content {
+    min-height: auto;
+    overflow: visible;
   }
 
   .site-header {
@@ -864,7 +887,7 @@ button:disabled {
 .wizard-shell {
   display: grid;
   width: min(920px, 100%);
-  gap: 22px;
+  gap: 14px;
   margin: 0 auto;
 }
 
@@ -886,8 +909,8 @@ button:disabled {
 }
 
 .wizard-intro h1 {
-  margin-bottom: 16px;
-  font-size: clamp(36px, 6vw, 60px);
+  margin-bottom: 12px;
+  font-size: clamp(32px, 5vw, 52px);
 }
 
 .wizard-panel {
@@ -900,7 +923,11 @@ button:disabled {
 .creation-form,
 .preview-panel,
 .success-panel {
-  padding: clamp(24px, 5vw, 44px);
+  max-height: min(560px, calc(100vh - 210px));
+  overflow-y: auto;
+  padding: clamp(20px, 3vw, 32px);
+  scrollbar-color: #41627e #0b192b;
+  scrollbar-width: thin;
 }
 
 .panel-heading {
@@ -908,12 +935,12 @@ button:disabled {
   align-items: flex-start;
   justify-content: space-between;
   gap: 20px;
-  margin-bottom: 32px;
+  margin-bottom: 20px;
 }
 
 .panel-heading h2 {
   margin-bottom: 0;
-  font-size: 28px;
+  font-size: 24px;
 }
 
 .step-counter,
@@ -1271,8 +1298,9 @@ button:disabled {
 
 .overview-shell {
   display: grid;
-  width: min(1080px, 100%);
-  gap: 20px;
+  width: min(1160px, 100%);
+  min-height: 0;
+  gap: 12px;
   margin: 0 auto;
 }
 
@@ -1282,8 +1310,8 @@ button:disabled {
 }
 
 .overview-intro h1 {
-  margin-bottom: 14px;
-  font-size: clamp(38px, 6vw, 64px);
+  margin-bottom: 10px;
+  font-size: clamp(32px, 5vw, 52px);
 }
 
 .overview-panel {
@@ -1500,6 +1528,8 @@ button:disabled {
 
 .role-list {
   display: grid;
+  max-height: min(260px, calc(100vh - 430px));
+  overflow-y: auto;
   grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
   gap: 10px;
   margin: 0;
@@ -1637,6 +1667,8 @@ button:disabled {
 
 .goal-list {
   display: grid;
+  max-height: min(360px, calc(100vh - 360px));
+  overflow-y: auto;
   gap: 12px;
   margin: 0;
   padding: 0;
@@ -1665,6 +1697,8 @@ button:disabled {
 
 .issue-list {
   display: grid;
+  max-height: min(360px, calc(100vh - 360px));
+  overflow-y: auto;
   gap: 14px;
   margin: 0;
   padding: 0;
@@ -1760,6 +1794,8 @@ button:disabled {
 
 .report-list {
   display: grid;
+  max-height: min(360px, calc(100vh - 360px));
+  overflow-y: auto;
   gap: 12px;
   margin: 0;
   padding: 0;
@@ -1783,6 +1819,7 @@ button:disabled {
 }
 
 .execution-console {
+  min-height: 0;
   gap: 18px;
 }
 
@@ -2050,6 +2087,8 @@ button:disabled {
 
 .task-list {
   display: grid;
+  max-height: min(360px, calc(100vh - 360px));
+  overflow-y: auto;
   gap: 12px;
   margin: 0;
   padding: 0;
@@ -2074,7 +2113,11 @@ button:disabled {
 
 .task-editor {
   display: grid;
+  max-height: min(520px, calc(100vh - 250px));
+  overflow-y: auto;
   gap: 12px;
+  scrollbar-color: #41627e #0b192b;
+  scrollbar-width: thin;
 }
 
 .task-editor label {
@@ -2146,6 +2189,62 @@ button:disabled {
 .field-source {
   margin-top: auto;
   font-size: 11px;
+}
+
+@media (min-width: 841px) {
+  .workflow-stage-list,
+  .project-list,
+  .stack-list,
+  .execution-timeline,
+  .goal-list,
+  .role-list,
+  .issue-list,
+  .report-list,
+  .task-list {
+    scrollbar-color: #41627e #0b192b;
+    scrollbar-width: thin;
+  }
+
+  .workflow-stage-list {
+    max-height: min(360px, calc(100vh - 420px));
+  }
+
+  .project-list,
+  .stack-list,
+  .execution-timeline,
+  .goal-list,
+  .issue-list,
+  .report-list,
+  .task-list {
+    max-height: min(360px, calc(100vh - 360px));
+  }
+}
+
+@media (max-width: 680px) {
+  .site-footer {
+    padding: 18px 0 24px;
+  }
+
+  .creation-form,
+  .preview-panel,
+  .success-panel,
+  .task-editor {
+    max-height: none;
+    overflow: visible;
+  }
+
+  .workflow-stage-list,
+  .project-list,
+  .stack-list,
+  .execution-timeline,
+  .goal-list,
+  .role-list,
+  .issue-list,
+  .report-list,
+  .task-list {
+    max-height: none;
+    overflow: visible;
+  }
 }
 
 .read-only-note {

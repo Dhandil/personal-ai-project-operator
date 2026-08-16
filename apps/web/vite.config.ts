@@ -9,6 +9,10 @@ export default defineConfig({
     proxy: {
       "/health": {
         target: "http://127.0.0.1:4300",
+        bypass: (request) =>
+          request.headers.accept?.includes("text/html")
+            ? "/index.html"
+            : undefined,
       },
       "/api": {
         target: "http://127.0.0.1:4300",

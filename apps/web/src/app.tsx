@@ -295,7 +295,7 @@ export function App(): ReactElement {
       </aside>
 
       <div className="site-body">
-        <main className="main-content">
+        <main className={`main-content page-${route}`}>
           <nav
             aria-label={`${currentPrimary?.label ?? "当前模块"}二级导航`}
             className="secondary-navigation"
@@ -350,7 +350,7 @@ export function App(): ReactElement {
           ) : route === "execution" ? (
             <ExecutionConsolePage />
           ) : (
-            <>
+            <div className="home-page">
               <ProjectOverview
                 onCreate={() => {
                   window.location.href = "/projects/new";
@@ -385,7 +385,7 @@ export function App(): ReactElement {
                   </span>
                 </div>
               </section>
-            </>
+            </div>
           )}
         </main>
 
