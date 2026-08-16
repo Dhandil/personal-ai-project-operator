@@ -3,16 +3,18 @@ schema_version: 1
 document_type: report
 id: REPORT-054
 title: TASK-050 工作流使用引导验收报告
-status: pending_acceptance
+status: accepted
 report_type: task_verification
-acceptance_state: pending
+acceptance_state: accepted
 task_id: TASK-050
 goal_id: GOAL-010
-revision: 1
+revision: 2
 created_at: 2026-08-16T07:42:24Z
-updated_at: 2026-08-16T07:42:24Z
+updated_at: 2026-08-16T07:52:00Z
 verified_by: implementation_agent
 verified_commit: 32220e0ef16e530cd77bea56d796ccf48d9e93d0
+accepted_by: project_owner
+accepted_at: 2026-08-16T07:52:00Z
 verification_commands:
   - npx vitest run --config apps/web/vitest.config.ts apps/web/src/workflow.test.ts
   - npx tsx --test apps/server/test/workflow.integration.test.ts
@@ -53,3 +55,10 @@ TASK-050 已完成实现和验证，提交独立验收。工作流页面现在�
 2. 运行 `npx playwright test e2e/workflow.spec.ts --config=playwright.config.ts`，确认首次引导、状态分离、无需上传提示、执行入口和跳过用户决定均通过。
 3. 打开 `/projects/workflow`，确认当前阶段有首要操作、读取产物和推荐下一步；确认“待开始”与“文件状态”不会被理解为上传要求。
 4. 复跑 `npm run verify`；通过后将 REPORT-054 标记为 `accepted`、TASK-050 标记为 `completed`，再单独决定是否解锁 TASK-051。
+
+## 独立验收结果
+
+- 前端工作流专项测试：3/3 通过。
+- 后端工作流集成测试：3/3 通过。
+- Chromium 工作流场景：1/1 通过，覆盖首次引导、状态/文件区分、共享材料无需上传、执行入口和跳过决定。
+- 验收结论：通过，接受 REPORT-054；未执行 TASK-051 或 TASK-052。

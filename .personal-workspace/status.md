@@ -1,22 +1,22 @@
 ---
 schema_version: 1
 document_type: status_snapshot
-revision: 27
-generated_at: 2026-08-16T07:45:04.104Z
-updated_at: 2026-08-16T07:45:04.104Z
+revision: 28
+generated_at: 2026-08-16T07:50:02.184Z
+updated_at: 2026-08-16T07:50:02.184Z
 source: formal_project_facts
 status: in_progress
 current_stage: 03-spec
 current_goal: GOAL-010
-current_task: TASK-050
-source_manifest_hash: aaa71a2b3f45bd2acfa6f2cbf2f30870241fcfb65cc7358d51d24ccfa3a2d60f
+current_task: null
+source_manifest_hash: 6c865b37d0a78f41a435a8f12ceac7607f4281ad949f48f9c83352ad7427f2f1
 ---
 # 项目状态
 
 - 项目：个人 AI 项目运营工具
 - 当前正式源阶段：03-spec
 - 当前目标：GOAL-010
-- 当前任务：TASK-050
+- 当前任务：无
 - 本文件由正式项目事实自动生成，不是独立事实源。
 
 ## 当前获批短期目标
@@ -71,9 +71,10 @@ source_manifest_hash: aaa71a2b3f45bd2acfa6f2cbf2f30870241fcfb65cc7358d51d24ccfa3
 - TASK-047 完成 V0.2 全链路验收
 - TASK-048 实现 Claude Code CLI Adapter
 - TASK-049 重构左侧导航与信息架构
+- TASK-050 明确项目创建后的工作流引导
 
 ## 当前任务
-- TASK-050 明确项目创建后的工作流引导 — in_review
+- 无
 
 ## Blocker、风险和待决策事项
 - 以正式问题、审批和决策记录为准。
@@ -82,7 +83,7 @@ source_manifest_hash: aaa71a2b3f45bd2acfa6f2cbf2f30870241fcfb65cc7358d51d24ccfa3
 - 已从 124 个正式文件重建导入清单。
 
 ## 推荐下一步
-- 由项目负责人继续处理 TASK-050。
+- 由项目负责人继续处理 当前就绪任务。
 
 ## 用户待办
-- 继续处理 TASK-050。
+- 决定是否批准真实项目的 main 合并，或进入下一目标。

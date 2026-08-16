@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-050
 title: 明确项目创建后的工作流引导
-status: in_review
+status: completed
 goal_id: GOAL-010
 role: executor
 dependencies: [TASK-049]
-revision: 3
+revision: 4
 created_at: 2026-08-16T06:48:35Z
-updated_at: 2026-08-16T07:42:24Z
+updated_at: 2026-08-16T07:52:00Z
 approval_id: APPROVAL-005
 target_branch: goal/GOAL-010
 unblocked_by: TASK-049
@@ -54,5 +54,10 @@ verification_report_id: REPORT-054
 
 ## Handoff
 
-- TASK-050 现为 `in_review`，等待项目负责人独立验收 REPORT-054。
+- TASK-050 已通过项目负责人独立验收，状态为 `completed`；REPORT-054 已接受。
 - TASK-051、TASK-052 未执行、未修改，继续保持 `draft`；TASK-051 只有在 TASK-050 验收通过后才可解锁。
+
+## Acceptance
+
+- 独立验收通过：前端工作流专项测试 3/3、后端工作流集成测试 3/3、Chromium 工作流场景 1/1。
+- 验收范围仅覆盖 TASK-050；未执行 TASK-051 或 TASK-052。
