@@ -3,16 +3,18 @@ schema_version: 1
 document_type: report
 id: REPORT-056
 title: TASK-052 页面布局和滚动体验验收报告
-status: pending_acceptance
+status: accepted
 report_type: task_verification
-acceptance_state: pending
+acceptance_state: accepted
 task_id: TASK-052
 goal_id: GOAL-010
-revision: 1
+revision: 2
 created_at: 2026-08-16T09:37:30Z
-updated_at: 2026-08-16T09:37:30Z
+updated_at: 2026-08-16T10:00:00Z
 verified_by: implementation_agent
 verified_commit: 6a5bb5784d6437ca3377d10be839cf6cea56aeda
+accepted_by: project_owner
+accepted_at: 2026-08-16T10:00:00Z
 verification_commands:
   - npx playwright test e2e/layout.spec.ts --config=playwright.config.ts
   - npm run verify
@@ -51,4 +53,5 @@ TASK-052 已完成实现和验证，提交项目负责人独立验收。项目�
 
 ## 独立验收结果
 
-- 尚未由项目负责人验收；实现者不得将本报告标记为 `accepted`。
+- 独立复跑布局专项：1/1 通过，确认长列表局部滚动、标题首屏可见和无横向溢出。
+- 验收结论：通过，接受 REPORT-056；未执行其他任务。

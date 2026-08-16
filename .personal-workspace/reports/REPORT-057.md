@@ -3,15 +3,17 @@ schema_version: 1
 document_type: report
 id: REPORT-057
 title: GOAL-010 工作台基础可用性检查点报告
-status: pending_acceptance
+status: accepted
 report_type: goal_checkpoint
-acceptance_state: pending
+acceptance_state: accepted
 goal_id: GOAL-010
-revision: 1
+revision: 2
 created_at: 2026-08-16T09:37:30Z
-updated_at: 2026-08-16T09:37:30Z
+updated_at: 2026-08-16T10:00:00Z
 verified_by: implementation_agent
 verified_commit: 6a5bb5784d6437ca3377d10be839cf6cea56aeda
+accepted_by: project_owner
+accepted_at: 2026-08-16T10:00:00Z
 task_reports: [REPORT-053, REPORT-054, REPORT-055, REPORT-056]
 verification_commands:
   - npm run verify
@@ -28,7 +30,7 @@ GOAL-010 的四项任务均已完成实现并提交独立验收：左侧导航�
 - TASK-049：统一左侧导航分组，清晰区分工作区、当前项目、运行和治理入口；REPORT-053 已独立接受。
 - TASK-050：补充工作流使用引导，说明阶段状态、文件来源、推荐操作和审批门；REPORT-054 已独立接受。
 - TASK-051：提供 Windows 本机目录选择器并保留手动路径回退，选择结果仍进入只读预览；REPORT-055 已独立接受。
-- TASK-052：统一页面密度并为长列表增加局部滚动，保持首屏关键内容和可读性；REPORT-056 等待独立验收。
+- TASK-052：统一页面密度并为长列表增加局部滚动，保持首屏关键内容和可读性；REPORT-056 已独立接受。
 
 ## 全量验证
 
@@ -40,7 +42,7 @@ GOAL-010 的四项任务均已完成实现并提交独立验收：左侧导航�
 
 - GOAL-010 只涉及工作台导航、引导、目录选择和页面布局；正式项目事实、审批门、审计、Git 安全约束和动态状态来源未被改变。
 - TASK-051 仍保持已接受的 `completed`；TASK-052 当前为 `in_review`。
-- GOAL-010 当前保持 `in_review`，不自动启动其他目标，也不执行主分支合并。
+- GOAL-010 已通过检查点独立验收并登记为 `completed`；不自动启动其他目标，也不执行主分支合并。
 
 ## 用户验收建议
 
@@ -50,4 +52,5 @@ GOAL-010 的四项任务均已完成实现并提交独立验收：左侧导航�
 
 ## 独立验收结果
 
-- 尚未由项目负责人验收；实现者不得将 REPORT-057 标记为 `accepted`。
+- 独立复核确认 REPORT-053、REPORT-054、REPORT-055 和 REPORT-056 均已接受，四项任务边界与全量验证证据一致。
+- 验收结论：通过，接受 REPORT-057，GOAL-010 登记为 `completed`。

@@ -2,10 +2,10 @@
 schema_version: 1
 id: GOAL-010
 title: 工作台基础可用性改进
-status: in_review
-revision: 2
+status: completed
+revision: 3
 created_at: 2026-08-16T06:48:35Z
-updated_at: 2026-08-16T09:37:30Z
+updated_at: 2026-08-16T10:00:00Z
 tasks: [TASK-049, TASK-050, TASK-051, TASK-052]
 approval_ids: [APPROVAL-005]
 target_branch: goal/GOAL-010
@@ -42,3 +42,9 @@ checkpoint_report_id: REPORT-057
 - 用户已批准按照本目标推进，审批记录为 APPROVAL-005。
 - 首个建议任务为 TASK-049“重构左侧导航与信息架构”。
 - 真实项目 `main` 合并仍未批准；本目标在当前目标开发边界内推进。
+
+## Completion
+
+- REPORT-057 已通过项目负责人独立验收。
+- TASK-049、TASK-050、TASK-051、TASK-052 均已完成并分别接受对应报告。
+- 本目标完成不代表批准真实项目 `main` 合并，也不自动启动 GOAL-011。

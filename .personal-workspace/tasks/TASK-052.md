@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-052
 title: 优化页面布局和滚动体验
-status: in_review
+status: completed
 goal_id: GOAL-010
 role: executor
 dependencies: [TASK-049, TASK-050, TASK-051]
-revision: 3
+revision: 4
 created_at: 2026-08-16T06:48:35Z
-updated_at: 2026-08-16T09:37:30Z
+updated_at: 2026-08-16T10:00:00Z
 approval_id: APPROVAL-005
 target_branch: goal/GOAL-010
 unblocked_by: TASK-051
@@ -38,10 +38,10 @@ verification_report_id: REPORT-056
 
 ## Handoff
 
-- TASK-052 已完成实现，状态为 `in_review`；REPORT-056 等待项目负责人独立验收。
+- TASK-052 已通过项目负责人独立验收，状态为 `completed`；REPORT-056 已接受。
 - 项目概览、工作流、审批和历史页面使用统一紧凑布局；长列表改为局部滚动，标题、当前状态和主要操作保持在首屏可见。
 - 仅修改前端布局、滚动样式、审批/历史列表语义标记和布局回归测试，未修改正式事实、审批语义或任务状态转换。
-- 已生成 GOAL-010 检查点报告 REPORT-057，等待项目负责人验收后再登记 TASK-052 完成和 GOAL-010 完成。
+- GOAL-010 检查点报告 REPORT-057 已完成独立验收，GOAL-010 已登记为 `completed`。
 
 ## 完成证据
 
@@ -49,3 +49,8 @@ verification_report_id: REPORT-056
 - 完整 `npm run verify`：76 个单元测试、129 个集成测试、18 个 Playwright 测试全部通过；格式、Lint、类型检查和 contracts/domain/server/web 构建全部通过。
 - 布局专项 `npx playwright test e2e/layout.spec.ts --config=playwright.config.ts`：1/1 通过，确认长审批/历史列表局部滚动、标题首屏可见和无横向溢出。
 - 浏览器检查确认桌面和窄屏布局保留可读字号、语义导航和键盘可达控件；未改变项目事实或治理语义。
+
+## Acceptance
+
+- 独立验收通过：布局专项 Chromium 场景 1/1。
+- 验收范围仅覆盖 TASK-052；GOAL-010 检查点另由 REPORT-057 记录。

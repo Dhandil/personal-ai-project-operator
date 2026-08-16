@@ -292,7 +292,11 @@ function currentGoal(
   return (
     goals
       .filter(
-        (goal) => goal.status === "in_progress" || goal.status === "ready",
+        (goal) =>
+          goal.status === "in_progress" ||
+          goal.status === "ready" ||
+          goal.status === "in_review" ||
+          goal.status === "completed",
       )
       .toSorted((left, right) => numericId(right.id) - numericId(left.id))[0]
       ?.id ?? null

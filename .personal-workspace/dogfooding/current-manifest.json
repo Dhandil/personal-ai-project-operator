@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "manifest_kind": "current",
-  "generated_at": "2026-08-16T09:40:38.680Z",
-  "source_manifest_hash": "820d0c69c72f05f86dd3f67134e331e0fac34331c619cd46d972cdb271c31ec7",
+  "generated_at": "2026-08-16T09:48:13.667Z",
+  "source_manifest_hash": "160f15f552f5e1a80cd87cd0c9c0daa6c046bab07eedaa0f3357e6850b30a341",
   "current_source_stage": "03-spec",
   "current_goal_id": "GOAL-010",
-  "current_task_id": "TASK-052",
+  "current_task_id": null,
   "source_files": [
     {
       "relativePath": ".personal-workspace/approvals/APPROVAL-001.md",
@@ -178,14 +178,14 @@
     {
       "relativePath": ".personal-workspace/goals/GOAL-010.md",
       "kind": "goal",
-      "hash": "dc00fa7f114614ddf8f540d3a06c4133add7076c3a58248584745089f6431c14",
+      "hash": "b3ef266ad941ed2653cadca297d815f34a7aa00ee3dac44458ca96875bb7206b",
       "id": "GOAL-010",
       "title": "工作台基础可用性改进",
-      "status": "in_review",
+      "status": "completed",
       "stage": null,
       "goalId": null,
       "generated": false,
-      "revision": 2
+      "revision": 3
     },
     {
       "relativePath": ".personal-workspace/reports/REPORT-001.md",
@@ -850,26 +850,26 @@
     {
       "relativePath": ".personal-workspace/reports/REPORT-056.md",
       "kind": "report",
-      "hash": "ce9d6c646d985ffa97a6842acd7fc827e05f89b9ed19e1b9065f1f41f16569b6",
+      "hash": "3dd606f030245175ed10a278319dffc4a1757b48449180dcdcfc3f18217bcb6e",
       "id": "REPORT-056",
       "title": "TASK-052 页面布局和滚动体验验收报告",
-      "status": "pending_acceptance",
+      "status": "accepted",
       "stage": null,
       "goalId": "GOAL-010",
       "generated": false,
-      "revision": 1
+      "revision": 2
     },
     {
       "relativePath": ".personal-workspace/reports/REPORT-057.md",
       "kind": "report",
-      "hash": "e2a055ccb33ee56c9df6a5a12bf67d5c7e2c644da2bc485449703ff1a67d0b31",
+      "hash": "be0f26ed439c6eb42d2881276c2b7791de60cf73d10b24025751508bb7a726ca",
       "id": "REPORT-057",
       "title": "GOAL-010 工作台基础可用性检查点报告",
-      "status": "pending_acceptance",
+      "status": "accepted",
       "stage": null,
       "goalId": "GOAL-010",
       "generated": false,
-      "revision": 1
+      "revision": 2
     },
     {
       "relativePath": ".personal-workspace/stages/01-idea/01-idea.md",
@@ -1522,14 +1522,14 @@
     {
       "relativePath": ".personal-workspace/tasks/TASK-052.md",
       "kind": "task",
-      "hash": "8d659030084597a59f8e5ccc7f19b5429c8eaf40a27bb75fcc382a2a8a1f7f8b",
+      "hash": "174edd8b071b6d2c7fde3cda7d10df1854efefb8cd98559cd8f62f14f76ec4a5",
       "id": "TASK-052",
       "title": "优化页面布局和滚动体验",
-      "status": "in_review",
+      "status": "completed",
       "stage": null,
       "goalId": "GOAL-010",
       "generated": false,
-      "revision": 3
+      "revision": 4
     }
   ]
 }

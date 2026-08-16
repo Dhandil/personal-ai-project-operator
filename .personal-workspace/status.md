@@ -1,22 +1,22 @@
 ---
 schema_version: 1
 document_type: status_snapshot
-revision: 32
-generated_at: 2026-08-16T09:40:38.680Z
-updated_at: 2026-08-16T09:40:38.680Z
+revision: 34
+generated_at: 2026-08-16T09:48:13.667Z
+updated_at: 2026-08-16T09:48:13.667Z
 source: formal_project_facts
 status: in_progress
 current_stage: 03-spec
 current_goal: GOAL-010
-current_task: TASK-052
-source_manifest_hash: 820d0c69c72f05f86dd3f67134e331e0fac34331c619cd46d972cdb271c31ec7
+current_task: null
+source_manifest_hash: 160f15f552f5e1a80cd87cd0c9c0daa6c046bab07eedaa0f3357e6850b30a341
 ---
 # 项目状态
 
 - 项目：个人 AI 项目运营工具
 - 当前正式源阶段：03-spec
 - 当前目标：GOAL-010
-- 当前任务：TASK-052
+- 当前任务：无
 - 本文件由正式项目事实自动生成，不是独立事实源。
 
 ## 当前获批短期目标
@@ -73,9 +73,10 @@ source_manifest_hash: 820d0c69c72f05f86dd3f67134e331e0fac34331c619cd46d972cdb271
 - TASK-049 重构左侧导航与信息架构
 - TASK-050 明确项目创建后的工作流引导
 - TASK-051 增加本机项目目录选择器
+- TASK-052 优化页面布局和滚动体验
 
 ## 当前任务
-- TASK-052 优化页面布局和滚动体验 — in_review
+- 无
 
 ## Blocker、风险和待决策事项
 - 以正式问题、审批和决策记录为准。
@@ -84,7 +85,7 @@ source_manifest_hash: 820d0c69c72f05f86dd3f67134e331e0fac34331c619cd46d972cdb271
 - 已从 127 个正式文件重建导入清单。
 
 ## 推荐下一步
-- 由项目负责人继续处理 TASK-052。
+- 由项目负责人继续处理 当前就绪任务。
 
 ## 用户待办
-- 继续处理 TASK-052。
+- 决定是否批准真实项目的 main 合并，或进入下一目标。
