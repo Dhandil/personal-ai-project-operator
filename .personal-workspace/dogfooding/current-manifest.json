@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "manifest_kind": "current",
-  "generated_at": "2026-08-16T07:53:58.700Z",
-  "source_manifest_hash": "a4a622f2fd280a24637999688951020ce3be9398eb731ffdb4db108acc2b5d97",
+  "generated_at": "2026-08-16T08:09:05.656Z",
+  "source_manifest_hash": "854a53e3cf6caedc1f0cec73a99e9f94bcd14941c4fadcda2f9772426a6289cd",
   "current_source_stage": "03-spec",
   "current_goal_id": "GOAL-010",
   "current_task_id": "TASK-051",
@@ -836,6 +836,18 @@
       "revision": 2
     },
     {
+      "relativePath": ".personal-workspace/reports/REPORT-055.md",
+      "kind": "report",
+      "hash": "260885dfa6a32607f4e3d020c4b08106f505e227e258b804f5f766dbc7aa73d3",
+      "id": "REPORT-055",
+      "title": "TASK-051 本机项目目录选择器验收报告",
+      "status": "pending_acceptance",
+      "stage": null,
+      "goalId": "GOAL-010",
+      "generated": false,
+      "revision": 1
+    },
+    {
       "relativePath": ".personal-workspace/stages/01-idea/01-idea.md",
       "kind": "stage",
       "hash": "b5fcb8638dc61127da5f228a1e2a41cf36417fd9f764dafb6dfbb0c172c157e4",
@@ -1474,14 +1486,14 @@
     {
       "relativePath": ".personal-workspace/tasks/TASK-051.md",
       "kind": "task",
-      "hash": "993c81d93587404ebf497fd10b059ca82d8fc628a57f383acf50d984e84956ac",
+      "hash": "e585cf0b4af59180580c9de6e93307f370cbeb7dd351f829435603b02880aadf",
       "id": "TASK-051",
       "title": "增加本机项目目录选择器",
-      "status": "ready",
+      "status": "in_review",
       "stage": null,
       "goalId": "GOAL-010",
       "generated": false,
-      "revision": 2
+      "revision": 3
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-052.md",

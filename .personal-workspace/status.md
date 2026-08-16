@@ -1,15 +1,15 @@
 ---
 schema_version: 1
 document_type: status_snapshot
-revision: 29
-generated_at: 2026-08-16T07:53:58.700Z
-updated_at: 2026-08-16T07:53:58.700Z
+revision: 30
+generated_at: 2026-08-16T08:09:05.656Z
+updated_at: 2026-08-16T08:09:05.656Z
 source: formal_project_facts
 status: in_progress
 current_stage: 03-spec
 current_goal: GOAL-010
 current_task: TASK-051
-source_manifest_hash: a4a622f2fd280a24637999688951020ce3be9398eb731ffdb4db108acc2b5d97
+source_manifest_hash: 854a53e3cf6caedc1f0cec73a99e9f94bcd14941c4fadcda2f9772426a6289cd
 ---
 # 项目状态
 
@@ -74,13 +74,13 @@ source_manifest_hash: a4a622f2fd280a24637999688951020ce3be9398eb731ffdb4db108acc
 - TASK-050 明确项目创建后的工作流引导
 
 ## 当前任务
-- TASK-051 增加本机项目目录选择器 — ready
+- TASK-051 增加本机项目目录选择器 — in_review
 
 ## Blocker、风险和待决策事项
 - 以正式问题、审批和决策记录为准。
 
 ## 上一步
-- 已从 124 个正式文件重建导入清单。
+- 已从 125 个正式文件重建导入清单。
 
 ## 推荐下一步
 - 由项目负责人继续处理 TASK-051。

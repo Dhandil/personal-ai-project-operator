@@ -2,16 +2,17 @@
 schema_version: 1
 id: TASK-051
 title: 增加本机项目目录选择器
-status: ready
+status: in_review
 goal_id: GOAL-010
 role: executor
 dependencies: [TASK-050]
-revision: 2
+revision: 3
 created_at: 2026-08-16T06:48:35Z
-updated_at: 2026-08-16T08:00:00Z
+updated_at: 2026-08-16T08:06:41Z
 approval_id: APPROVAL-005
 target_branch: goal/GOAL-010
 unblocked_by: TASK-050
+verification_report_id: REPORT-055
 ---
 
 # TASK-051：增加本机项目目录选择器
@@ -36,7 +37,13 @@ unblocked_by: TASK-050
 - 不因选择目录自动批准项目初始化；
 - 完成并验收后再执行 TASK-052。
 
+## 完成证据
+
+- 新增仅接受回环地址请求的 `/api/projects/select-directory` 接口，在 Windows 本机通过 PowerShell `FolderBrowserDialog` 返回已存在的目录；接口不接受路径参数，不读取所选目录内容。
+- 创建向导新增“选择本机目录”按钮；选择结果只回填表单并进入既有只读预览，手动输入绝对路径继续作为回退；取消、平台不支持、选择器失败和无效目录均保留结构化错误。
+- 选择目录专项：服务器 4/4、前端 5/5、Chromium 创建向导 1/1；完整 `npm run verify`：76 个单元测试、129 个集成测试、17 个 Playwright 测试，以及格式、Lint、类型检查和构建全部通过。
+
 ## Handoff
 
-- TASK-051 已由用户持续授权解锁，当前为 `ready`，尚未开始执行。
-- TASK-052 继续保持 `draft`，将在 TASK-051 独立验收通过后自动解锁。
+- TASK-051 已完成实现和验证，当前为 `in_review`，等待项目负责人独立验收 REPORT-055。
+- TASK-052 未执行、未修改，继续保持 `draft`；TASK-052 仅在 TASK-051 独立验收通过后解锁。
