@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "manifest_kind": "current",
-  "generated_at": "2026-08-17T06:07:09.365Z",
-  "source_manifest_hash": "592e8af59d8e1c44cea4a65a908bc7d5ba44a03f31c659812fb9706bf8b52001",
+  "generated_at": "2026-08-17T09:21:47.940Z",
+  "source_manifest_hash": "ed6bca67ccf939e3a58a8f684375ecc17899291a325bb9eb02a15d9653c053f6",
   "current_source_stage": "03-spec",
-  "current_goal_id": "GOAL-012",
-  "current_task_id": null,
+  "current_goal_id": "GOAL-016",
+  "current_task_id": "TASK-085",
   "source_files": [
     {
       "relativePath": ".personal-workspace/approvals/APPROVAL-001.md",
@@ -84,6 +84,18 @@
       "kind": "approval",
       "hash": "e71b50d97dc265427cb480af8ed317c0ca49c9f817310b654a1b7ee9d77daafa",
       "id": "APPROVAL-007",
+      "title": null,
+      "status": "approved",
+      "stage": null,
+      "goalId": null,
+      "generated": false,
+      "revision": 1
+    },
+    {
+      "relativePath": ".personal-workspace/approvals/APPROVAL-008.md",
+      "kind": "approval",
+      "hash": "19c860a7a12c7f6c511edd0b6b0487263d7b5071bfbada0d240195e4c3c6629d",
+      "id": "APPROVAL-008",
       "title": null,
       "status": "approved",
       "stage": null,
@@ -266,6 +278,18 @@
       "id": "GOAL-015",
       "title": "V0.6 建立多 Runtime Adapter 扩展层",
       "status": "draft",
+      "stage": null,
+      "goalId": null,
+      "generated": false,
+      "revision": 1
+    },
+    {
+      "relativePath": ".personal-workspace/goals/GOAL-016.md",
+      "kind": "goal",
+      "hash": "93039c41420ec55754a5b3bea1fd0c5ae948f372df1a5560458dc249e660ed55",
+      "id": "GOAL-016",
+      "title": "修复 V0.3 核心可用性阻塞",
+      "status": "in_progress",
       "stage": null,
       "goalId": null,
       "generated": false,
@@ -1086,6 +1110,18 @@
       "goalId": "GOAL-012",
       "generated": false,
       "revision": 2
+    },
+    {
+      "relativePath": ".personal-workspace/reports/REPORT-069.md",
+      "kind": "report",
+      "hash": "26bf98996d0a5b8d29f9e4bf081b2868c2a63ee002ebeeaa4215bda0832cb0c9",
+      "id": "REPORT-069",
+      "title": "TASK-085 Claude Runtime Web production startup integration",
+      "status": "pending_acceptance",
+      "stage": null,
+      "goalId": "GOAL-016",
+      "generated": false,
+      "revision": 1
     },
     {
       "relativePath": ".personal-workspace/stages/01-idea/01-idea.md",
@@ -2152,6 +2188,90 @@
       "status": "draft",
       "stage": null,
       "goalId": "GOAL-015",
+      "generated": false,
+      "revision": 1
+    },
+    {
+      "relativePath": ".personal-workspace/tasks/TASK-085.md",
+      "kind": "task",
+      "hash": "456bff3ae836353f92e4e3f4fb851751a64471f19de37d3baa5c5781653531a1",
+      "id": "TASK-085",
+      "title": "将 Claude Code Runtime 接入 Web 生产启动链",
+      "status": "in_review",
+      "stage": null,
+      "goalId": "GOAL-016",
+      "generated": false,
+      "revision": 2
+    },
+    {
+      "relativePath": ".personal-workspace/tasks/TASK-086.md",
+      "kind": "task",
+      "hash": "9d07cb135ed54de87551c219614a3be8135947abb2d116a672867f60207506b4",
+      "id": "TASK-086",
+      "title": "修复真实阶段输出 Schema 与阻塞重试",
+      "status": "draft",
+      "stage": null,
+      "goalId": "GOAL-016",
+      "generated": false,
+      "revision": 1
+    },
+    {
+      "relativePath": ".personal-workspace/tasks/TASK-087.md",
+      "kind": "task",
+      "hash": "9492634d4a08265a0d5f6889ce46d303c6acba06d3c6733215aa1ec1231b0cd6",
+      "id": "TASK-087",
+      "title": "修复本机目录选择器的完成与取消反馈",
+      "status": "draft",
+      "stage": null,
+      "goalId": "GOAL-016",
+      "generated": false,
+      "revision": 1
+    },
+    {
+      "relativePath": ".personal-workspace/tasks/TASK-088.md",
+      "kind": "task",
+      "hash": "e52e923cb04f1985db79c851c3960aaffca9839fc3de3b1953626bfd8c858425",
+      "id": "TASK-088",
+      "title": "让今日启动返回明确下一步并进入对应页面",
+      "status": "draft",
+      "stage": null,
+      "goalId": "GOAL-016",
+      "generated": false,
+      "revision": 1
+    },
+    {
+      "relativePath": ".personal-workspace/tasks/TASK-089.md",
+      "kind": "task",
+      "hash": "4903ac381865d3419991801bc03e1c6f2c4737053d52f783de6f4692b9226155",
+      "id": "TASK-089",
+      "title": "统一阶段文件工作流和运行状态视图",
+      "status": "draft",
+      "stage": null,
+      "goalId": "GOAL-016",
+      "generated": false,
+      "revision": 1
+    },
+    {
+      "relativePath": ".personal-workspace/tasks/TASK-090.md",
+      "kind": "task",
+      "hash": "5bbf75a9f624c317a7a78ba6cf77844b5c2a92f20d7599875085ca47b3463ac2",
+      "id": "TASK-090",
+      "title": "完善核心页面空状态和中文操作说明",
+      "status": "draft",
+      "stage": null,
+      "goalId": "GOAL-016",
+      "generated": false,
+      "revision": 1
+    },
+    {
+      "relativePath": ".personal-workspace/tasks/TASK-091.md",
+      "kind": "task",
+      "hash": "3c29728d5212cadfb881b20625b64044c8ca698aa3f8fa3bcc143d84d7f18989",
+      "id": "TASK-091",
+      "title": "完成 V0.3 核心可用性修复验收",
+      "status": "draft",
+      "stage": null,
+      "goalId": "GOAL-016",
       "generated": false,
       "revision": 1
     }

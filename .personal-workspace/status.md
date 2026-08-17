@@ -1,26 +1,26 @@
 ---
 schema_version: 1
 document_type: status_snapshot
-revision: 62
-generated_at: 2026-08-17T06:07:09.365Z
-updated_at: 2026-08-17T06:07:09.365Z
+revision: 64
+generated_at: 2026-08-17T09:21:47.940Z
+updated_at: 2026-08-17T09:21:47.940Z
 source: formal_project_facts
 status: in_progress
 current_stage: 03-spec
-current_goal: GOAL-012
-current_task: null
-source_manifest_hash: 592e8af59d8e1c44cea4a65a908bc7d5ba44a03f31c659812fb9706bf8b52001
+current_goal: GOAL-016
+current_task: TASK-085
+source_manifest_hash: ed6bca67ccf939e3a58a8f684375ecc17899291a325bb9eb02a15d9653c053f6
 ---
 # 项目状态
 
 - 项目：个人 AI 项目运营工具
 - 当前正式源阶段：03-spec
-- 当前目标：GOAL-012
-- 当前任务：无
+- 当前目标：GOAL-016
+- 当前任务：TASK-085
 - 本文件由正式项目事实自动生成，不是独立事实源。
 
 ## 当前获批短期目标
-- GOAL-012
+- GOAL-016
 
 ## 已完成成果
 - TASK-001 建立 npm Workspace 和 TypeScript 根配置
@@ -85,16 +85,16 @@ source_manifest_hash: 592e8af59d8e1c44cea4a65a908bc7d5ba44a03f31c659812fb9706bf8
 - TASK-061 完成 V0.3 项目前期编排验收
 
 ## 当前任务
-- 无
+- TASK-085 将 Claude Code Runtime 接入 Web 生产启动链 — in_review
 
 ## Blocker、风险和待决策事项
 - 以正式问题、审批和决策记录为准。
 
 ## 上一步
-- 已从 179 个正式文件重建导入清单。
+- 已从 189 个正式文件重建导入清单。
 
 ## 推荐下一步
-- 由项目负责人继续处理 当前就绪任务。
+- 由项目负责人继续处理 TASK-085。
 
 ## 用户待办
-- 决定是否批准真实项目的 main 合并，或进入下一目标。
+- 继续处理 TASK-085。

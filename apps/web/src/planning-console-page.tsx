@@ -42,6 +42,8 @@ const stageDescriptions: Readonly<Record<string, string>> = {
   spec: "形成要求、约束和验证计划",
 };
 
+export type PlanningConsoleView = "stages" | "draft";
+
 function statusText(status: StageRunStatus): string {
   return {
     pending: "待开始",
@@ -50,7 +52,7 @@ function statusText(status: StageRunStatus): string {
     changes_requested: "待返工",
     approved: "已批准",
     blocked: "已阻塞",
-    cancelled: "已取消",
+    cancelled: "已取消，可重新启动",
     recovering: "恢复中",
   }[status];
 }
@@ -76,7 +78,11 @@ function stageVersionText(
 
 export function PlanningConsole({
   projectKey,
-}: Readonly<{ readonly projectKey: string }>): ReactElement {
+  view = "stages",
+}: Readonly<{
+  readonly projectKey: string;
+  readonly view?: PlanningConsoleView;
+}>): ReactElement {
   const [state, setState] = useState<ConsoleState>({ status: "loading" });
   const [draft, setDraft] = useState<DraftState>({ status: "loading" });
   const [busy, setBusy] = useState(false);
@@ -261,7 +267,7 @@ export function PlanningConsole({
 
   return (
     <section
-      className="overview-panel planning-console"
+      className={`overview-panel planning-console view-${view}`}
       aria-labelledby="planning-console-title"
     >
       <div className="panel-heading">
@@ -276,6 +282,18 @@ export function PlanningConsole({
         到规划草案批准的单一路径。候选产物、审核结果和正式事实分开显示；刷新或重启后以项目文件恢复。
       </p>
 
+      {busy && (
+        <div className="planning-busy" role="status">
+          正在处理操作并重新读取项目事实…
+        </div>
+      )}
+
+      {notice !== null && (
+        <div className="overview-alert planning-notice" role="status">
+          {notice}
+        </div>
+      )}
+
       {state.status === "loading" && (
         <div className="overview-loading">正在读取前期阶段事实…</div>
       )}
@@ -287,170 +305,194 @@ export function PlanningConsole({
       )}
       {state.status === "ready" && (
         <>
-          <div className="planning-summary-grid">
-            <div>
-              <span className="stage-fact-label">当前阶段</span>
-              <strong>
-                {state.value.currentStage === null
-                  ? "尚未启动"
-                  : stageLabels[state.value.currentStage]}
-              </strong>
+          <div className="planning-stage-workspace">
+            <div className="planning-summary-grid">
+              <div>
+                <span className="stage-fact-label">当前阶段</span>
+                <strong>
+                  {state.value.currentStage === null
+                    ? "尚未启动"
+                    : stageLabels[state.value.currentStage]}
+                </strong>
+              </div>
+              <div>
+                <span className="stage-fact-label">执行链</span>
+                <strong>{state.value.active ? "执行中" : "空闲"}</strong>
+              </div>
+              <div>
+                <span className="stage-fact-label">正式事实</span>
+                <strong>
+                  {currentRun?.artifactRefs.filter(
+                    (item) => item.kind === "approved",
+                  ).length ?? 0}{" "}
+                  个已批准产物
+                </strong>
+              </div>
+              <div>
+                <span className="stage-fact-label">恢复</span>
+                <strong>
+                  {state.value.recoveryRequired ? "需要用户决定" : "无需恢复"}
+                </strong>
+              </div>
             </div>
-            <div>
-              <span className="stage-fact-label">执行链</span>
-              <strong>{state.value.active ? "执行中" : "空闲"}</strong>
-            </div>
-            <div>
-              <span className="stage-fact-label">正式事实</span>
-              <strong>
-                {currentRun?.artifactRefs.filter(
-                  (item) => item.kind === "approved",
-                ).length ?? 0}{" "}
-                个已批准产物
-              </strong>
-            </div>
-            <div>
-              <span className="stage-fact-label">恢复</span>
-              <strong>
-                {state.value.recoveryRequired ? "需要用户决定" : "无需恢复"}
-              </strong>
-            </div>
-          </div>
 
-          <div className="planning-stage-grid" aria-label="前期阶段进度">
-            {(["idea", "discovery", "spec"] as const).map((stage) => {
-              const run = runForStage(state.value, stage);
-              return (
-                <article
-                  className={`planning-stage-card ${state.value.currentStage === stage ? "current" : ""}`}
-                  key={stage}
-                >
-                  <div className="workflow-stage-heading">
-                    <h3>{stageLabels[stage]}</h3>
-                    <span className={`stage-status ${run?.status ?? "draft"}`}>
-                      {run === undefined ? "待开始" : statusText(run.status)}
-                    </span>
-                  </div>
-                  <p>{stageDescriptions[stage]}</p>
-                  {run !== undefined && (
-                    <dl className="planning-facts">
-                      <div>
-                        <dt>责任角色</dt>
-                        <dd>{run.currentRole}</dd>
-                      </div>
-                      <div>
-                        <dt>运行 ID</dt>
-                        <dd>
-                          <code>{run.stageRunId}</code>
-                        </dd>
-                      </div>
-                      <div>
-                        <dt>候选产物</dt>
-                        <dd>{stageVersionText(run.candidateVersion)}</dd>
-                      </div>
-                      <div>
-                        <dt>审核结果</dt>
-                        <dd>{run.reviewDecision ?? "尚无"}</dd>
-                      </div>
-                    </dl>
-                  )}
-                </article>
-              );
-            })}
-          </div>
+            <div className="planning-stage-grid" aria-label="前期阶段进度">
+              {(["idea", "discovery", "spec"] as const).map((stage) => {
+                const run = runForStage(state.value, stage);
+                return (
+                  <article
+                    className={`planning-stage-card ${state.value.currentStage === stage ? "current" : ""}`}
+                    key={stage}
+                  >
+                    <div className="workflow-stage-heading">
+                      <h3>{stageLabels[stage]}</h3>
+                      <span
+                        className={`stage-status ${run?.status ?? "draft"}`}
+                      >
+                        {run === undefined ? "待开始" : statusText(run.status)}
+                      </span>
+                    </div>
+                    <p>{stageDescriptions[stage]}</p>
+                    {run !== undefined && (
+                      <dl className="planning-facts">
+                        <div>
+                          <dt>责任角色</dt>
+                          <dd>{run.currentRole}</dd>
+                        </div>
+                        <div>
+                          <dt>运行 ID</dt>
+                          <dd>
+                            <code>{run.stageRunId}</code>
+                          </dd>
+                        </div>
+                        <div>
+                          <dt>候选产物</dt>
+                          <dd>{stageVersionText(run.candidateVersion)}</dd>
+                        </div>
+                        <div>
+                          <dt>审核结果</dt>
+                          <dd>{run.reviewDecision ?? "尚无"}</dd>
+                        </div>
+                      </dl>
+                    )}
+                  </article>
+                );
+              })}
+            </div>
 
-          {currentRun?.statusReason !== null &&
-            currentRun?.statusReason !== undefined && (
-              <p className="planning-status-reason">
-                状态说明：{currentRun.statusReason}
-              </p>
-            )}
-
-          <div className="wizard-actions planning-actions">
-            {currentRun === null || currentRun.status === "approved" ? (
-              <button
-                className="button primary"
-                type="button"
-                onClick={() => void action("start")}
-                disabled={busy}
-              >
-                {currentRun === null ? "启动 Idea 阶段" : "启动下一阶段"}
-              </button>
-            ) : null}
-            {(currentRun?.status === "blocked" ||
-              currentRun?.status === "recovering") && (
-              <button
-                className="button primary"
-                type="button"
-                onClick={() => void action("resume", currentRun)}
-                disabled={busy}
-              >
-                恢复当前阶段
-              </button>
-            )}
-            {(currentRun?.status === "blocked" ||
-              currentRun?.status === "changes_requested") && (
-              <button
-                className="button secondary"
-                type="button"
-                onClick={() => void action("retry", currentRun)}
-                disabled={busy}
-              >
-                重新执行阶段
-              </button>
-            )}
-            {(state.value.active ||
-              currentRun?.status === "blocked" ||
-              currentRun?.status === "recovering") &&
-              currentRun !== null && (
-                <button
-                  className="button secondary"
-                  type="button"
-                  onClick={() => void action("cancel", currentRun)}
-                  disabled={busy}
-                >
-                  取消当前阶段
-                </button>
+            {currentRun?.statusReason !== null &&
+              currentRun?.statusReason !== undefined && (
+                <p className="planning-status-reason">
+                  状态说明：{currentRun.statusReason}
+                </p>
               )}
-          </div>
 
-          {waitingForApproval && currentRun !== null && (
-            <div className="planning-decision-panel">
-              <h3>阶段审核门</h3>
-              <p>
-                审核结果已产生，必须由用户批准、退回返工或取消；不会自动推进下一阶段。
-              </p>
-              <div className="wizard-actions">
-                <button
-                  className="button secondary"
-                  type="button"
-                  onClick={() =>
-                    void decideRun("changes_requested", currentRun)
-                  }
-                  disabled={busy}
-                >
-                  退回返工
-                </button>
+            <div className="wizard-actions planning-actions">
+              {currentRun === null || currentRun.status === "approved" ? (
                 <button
                   className="button primary"
                   type="button"
-                  onClick={() => void decideRun("approved", currentRun)}
+                  onClick={() => void action("start")}
                   disabled={busy}
                 >
-                  批准阶段产物
+                  {currentRun === null ? "启动 Idea 阶段" : "启动下一阶段"}
                 </button>
-              </div>
+              ) : null}
+              {currentRun?.status === "cancelled" && (
+                <button
+                  className="button primary"
+                  type="button"
+                  onClick={() => void action("start", currentRun)}
+                  disabled={busy}
+                >
+                  重新启动当前阶段
+                </button>
+              )}
+              {(currentRun?.status === "blocked" ||
+                currentRun?.status === "recovering") && (
+                <button
+                  className="button primary"
+                  type="button"
+                  onClick={() => void action("resume", currentRun)}
+                  disabled={busy}
+                >
+                  恢复当前阶段
+                </button>
+              )}
+              {(currentRun?.status === "blocked" ||
+                currentRun?.status === "changes_requested") && (
+                <button
+                  className="button secondary"
+                  type="button"
+                  onClick={() => void action("retry", currentRun)}
+                  disabled={busy}
+                >
+                  重新执行阶段
+                </button>
+              )}
+              {(state.value.active ||
+                currentRun?.status === "blocked" ||
+                currentRun?.status === "recovering") &&
+                currentRun !== null && (
+                  <button
+                    className="button secondary"
+                    type="button"
+                    onClick={() => void action("cancel", currentRun)}
+                    disabled={busy}
+                  >
+                    取消当前阶段
+                  </button>
+                )}
             </div>
-          )}
 
-          <label className="decision-reason">
-            用户决定或恢复理由
-            <textarea
-              value={decisionNote}
-              onChange={(event) => setDecisionNote(event.target.value)}
-              placeholder="说明批准、退回、取消或恢复原因"
-            />
-          </label>
+            {waitingForApproval && currentRun !== null && (
+              <div className="planning-decision-panel">
+                <h3>阶段审核门</h3>
+                <p>
+                  审核结果已产生，必须由用户批准、退回返工或取消；不会自动推进下一阶段。
+                </p>
+                <div className="wizard-actions">
+                  <button
+                    className="button secondary"
+                    type="button"
+                    onClick={() =>
+                      void decideRun("changes_requested", currentRun)
+                    }
+                    disabled={busy}
+                  >
+                    退回返工
+                  </button>
+                  <button
+                    className="button primary"
+                    type="button"
+                    onClick={() => void decideRun("approved", currentRun)}
+                    disabled={busy}
+                  >
+                    批准阶段产物
+                  </button>
+                </div>
+              </div>
+            )}
+
+            <label className="decision-reason">
+              用户决定或恢复理由
+              <textarea
+                value={decisionNote}
+                onChange={(event) => setDecisionNote(event.target.value)}
+                placeholder="说明批准、退回、取消或恢复原因"
+              />
+            </label>
+          </div>
+          {view === "draft" && (
+            <label className="decision-reason draft-decision-reason">
+              用户决定或恢复理由
+              <textarea
+                value={decisionNote}
+                onChange={(event) => setDecisionNote(event.target.value)}
+                placeholder="说明批准或退回规划草案的原因"
+              />
+            </label>
+          )}
         </>
       )}
 
@@ -577,11 +619,6 @@ export function PlanningConsole({
           </>
         )}
       </div>
-      {notice !== null && (
-        <div className="overview-alert" role="status">
-          {notice}
-        </div>
-      )}
       {approvalHandoff !== null && (
         <div className="planning-handoff" role="status">
           <strong>批准后的交接入口</strong>

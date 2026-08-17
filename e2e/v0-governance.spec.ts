@@ -270,7 +270,7 @@ test("V0 browser flow covers a temporary project across all governance surfaces"
     await page.getByRole("button", { name: /批准并创建项目/ }).click();
     await expect(page.getByText("EXEC-001")).toBeVisible();
 
-    await page.goto("/");
+    await page.goto("/projects");
     await expect(page.locator(".project-list-panel")).toBeVisible();
     await page.locator(".startup-button").click();
     await expect(page.locator(".startup-summary")).toBeVisible();
@@ -471,7 +471,7 @@ test("V0 reports recovery-required startup and illegal workflow state without wr
         ),
       ),
     );
-    await page.goto("/");
+    await page.goto("/projects");
     await expect(
       page.locator(".project-card .project-state.needs_recovery"),
     ).toBeVisible();

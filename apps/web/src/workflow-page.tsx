@@ -11,7 +11,10 @@ import {
   workflowGuides,
   type WorkflowPayload,
 } from "./workflow";
-import { PlanningConsole } from "./planning-console-page";
+import {
+  PlanningConsole,
+  type PlanningConsoleView,
+} from "./planning-console-page";
 
 type WorkflowPageState =
   | Readonly<{ readonly status: "loading" }>
@@ -145,6 +148,7 @@ export function WorkflowPage(): ReactElement {
   const [decisionReason, setDecisionReason] = useState("");
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
+  const [consoleView, setConsoleView] = useState<PlanningConsoleView>("stages");
 
   const load = (): void => {
     setState({ status: "loading" });
@@ -260,38 +264,54 @@ export function WorkflowPage(): ReactElement {
         <a href="/projects/execution">执行控制台</a>
       </div>
 
-      <section
-        className="overview-panel workflow-onboarding"
-        aria-labelledby="workflow-onboarding-title"
-      >
-        <div className="panel-heading">
-          <div>
-            <p className="eyebrow">FIRST USE GUIDE</p>
-            <h2 id="workflow-onboarding-title">工作流怎么推进</h2>
-          </div>
-          <span className="read-only-badge">无需上传阶段文件</span>
+      <details className="workflow-help">
+        <summary>第一次使用？查看工作流的 3 步说明</summary>
+        <div className="workflow-help-content">
+          <ol className="workflow-onboarding-steps">
+            <li>
+              <strong>系统初始化</strong>
+              <span>创建项目治理文件和默认流程。</span>
+            </li>
+            <li>
+              <strong>Agent 处理</strong>
+              <span>读取正式材料，在获准边界内更新事实并交接。</span>
+            </li>
+            <li>
+              <strong>用户决策</strong>
+              <span>审批目标、范围和跳过建议；系统不会自动替你决定。</span>
+            </li>
+          </ol>
+          <p className="workflow-onboarding-note">
+            阶段文件由系统按流程读取和创建，不是上传清单，用户无需手工上传。
+          </p>
         </div>
-        <ol className="workflow-onboarding-steps">
-          <li>
-            <strong>系统初始化</strong>
-            <span>创建项目治理文件和默认流程。</span>
-          </li>
-          <li>
-            <strong>Agent 处理</strong>
-            <span>读取正式材料，在获准边界内更新事实并交接。</span>
-          </li>
-          <li>
-            <strong>用户决策</strong>
-            <span>审批目标、范围和跳过建议；系统不会自动替你决定。</span>
-          </li>
-        </ol>
-        <p className="workflow-onboarding-note">
-          “待开始”表示阶段尚未推进；“已存在”表示系统创建的事实文件已经在项目中。文件不是上传清单，用户无需手工上传。
-        </p>
-      </section>
+      </details>
 
       {state.status === "ready" && (
-        <PlanningConsole projectKey={state.value.projectKey} />
+        <>
+          <nav className="workflow-console-tabs" aria-label="规划控制台视图">
+            <button
+              className={consoleView === "stages" ? "active" : ""}
+              type="button"
+              aria-pressed={consoleView === "stages"}
+              onClick={() => setConsoleView("stages")}
+            >
+              当前阶段与操作
+            </button>
+            <button
+              className={consoleView === "draft" ? "active" : ""}
+              type="button"
+              aria-pressed={consoleView === "draft"}
+              onClick={() => setConsoleView("draft")}
+            >
+              规划草案
+            </button>
+          </nav>
+          <PlanningConsole
+            projectKey={state.value.projectKey}
+            view={consoleView}
+          />
+        </>
       )}
 
       {state.status === "loading" && (

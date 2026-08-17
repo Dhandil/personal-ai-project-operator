@@ -131,8 +131,9 @@ test("workflow page separates agent skip proposal from user decision", async ({
 
   await page.goto("/projects/workflow");
   await expect(page.getByRole("heading", { name: "工作流阶段" })).toBeVisible();
+  await page.locator("summary").click();
   await expect(
-    page.getByRole("heading", { name: "工作流怎么推进" }),
+    page.getByText("第一次使用？查看工作流的 3 步说明"),
   ).toBeVisible();
   await expect(page.getByText("用户无需手工上传")).toBeVisible();
   await expect(

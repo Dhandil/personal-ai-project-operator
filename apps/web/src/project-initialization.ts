@@ -178,6 +178,7 @@ export async function requestProjectDirectorySelection(
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({}),
+      signal: AbortSignal.timeout(15_000),
     });
     const payload = await readJson(response);
     if (

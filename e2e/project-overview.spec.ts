@@ -67,7 +67,7 @@ test("project overview waits for an explicit daily startup action", async ({
     });
   });
 
-  await page.goto("/");
+  await page.goto("/projects");
   await expect(page.getByRole("heading", { name: "项目总览" })).toBeVisible();
   await expect(
     page.locator(".project-list").getByText("Demo project"),

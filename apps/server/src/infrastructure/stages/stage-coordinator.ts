@@ -346,11 +346,28 @@ function stagePayload(
         ? ["userScenarios", "evidence", "risks", "decisions", "artifactRefs"]
         : ["requirements", "constraints", "validationPlan", "artifactRefs"];
   const normalized: Record<string, unknown> = { ...source };
+  const aliases: Readonly<Record<string, string>> = {
+    schema_version: "schemaVersion",
+    problem_statement: "problemStatement",
+    open_questions: "openQuestions",
+    artifact_refs: "artifactRefs",
+    user_scenarios: "userScenarios",
+    validation_plan: "validationPlan",
+  };
+  for (const [alias, field] of Object.entries(aliases)) {
+    if (normalized[field] === undefined && normalized[alias] !== undefined) {
+      normalized[field] = normalized[alias];
+    }
+  }
   for (const field of fields)
     normalized[field] = parseJsonValue(normalized[field]);
   if (typeof normalized.schemaVersion === "string") {
     const parsed = Number(normalized.schemaVersion);
     if (Number.isInteger(parsed)) normalized.schemaVersion = parsed;
+  }
+  const expectedKind = `${stageValue}_result`;
+  if (normalized.kind === `${expectedKind}_v1`) {
+    normalized.kind = expectedKind;
   }
   return normalized;
 }
@@ -667,9 +684,11 @@ export class StageCoordinatorService {
           "The current stage is blocked and requires resume, retry, or cancel.",
         );
       } else if (current.stageRun.status === "cancelled") {
-        return failure(
-          "stage_not_ready",
-          "A cancelled stage run cannot be started again.",
+        record = await this.newRun(
+          root.value,
+          project.value.idea,
+          current.stage,
+          approvedArtifactRefs(records.value),
         );
       } else {
         return failure(
@@ -1639,6 +1658,7 @@ export class StageCoordinatorService {
         [
           `Run the ${record.stage} preflight stage.`,
           `Return the ${packageValue.outputSchema.id} structured output.`,
+          `The stage artifact payload must include the numeric field schemaVersion: 1, kind: "${record.stage}_result", and stage: "${record.stage}". Use these exact camelCase field names; do not omit schemaVersion or replace it with a prose summary.`,
           "Do not approve the stage or write formal goals/tasks.",
           JSON.stringify(packageValue),
         ].join("\n"),

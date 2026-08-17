@@ -190,13 +190,17 @@ test("planning console separates stage approval from planning draft approval", a
   await expect(
     page.getByRole("heading", { name: "项目前期规划控制台" }),
   ).toBeVisible();
+  await expect(page.getByText("阶段审核门")).toBeVisible();
+
+  await page.getByRole("button", { name: "规划草案" }).click();
   await expect(page.getByText("候选版本")).toBeVisible();
   await expect(page.getByText("Executor", { exact: true })).toBeVisible();
-  await expect(page.getByText("阶段审核门")).toBeVisible();
   await page.getByLabel("目标标题（用户可编辑）").fill("Edited goal");
   await page.getByRole("button", { name: "保存草案编辑" }).click();
   await expect(page.getByText("用户编辑已保存为新的候选版本。")).toBeVisible();
-  await page.getByLabel("用户决定或恢复理由").fill("User approved the plan.");
+  await page
+    .locator(".draft-decision-reason textarea")
+    .fill("User approved the plan.");
   await page.getByRole("button", { name: "批准并写入正式事实" }).click();
   await expect(page.getByText(/规划草案已批准/)).toBeVisible();
   await expect(page.getByText("GOAL-013")).toBeVisible();

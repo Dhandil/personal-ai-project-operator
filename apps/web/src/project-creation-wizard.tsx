@@ -322,8 +322,15 @@ export function ProjectCreationWizard({
             </button>
           </div>
           <p className="muted-note">
-            Windows 用户可打开本机目录选择器；也可以继续手动输入绝对路径。
+            {directoryPickerBusy
+              ? "正在打开 Windows 目录选择器；如果窗口没有出现，请检查任务栏，或直接手动输入绝对路径。"
+              : "Windows 用户可打开本机目录选择器；也可以继续手动输入绝对路径。"}
           </p>
+          {directoryPickerBusy && (
+            <p className="picker-progress" role="status">
+              目录选择器正在等待你的选择…
+            </p>
+          )}
           {formErrors.projectRoot !== undefined && (
             <p className="field-error" id="project-root-error">
               {formErrors.projectRoot}

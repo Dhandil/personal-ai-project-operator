@@ -218,6 +218,43 @@ function successScenario(output: unknown): FakeAgentScenario {
   return { outcome: "success", output, cleanup: "success" };
 }
 
+test("normalizes provider stage payload aliases before strict validation", async () => {
+  const root = await fixture();
+  try {
+    const runtime = new FakeAgentAdapter({
+      now: () => timestamp,
+      scenarios: [successScenario(review())],
+    });
+    const service = new StageCoordinatorService({
+      runtime,
+      now: () => timestamp,
+      lock: new ExecutionLock(),
+    });
+    const result = await service.start(
+      { projectRoot: root },
+      successScenario({
+        schema_version: "1",
+        kind: "idea_result_v1",
+        stage: "idea",
+        problem_statement: "Clarify the problem.",
+        assumptions: ["one"],
+        open_questions: ["one"],
+        artifact_refs: [],
+        handoff: "Ready for review.",
+      }),
+    );
+    assert.equal(
+      result.ok,
+      true,
+      result.ok ? "" : JSON.stringify(result.error),
+    );
+    if (!result.ok) throw new Error(result.error.message);
+    assert.equal(result.value.run.status, "awaiting_review");
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
 test("coordinates Idea, Discovery and Spec in order with explicit approval gates", async () => {
   const root = await fixture();
   try {
@@ -490,6 +527,55 @@ test("reports the assigned execution as active while the producer is still runni
     const after = await service.state({ projectRoot: root });
     assert.equal(after.ok, true);
     if (after.ok) assert.equal(after.value.active, false);
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+test("restarts a cancelled stage as a new governed run", async () => {
+  const root = await fixture();
+  try {
+    const runtime = new DelayedRuntime();
+    const service = new StageCoordinatorService({
+      runtime,
+      now: () => timestamp,
+      lock: new ExecutionLock(),
+    });
+    const pending = service.start({ projectRoot: root });
+    const active = await waitForActive(service, root);
+    assert.equal(active.ok, true);
+    if (!active.ok) throw new Error(active.error.message);
+    const executionId = active.value.currentRun?.executionId;
+    assert.notEqual(executionId, null);
+    assert.notEqual(executionId, undefined);
+
+    const cancelled = await service.cancel({
+      projectRoot: root,
+      executionId: executionId ?? undefined,
+      note: "用户决定重新开始 Idea 阶段。",
+    });
+    assert.equal(cancelled.ok, true);
+    if (!cancelled.ok) throw new Error(cancelled.error.message);
+    assert.equal(cancelled.value.run.status, "cancelled");
+    await pending;
+
+    const restarted = new StageCoordinatorService({
+      runtime: new FakeAgentAdapter({
+        now: () => timestamp,
+        scenarios: [successScenario(review())],
+      }),
+      now: () => timestamp,
+      lock: new ExecutionLock(),
+    });
+    const next = await restarted.start(
+      { projectRoot: root },
+      successScenario(artifact("idea")),
+    );
+    assert.equal(next.ok, true, next.ok ? "" : JSON.stringify(next.error));
+    if (!next.ok) throw new Error(next.error.message);
+    assert.equal(next.value.stage, "idea");
+    assert.equal(next.value.run.status, "awaiting_review");
+    assert.notEqual(next.value.run.stageRunId, cancelled.value.run.stageRunId);
   } finally {
     await rm(root, { recursive: true, force: true });
   }
