@@ -3,16 +3,18 @@ schema_version: 1
 document_type: report
 id: REPORT-066
 title: TASK-060 planning console verification
-status: pending_acceptance
+status: accepted
 report_type: task_verification
-acceptance_state: pending_acceptance
+acceptance_state: accepted
 task_id: TASK-060
 goal_id: GOAL-012
-revision: 1
+revision: 2
 created_at: 2026-08-17T12:25:00Z
-updated_at: 2026-08-17T12:25:00Z
+updated_at: 2026-08-17T13:10:00Z
 verified_by: implementation_agent
 verified_commit: 8dfe260
+accepted_by: project_owner
+accepted_at: 2026-08-17T13:10:00Z
 verification_commands:
   - npm run test:unit -- --run apps/web/src/planning.test.ts
   - npx tsx --test apps/server/test/stage-console.integration.test.ts apps/server/test/planning-draft.integration.test.ts
@@ -54,4 +56,13 @@ verification_commands:
 
 ## Status
 
-REPORT-066 remains `pending_acceptance`. It has not been independently accepted by the implementation agent.
+## Independent acceptance
+
+- Planning client contract tests: 4/4 passed independently.
+- Stage/planning integration tests: 5/5 passed independently.
+- Planning console Chromium regression: 1/1 passed independently.
+- Full `npm run verify`: 107 unit tests, 142 integration tests, 23 Chromium tests, formatting, lint, type checking, and all builds passed.
+- Refresh/reload recovery, approval gates, candidate/formal separation, revision/hash protection, and approved handoff are covered by passing tests; TASK-061 remained untouched.
+- Acceptance conclusion: passed. REPORT-066 is `accepted`; TASK-060 is `completed`; TASK-061 is unlocked as `ready`.
+
+REPORT-066 is `accepted` by the project owner. TASK-060 is `completed` and TASK-061 is `ready`.

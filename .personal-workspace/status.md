@@ -1,22 +1,22 @@
 ---
 schema_version: 1
 document_type: status_snapshot
-revision: 58
-generated_at: 2026-08-17T04:28:09.874Z
-updated_at: 2026-08-17T04:28:09.874Z
+revision: 59
+generated_at: 2026-08-17T05:06:09.480Z
+updated_at: 2026-08-17T05:06:09.480Z
 source: formal_project_facts
 status: in_progress
 current_stage: 03-spec
 current_goal: GOAL-012
-current_task: TASK-060
-source_manifest_hash: 077ee2389570df79b1b4fdfef787654c2843a44749d5dfa7cf815d1a984b48ed
+current_task: TASK-061
+source_manifest_hash: 20636590822b33a157435e321b320ccb183e44547dc0a16e938414fc20caf80b
 ---
 # 项目状态
 
 - 项目：个人 AI 项目运营工具
 - 当前正式源阶段：03-spec
 - 当前目标：GOAL-012
-- 当前任务：TASK-060
+- 当前任务：TASK-061
 - 本文件由正式项目事实自动生成，不是独立事实源。
 
 ## 当前获批短期目标
@@ -81,9 +81,10 @@ source_manifest_hash: 077ee2389570df79b1b4fdfef787654c2843a44749d5dfa7cf815d1a98
 - TASK-057 实现阶段产物校验与批准写入
 - TASK-058 实现 Idea Discovery Spec 阶段协调器
 - TASK-059 从 Spec 生成目标角色与任务草案
+- TASK-060 实现项目前期规划控制台
 
 ## 当前任务
-- TASK-060 实现项目前期规划控制台 — in_review
+- TASK-061 完成 V0.3 项目前期编排验收 — ready
 
 ## Blocker、风险和待决策事项
 - 以正式问题、审批和决策记录为准。
@@ -92,7 +93,7 @@ source_manifest_hash: 077ee2389570df79b1b4fdfef787654c2843a44749d5dfa7cf815d1a98
 - 已从 177 个正式文件重建导入清单。
 
 ## 推荐下一步
-- 由项目负责人继续处理 TASK-060。
+- 由项目负责人继续处理 TASK-061。
 
 ## 用户待办
-- 继续处理 TASK-060。
+- 继续处理 TASK-061。

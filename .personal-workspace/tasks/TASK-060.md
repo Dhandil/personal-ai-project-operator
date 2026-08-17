@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-060
 title: 实现项目前期规划控制台
-status: in_review
+status: completed
 goal_id: GOAL-012
 role: executor
 dependencies: [TASK-058, TASK-059]
-revision: 3
+revision: 4
 created_at: 2026-08-16T14:00:00Z
-updated_at: 2026-08-17T12:25:00Z
+updated_at: 2026-08-17T13:10:00Z
 target_branch: goal/GOAL-012
 unblocked_by: TASK-059
 ---
@@ -54,4 +54,9 @@ unblocked_by: TASK-059
 
 ## 边界与交接
 
-UI 不隐藏领域规则，不伪造自动执行结果。完成后 TASK-061 可申请解锁。
+UI 不隐藏领域规则，不伪造自动执行结果。REPORT-066 已通过独立验收，TASK-060 已完成，TASK-061 已解锁为 `ready`。
+
+## 独立验收
+
+- 前端契约测试 4/4、阶段/规划集成测试 5/5、规划控制台 Chromium 测试 1/1 通过。
+- 完整 `npm run verify`：107 单元、142 集成、23 Chromium，以及质量检查和构建全部通过。

@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "manifest_kind": "current",
-  "generated_at": "2026-08-17T04:28:09.874Z",
-  "source_manifest_hash": "077ee2389570df79b1b4fdfef787654c2843a44749d5dfa7cf815d1a984b48ed",
+  "generated_at": "2026-08-17T05:06:09.480Z",
+  "source_manifest_hash": "20636590822b33a157435e321b320ccb183e44547dc0a16e938414fc20caf80b",
   "current_source_stage": "03-spec",
   "current_goal_id": "GOAL-012",
-  "current_task_id": "TASK-060",
+  "current_task_id": "TASK-061",
   "source_files": [
     {
       "relativePath": ".personal-workspace/approvals/APPROVAL-001.md",
@@ -1054,14 +1054,14 @@
     {
       "relativePath": ".personal-workspace/reports/REPORT-066.md",
       "kind": "report",
-      "hash": "80f0f84732d900ccf973a8b31d4261519b034fe3b3431614cf19e76b091da39f",
+      "hash": "f3caa8ccdf0e298e41323dbc033cafb2ad1cb4bd92b9b8bbd03fb78f0fae405d",
       "id": "REPORT-066",
       "title": "TASK-060 planning console verification",
-      "status": "pending_acceptance",
+      "status": "accepted",
       "stage": null,
       "goalId": "GOAL-012",
       "generated": false,
-      "revision": 1
+      "revision": 2
     },
     {
       "relativePath": ".personal-workspace/stages/01-idea/01-idea.md",
@@ -1834,26 +1834,26 @@
     {
       "relativePath": ".personal-workspace/tasks/TASK-060.md",
       "kind": "task",
-      "hash": "737e663a9cf3c1af303b320cba29c45685d07cbebdf482bc7c28d7904619b7aa",
+      "hash": "6ec11ad1a94d0b277f4c26ddc52318aac7dafa7c58105d934aca54aba1759591",
       "id": "TASK-060",
       "title": "实现项目前期规划控制台",
-      "status": "in_review",
+      "status": "completed",
       "stage": null,
       "goalId": "GOAL-012",
       "generated": false,
-      "revision": 3
+      "revision": 4
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-061.md",
       "kind": "task",
-      "hash": "c82f45b93fc03c954845c496c815212a6c1eb8a4d039ad2078920208840a04d5",
+      "hash": "3b8b61b83c4e0f1fbf571791e7b14a06ba6ecfba540d3adaec66a5520481bbe5",
       "id": "TASK-061",
       "title": "完成 V0.3 项目前期编排验收",
-      "status": "draft",
+      "status": "ready",
       "stage": null,
       "goalId": "GOAL-012",
       "generated": false,
-      "revision": 1
+      "revision": 2
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-062.md",
