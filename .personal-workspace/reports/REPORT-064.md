@@ -8,11 +8,11 @@ report_type: task_verification
 acceptance_state: pending
 task_id: TASK-058
 goal_id: GOAL-012
-revision: 1
+revision: 2
 created_at: 2026-08-17T09:45:00Z
-updated_at: 2026-08-17T09:45:00Z
+updated_at: 2026-08-17T10:20:00Z
 verified_by: implementation_agent
-verified_commit: eef7363
+verified_commit: eaa1e77
 verification_commands:
   - npx tsx --test apps/server/test/stage-coordinator.integration.test.ts
   - npm run verify
@@ -27,11 +27,12 @@ verification_commands:
 - Agent 候选产物先经过现有阶段 Schema 校验，再写入候选目录并启动只读审核；审核结果写入独立记录，只有用户明确批准才调用现有批准门写入正式阶段事实并允许下一阶段启动。
 - 阶段交接携带已批准产物引用；返工继续使用原阶段角色，审核者使用只读任务包、空允许写入路径和禁止写入 formal facts 的边界。
 - 中断保留精确 execution/session 上下文以供恢复；非法输出、运行失败、权限异常和清理失败会阻断推进、保存恢复信息并写入审计事件。
+- 修复 `ExecutionLock` 执行 ID 关联：producer start、resume、retry 以及 reviewer 接管都会写入真实 executionId，锁释放逻辑保持不变；状态查询在运行期间返回 `active: true` 并显示当前 executionId。
 
 ## 验证结果
 
-- TASK-058 专项集成测试：4/4 通过，覆盖三阶段顺序与审批门、批准产物交接、返工、非法输出阻塞、精确 session 恢复和 cleanup failure。
-- 完整 `npm run verify` 通过：97 个单元测试、133 个集成测试、22 个 Chromium Playwright 测试，以及格式、Lint、类型检查和 contracts/domain/server/web 构建。
+- TASK-058 专项集成测试：6/6 通过，新增延迟 Runtime active 状态、resume 和 retry 执行 ID 回归测试。
+- 完整 `npm run verify` 通过：97 个单元测试、135 个集成测试、22 个 Chromium Playwright 测试，以及格式、Lint、类型检查和 contracts/domain/server/web 构建。
 - 未启动真实 Agent，未修改 UI，未生成正式 GOAL/TASK，也未执行 TASK-059 或其他后续任务。
 
 ## 独立验收建议
