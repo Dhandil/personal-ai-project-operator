@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "manifest_kind": "current",
-  "generated_at": "2026-08-17T03:46:26.013Z",
-  "source_manifest_hash": "87da556f52308c1dbf0504a86e72a95bd1e578bb4815ed172154ad0af9a9557b",
+  "generated_at": "2026-08-17T04:28:09.874Z",
+  "source_manifest_hash": "077ee2389570df79b1b4fdfef787654c2843a44749d5dfa7cf815d1a984b48ed",
   "current_source_stage": "03-spec",
   "current_goal_id": "GOAL-012",
   "current_task_id": "TASK-060",
@@ -1052,6 +1052,18 @@
       "revision": 2
     },
     {
+      "relativePath": ".personal-workspace/reports/REPORT-066.md",
+      "kind": "report",
+      "hash": "80f0f84732d900ccf973a8b31d4261519b034fe3b3431614cf19e76b091da39f",
+      "id": "REPORT-066",
+      "title": "TASK-060 planning console verification",
+      "status": "pending_acceptance",
+      "stage": null,
+      "goalId": "GOAL-012",
+      "generated": false,
+      "revision": 1
+    },
+    {
       "relativePath": ".personal-workspace/stages/01-idea/01-idea.md",
       "kind": "stage",
       "hash": "b5fcb8638dc61127da5f228a1e2a41cf36417fd9f764dafb6dfbb0c172c157e4",
@@ -1822,14 +1834,14 @@
     {
       "relativePath": ".personal-workspace/tasks/TASK-060.md",
       "kind": "task",
-      "hash": "b1b17ceb5bfd154aa16cd9337dc4b6d2bcf93f0c008a03706eb45cce30662f98",
+      "hash": "737e663a9cf3c1af303b320cba29c45685d07cbebdf482bc7c28d7904619b7aa",
       "id": "TASK-060",
       "title": "实现项目前期规划控制台",
-      "status": "ready",
+      "status": "in_review",
       "stage": null,
       "goalId": "GOAL-012",
       "generated": false,
-      "revision": 2
+      "revision": 3
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-061.md",
