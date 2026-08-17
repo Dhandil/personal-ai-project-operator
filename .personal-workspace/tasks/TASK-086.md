@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-086
 title: 修复真实阶段输出 Schema 与阻塞重试
-status: draft
+status: ready
 goal_id: GOAL-016
 role: executor
 dependencies: [TASK-085]
-revision: 1
+revision: 2
 created_at: 2026-08-17T08:51:22Z
-updated_at: 2026-08-17T08:51:22Z
+updated_at: 2026-08-17T09:42:00Z
 target_branch: goal/GOAL-016
 unblocked_by: TASK-085
 ---
@@ -34,4 +34,3 @@ unblocked_by: TASK-085
 ## 边界与交接
 
 不得绕过用户批准，不得把 Agent 输出直接写成正式目标/任务；完成后交接给 TASK-087。
-

@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "manifest_kind": "current",
-  "generated_at": "2026-08-17T09:21:47.940Z",
-  "source_manifest_hash": "ed6bca67ccf939e3a58a8f684375ecc17899291a325bb9eb02a15d9653c053f6",
+  "generated_at": "2026-08-17T09:33:13.222Z",
+  "source_manifest_hash": "c976c0ed0fcce9bcf34a80f545b906f4e7cfb57a7bdcd19fffd18809a25bad3e",
   "current_source_stage": "03-spec",
   "current_goal_id": "GOAL-016",
-  "current_task_id": "TASK-085",
+  "current_task_id": "TASK-086",
   "source_files": [
     {
       "relativePath": ".personal-workspace/approvals/APPROVAL-001.md",
@@ -1114,14 +1114,14 @@
     {
       "relativePath": ".personal-workspace/reports/REPORT-069.md",
       "kind": "report",
-      "hash": "26bf98996d0a5b8d29f9e4bf081b2868c2a63ee002ebeeaa4215bda0832cb0c9",
+      "hash": "35c7cad1be56375799e8cbe3dbd9ef88dfc4c39897f8844eab1b0b2506d9f2fa",
       "id": "REPORT-069",
       "title": "TASK-085 Claude Runtime Web production startup integration",
-      "status": "pending_acceptance",
+      "status": "accepted",
       "stage": null,
       "goalId": "GOAL-016",
       "generated": false,
-      "revision": 1
+      "revision": 2
     },
     {
       "relativePath": ".personal-workspace/stages/01-idea/01-idea.md",
@@ -2194,26 +2194,26 @@
     {
       "relativePath": ".personal-workspace/tasks/TASK-085.md",
       "kind": "task",
-      "hash": "456bff3ae836353f92e4e3f4fb851751a64471f19de37d3baa5c5781653531a1",
+      "hash": "094070407674c6a08b2ee1337f6751e2ee3aa375f97a51a566ba8c0eda3cb396",
       "id": "TASK-085",
       "title": "将 Claude Code Runtime 接入 Web 生产启动链",
-      "status": "in_review",
+      "status": "completed",
       "stage": null,
       "goalId": "GOAL-016",
       "generated": false,
-      "revision": 2
+      "revision": 3
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-086.md",
       "kind": "task",
-      "hash": "9d07cb135ed54de87551c219614a3be8135947abb2d116a672867f60207506b4",
+      "hash": "1026097433dc6817df1e1cac4cdd94f4d4f225d04677f6258c97d09bce9aee41",
       "id": "TASK-086",
       "title": "修复真实阶段输出 Schema 与阻塞重试",
-      "status": "draft",
+      "status": "ready",
       "stage": null,
       "goalId": "GOAL-016",
       "generated": false,
-      "revision": 1
+      "revision": 2
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-087.md",

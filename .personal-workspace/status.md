@@ -1,22 +1,22 @@
 ---
 schema_version: 1
 document_type: status_snapshot
-revision: 64
-generated_at: 2026-08-17T09:21:47.940Z
-updated_at: 2026-08-17T09:21:47.940Z
+revision: 66
+generated_at: 2026-08-17T09:33:13.222Z
+updated_at: 2026-08-17T09:33:13.222Z
 source: formal_project_facts
 status: in_progress
 current_stage: 03-spec
 current_goal: GOAL-016
-current_task: TASK-085
-source_manifest_hash: ed6bca67ccf939e3a58a8f684375ecc17899291a325bb9eb02a15d9653c053f6
+current_task: TASK-086
+source_manifest_hash: c976c0ed0fcce9bcf34a80f545b906f4e7cfb57a7bdcd19fffd18809a25bad3e
 ---
 # 项目状态
 
 - 项目：个人 AI 项目运营工具
 - 当前正式源阶段：03-spec
 - 当前目标：GOAL-016
-- 当前任务：TASK-085
+- 当前任务：TASK-086
 - 本文件由正式项目事实自动生成，不是独立事实源。
 
 ## 当前获批短期目标
@@ -83,9 +83,10 @@ source_manifest_hash: ed6bca67ccf939e3a58a8f684375ecc17899291a325bb9eb02a15d9653
 - TASK-059 从 Spec 生成目标角色与任务草案
 - TASK-060 实现项目前期规划控制台
 - TASK-061 完成 V0.3 项目前期编排验收
+- TASK-085 将 Claude Code Runtime 接入 Web 生产启动链
 
 ## 当前任务
-- TASK-085 将 Claude Code Runtime 接入 Web 生产启动链 — in_review
+- TASK-086 修复真实阶段输出 Schema 与阻塞重试 — ready
 
 ## Blocker、风险和待决策事项
 - 以正式问题、审批和决策记录为准。
@@ -94,7 +95,7 @@ source_manifest_hash: ed6bca67ccf939e3a58a8f684375ecc17899291a325bb9eb02a15d9653
 - 已从 189 个正式文件重建导入清单。
 
 ## 推荐下一步
-- 由项目负责人继续处理 TASK-085。
+- 由项目负责人继续处理 TASK-086。
 
 ## 用户待办
-- 继续处理 TASK-085。
+- 继续处理 TASK-086。

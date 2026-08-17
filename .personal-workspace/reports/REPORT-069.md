@@ -3,16 +3,20 @@ schema_version: 1
 document_type: report
 id: REPORT-069
 title: TASK-085 Claude Runtime Web production startup integration
-status: pending_acceptance
+status: accepted
 report_type: task_acceptance
-acceptance_state: pending_acceptance
+acceptance_state: accepted
 task_id: TASK-085
 goal_id: GOAL-016
-revision: 1
+revision: 2
 created_at: 2026-08-17T09:20:00Z
-updated_at: 2026-08-17T09:20:00Z
+updated_at: 2026-08-17T09:42:00Z
 verified_by: implementation_agent
 verified_commit: f517ede
+reviewed_by: project_lead
+reviewed_at: 2026-08-17T09:42:00Z
+accepted_by: project_owner
+accepted_at: 2026-08-17T09:42:00Z
 verification_commands:
   - npm exec --workspace apps/server -- tsx --test test/claude-runtime-service.integration.test.ts
   - npm run test:e2e -- e2e/claude-runtime-diagnostics.spec.ts
@@ -54,4 +58,12 @@ Preflight：installed，version `2.1.233`，authentication `authenticated`，con
 
 ## 独立验收
 
-本报告由实现者生成，状态保持 `pending_acceptance`，未由实现者标记为 `accepted`。建议验收时复跑预检、真实临时项目 acceptance、Runtime 专项和完整 `npm run verify`，并确认生产入口未默认创建 FakeAgentAdapter、未写入任何凭据且没有 main 合并副作用。
+独立复核已完成并通过：
+
+- Runtime 专项测试 3/3 通过；Web Claude 诊断 Chromium 场景 1/1 通过；
+- `npm run test:claude-cli -- preflight` 通过，`canExecute: true`，认证、模型和执行能力均可用；
+- 真实临时项目 acceptance 7/7 通过，覆盖执行、只读审核、临时/持久会话清理和精确 session resume；
+- 独立运行 `npm run verify` 通过：107 单元、148 集成、24 Chromium，格式、Lint、类型检查和构建全部通过；
+- 未访问真实个人项目、未读取凭据内容、未执行 main 合并；provider 保持 `unknown` 仅作为诊断信息，不影响已验证的执行能力。
+
+结论：TASK-085 的验收条件全部满足，REPORT-069 接受，允许完成 TASK-085 并按批准依赖解锁 TASK-086。

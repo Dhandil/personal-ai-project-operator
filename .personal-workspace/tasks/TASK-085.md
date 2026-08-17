@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-085
 title: 将 Claude Code Runtime 接入 Web 生产启动链
-status: in_review
+status: completed
 goal_id: GOAL-016
 role: executor
 dependencies: [TASK-061]
-revision: 2
+revision: 3
 created_at: 2026-08-17T08:51:22Z
-updated_at: 2026-08-17T09:20:00Z
+updated_at: 2026-08-17T09:42:00Z
 target_branch: goal/GOAL-016
 unblocked_by: GOAL-012
 ---
@@ -49,7 +49,14 @@ unblocked_by: GOAL-012
 
 ## 交接
 
-任务状态保持 `in_review`，等待项目负责人独立验收；本任务未修改审批门、只读审核或 Git 合并安全边界。下一步仅在本任务独立验收通过后进行 TASK-086。
+任务已通过独立验收并完成；本任务未修改审批门、只读审核或 Git 合并安全边界。下一步进行 TASK-086。
+
+## 独立验收
+
+- REPORT-069 已由独立复核接受。
+- Runtime 专项 3/3、Web 诊断 Chromium 1/1、真实 Claude Code + DeepSeek 临时项目 7/7 通过。
+- 独立运行完整 `npm run verify`：107 单元、148 集成、24 Chromium，以及格式、Lint、类型检查和构建全部通过。
+- 未访问真实个人项目，未执行 main 合并；工作区在验收前保持干净。
 
 ## 边界与交接
 
