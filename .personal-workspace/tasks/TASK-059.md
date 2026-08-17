@@ -2,16 +2,35 @@
 schema_version: 1
 id: TASK-059
 title: 从 Spec 生成目标角色与任务草案
-status: ready
+status: in_review
 goal_id: GOAL-012
 role: executor
 dependencies: [TASK-057, TASK-058]
-revision: 2
+revision: 3
 created_at: 2026-08-16T14:00:00Z
-updated_at: 2026-08-17T11:10:00Z
+updated_at: 2026-08-17T11:40:00Z
 target_branch: goal/GOAL-012
 unblocked_by: TASK-058
 ---
+
+## Implementation evidence
+
+- Added the vendor-neutral `PlanningDraft` domain model with validation for IDs, dependencies, cycles, role keys, and safe relative paths.
+- Added `PlanningDraftService` and API routes for generate, read, edit, reject, and approve.
+- Generated drafts are stored separately at `.personal-workspace/stages/03-spec/planning-draft.md`; regeneration preserves an existing candidate and unknown front-matter fields.
+- Approval revalidates the approved Spec revision/hash, writes formal goal/role/task facts atomically per file, marks only the first dependency-free task `ready`, and returns a recovery plan on partial failure.
+- No Agent was started and no formal GOAL/TASK facts were written by the implementation itself.
+- Implementation commit: `36bd5e0`.
+
+## Verification evidence
+
+- Planning domain tests: 6/6 passed.
+- Planning service/API integration tests: 4/4 passed.
+- Full `npm run verify`: 103 unit tests, 141 integration tests, 22 Chromium tests, formatting, lint, type checks, and builds all passed.
+
+## Handoff
+
+Task remains `in_review`; REPORT-065 remains `pending_acceptance`. Independent acceptance must verify candidate/fact separation, user edit preservation, dependency validation, approval atomicity/recovery behavior, and that TASK-060 is not started.
 
 # TASK-059：从 Spec 生成目标角色与任务草案
 

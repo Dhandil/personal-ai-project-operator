@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "manifest_kind": "current",
-  "generated_at": "2026-08-17T03:01:31.370Z",
-  "source_manifest_hash": "07824a66ad05facda49ea0bd5107fdbfd666c945573fd52898b2f876248e82b1",
+  "generated_at": "2026-08-17T03:40:19.516Z",
+  "source_manifest_hash": "58fd82d9033ef84212e36f916c3f2a8c1fe0c260c5e7ddf9583b6e27d0433cf7",
   "current_source_stage": "03-spec",
   "current_goal_id": "GOAL-012",
   "current_task_id": "TASK-059",
@@ -1040,6 +1040,18 @@
       "revision": 5
     },
     {
+      "relativePath": ".personal-workspace/reports/REPORT-065.md",
+      "kind": "report",
+      "hash": "22280c92158d2acb0b819173e9f8031ac9b42bdebc9e297b3f5d09fdfb3f8120",
+      "id": "REPORT-065",
+      "title": "TASK-059 planning draft generation verification",
+      "status": "pending_acceptance",
+      "stage": null,
+      "goalId": "GOAL-012",
+      "generated": false,
+      "revision": 1
+    },
+    {
       "relativePath": ".personal-workspace/stages/01-idea/01-idea.md",
       "kind": "stage",
       "hash": "b5fcb8638dc61127da5f228a1e2a41cf36417fd9f764dafb6dfbb0c172c157e4",
@@ -1798,14 +1810,14 @@
     {
       "relativePath": ".personal-workspace/tasks/TASK-059.md",
       "kind": "task",
-      "hash": "1ea850e9337cfbd979af712e0de55f24685bf1b5756878477696f96e1b894901",
+      "hash": "bede418627986b5c31d38a042c71a2dd03f9ece5bc8d16ea723291478b3532c0",
       "id": "TASK-059",
       "title": "从 Spec 生成目标角色与任务草案",
-      "status": "ready",
+      "status": "in_review",
       "stage": null,
       "goalId": "GOAL-012",
       "generated": false,
-      "revision": 2
+      "revision": 3
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-060.md",

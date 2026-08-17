@@ -1,15 +1,15 @@
 ---
 schema_version: 1
 document_type: status_snapshot
-revision: 54
-generated_at: 2026-08-17T03:01:31.370Z
-updated_at: 2026-08-17T03:01:31.370Z
+revision: 56
+generated_at: 2026-08-17T03:40:19.516Z
+updated_at: 2026-08-17T03:40:19.516Z
 source: formal_project_facts
 status: in_progress
 current_stage: 03-spec
 current_goal: GOAL-012
 current_task: TASK-059
-source_manifest_hash: 07824a66ad05facda49ea0bd5107fdbfd666c945573fd52898b2f876248e82b1
+source_manifest_hash: 58fd82d9033ef84212e36f916c3f2a8c1fe0c260c5e7ddf9583b6e27d0433cf7
 ---
 # 项目状态
 
@@ -82,13 +82,13 @@ source_manifest_hash: 07824a66ad05facda49ea0bd5107fdbfd666c945573fd52898b2f87624
 - TASK-058 实现 Idea Discovery Spec 阶段协调器
 
 ## 当前任务
-- TASK-059 从 Spec 生成目标角色与任务草案 — ready
+- TASK-059 从 Spec 生成目标角色与任务草案 — in_review
 
 ## Blocker、风险和待决策事项
 - 以正式问题、审批和决策记录为准。
 
 ## 上一步
-- 已从 175 个正式文件重建导入清单。
+- 已从 176 个正式文件重建导入清单。
 
 ## 推荐下一步
 - 由项目负责人继续处理 TASK-059。
