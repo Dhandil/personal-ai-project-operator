@@ -34,6 +34,7 @@ import {
   ReviewLoopService,
   type ReworkInput,
 } from "./infrastructure/reviews/review-loop-service.js";
+import { PlanningDraftService } from "./infrastructure/planning/planning-draft-service.js";
 
 const SERVICE_NAME = "@personal-ai-operator/server";
 
@@ -61,6 +62,7 @@ export type AppOptions = Readonly<{
   readonly codexCliPreflightService?: CodexCliPreflightService;
   readonly reviewService?: ReviewService;
   readonly reviewLoopService?: ReviewLoopService;
+  readonly planningDraftService?: PlanningDraftService;
 }>;
 
 export function buildApp(options: AppOptions = {}): FastifyInstance {
@@ -142,6 +144,8 @@ export function buildApp(options: AppOptions = {}): FastifyInstance {
       approvalService,
       executionCoordinator: executionCoordinatorService,
     });
+  const planningDraftService =
+    options.planningDraftService ?? new PlanningDraftService();
 
   app.addHook("onClose", async () => {
     await executionCoordinatorService.shutdown();
@@ -253,6 +257,65 @@ export function buildApp(options: AppOptions = {}): FastifyInstance {
         .send(result);
     },
   );
+
+  app.get<{ Querystring: { readonly projectKey?: unknown } }>(
+    "/api/projects/planning-draft",
+    async (request, reply) => {
+      const projectKey = request.query?.projectKey;
+      if (typeof projectKey !== "string") {
+        return reply.code(400).send({
+          ok: false,
+          error: {
+            code: "invalid_input",
+            message: "A project key is required.",
+            details: [],
+          },
+        });
+      }
+      const result = await planningDraftService.get({ projectKey });
+      return reply
+        .code(
+          result.ok ? 200 : result.error.code === "registry_failed" ? 500 : 400,
+        )
+        .send(result);
+    },
+  );
+
+  app.post("/api/projects/planning-draft/generate", async (request, reply) => {
+    const result = await planningDraftService.generate(request.body);
+    return reply
+      .code(
+        result.ok ? 200 : result.error.code === "registry_failed" ? 500 : 400,
+      )
+      .send(result);
+  });
+
+  app.post("/api/projects/planning-draft/edit", async (request, reply) => {
+    const result = await planningDraftService.edit(request.body);
+    return reply
+      .code(
+        result.ok ? 200 : result.error.code === "registry_failed" ? 500 : 400,
+      )
+      .send(result);
+  });
+
+  app.post("/api/projects/planning-draft/reject", async (request, reply) => {
+    const result = await planningDraftService.reject(request.body);
+    return reply
+      .code(
+        result.ok ? 200 : result.error.code === "registry_failed" ? 500 : 400,
+      )
+      .send(result);
+  });
+
+  app.post("/api/projects/planning-draft/approve", async (request, reply) => {
+    const result = await planningDraftService.approve(request.body);
+    return reply
+      .code(
+        result.ok ? 200 : result.error.code === "registry_failed" ? 500 : 400,
+      )
+      .send(result);
+  });
 
   app.post("/api/projects/goals/propose", async (request, reply) => {
     const result = await goalService.propose(request.body);
