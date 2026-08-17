@@ -33,6 +33,8 @@ export type DomainErrorCode =
   | "invalid_stage_transition"
   | "invalid_stage_run"
   | "invalid_stage_run_transition"
+  | "invalid_stage_artifact"
+  | "invalid_stage_review"
   | "stage_approval_required"
   | "reason_required"
   | "user_decision_required"

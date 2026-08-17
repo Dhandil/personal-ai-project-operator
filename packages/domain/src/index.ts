@@ -15,3 +15,4 @@ export * from "./completion-policy.js";
 export * from "./task.js";
 export * from "./stage-run.js";
 export * from "./stage-task-package.js";
+export * from "./stage-artifact.js";
