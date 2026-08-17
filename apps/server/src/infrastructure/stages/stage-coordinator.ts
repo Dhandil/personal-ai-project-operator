@@ -564,6 +564,8 @@ async function collectEvents(
   return result;
 }
 
+const sharedStageExecutionLock = new ExecutionLock();
+
 export class StageCoordinatorService {
   private readonly runtime: AgentRuntime;
   private readonly now: () => UtcIsoTimestamp;
@@ -577,7 +579,7 @@ export class StageCoordinatorService {
   public constructor(options: StageCoordinatorOptions = {}) {
     this.runtime = options.runtime ?? new FakeAgentAdapter();
     this.now = options.now ?? nowUtc;
-    this.lock = options.lock ?? new ExecutionLock();
+    this.lock = options.lock ?? sharedStageExecutionLock;
     this.registryFactory =
       options.registryFactory ?? (() => new ProjectRegistryRepository());
     this.artifactServiceFactory =

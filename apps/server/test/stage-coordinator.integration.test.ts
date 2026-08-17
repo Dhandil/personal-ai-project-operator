@@ -21,6 +21,7 @@ import {
   type FakeAgentScenario,
 } from "../src/infrastructure/agent-runtime/fake-agent-adapter.js";
 import { GovernanceRepository } from "../src/infrastructure/files/governance-repository.js";
+import { ExecutionLock } from "../src/infrastructure/execution/execution-coordinator.js";
 import { StageCoordinatorService } from "../src/infrastructure/stages/stage-coordinator.js";
 
 const timestamp = parseUtcIsoTimestamp("2026-08-17T00:00:00Z");
@@ -231,6 +232,7 @@ test("coordinates Idea, Discovery and Spec in order with explicit approval gates
     const service = new StageCoordinatorService({
       runtime,
       now: () => timestamp,
+      lock: new ExecutionLock(),
     });
 
     const idea = await service.start(
@@ -329,6 +331,7 @@ test("keeps rejected review in rework and retries the original stage role", asyn
     const service = new StageCoordinatorService({
       runtime,
       now: () => timestamp,
+      lock: new ExecutionLock(),
     });
     const first = await service.start(
       { projectRoot: root },
@@ -369,6 +372,7 @@ test("blocks invalid output, persists recovery, and resumes with the exact sessi
     const service = new StageCoordinatorService({
       runtime,
       now: () => timestamp,
+      lock: new ExecutionLock(),
     });
     const invalid = await service.start(
       { projectRoot: root },
@@ -400,6 +404,7 @@ test("blocks invalid output, persists recovery, and resumes with the exact sessi
       const interruptedService = new StageCoordinatorService({
         runtime: interruptedRuntime,
         now: () => timestamp,
+        lock: new ExecutionLock(),
       });
       const interrupted = await interruptedService.start(
         { projectRoot: interruptedRoot },
@@ -416,6 +421,7 @@ test("blocks invalid output, persists recovery, and resumes with the exact sessi
       const restarted = new StageCoordinatorService({
         runtime: interruptedRuntime,
         now: () => timestamp,
+        lock: new ExecutionLock(),
       });
       const resumed = await restarted.resume({
         projectRoot: interruptedRoot,
@@ -443,6 +449,7 @@ test("cleanup failure blocks progress and records a recoverable result", async (
     const service = new StageCoordinatorService({
       runtime,
       now: () => timestamp,
+      lock: new ExecutionLock(),
     });
     const result = await service.start(
       { projectRoot: root },
@@ -466,6 +473,7 @@ test("reports the assigned execution as active while the producer is still runni
     const service = new StageCoordinatorService({
       runtime,
       now: () => timestamp,
+      lock: new ExecutionLock(),
     });
     const pending = service.start({ projectRoot: root });
     const state = await waitForActive(service, root);
@@ -484,6 +492,46 @@ test("reports the assigned execution as active while the producer is still runni
     if (after.ok) assert.equal(after.value.active, false);
   } finally {
     await rm(root, { recursive: true, force: true });
+  }
+});
+
+test("shares the global execution lock across default coordinator instances", async () => {
+  const firstRoot = await fixture();
+  const secondRoot = await fixture();
+  try {
+    const firstRuntime = new DelayedRuntime();
+    const first = new StageCoordinatorService({
+      runtime: firstRuntime,
+      now: () => timestamp,
+    });
+    const second = new StageCoordinatorService({
+      runtime: new FakeAgentAdapter({ now: () => timestamp }),
+      now: () => timestamp,
+    });
+
+    const firstPending = first.start({ projectRoot: firstRoot });
+    const firstState = await waitForActive(first, firstRoot);
+    assert.equal(firstState.ok, true);
+    if (!firstState.ok) throw new Error(firstState.error.message);
+    assert.equal(firstState.value.active, true);
+    assert.equal(firstState.value.currentRun?.executionId, "EXEC-001");
+
+    const blocked = await second.start({ projectRoot: secondRoot });
+    assert.equal(blocked.ok, false);
+    if (blocked.ok) throw new Error("second execution unexpectedly started");
+    assert.equal(blocked.error.code, "execution_active");
+
+    firstRuntime.completeProducer();
+    const completed = await firstPending;
+    assert.equal(completed.ok, true);
+
+    const after = await second.state({ projectRoot: secondRoot });
+    assert.equal(after.ok, true);
+    if (!after.ok) throw new Error(after.error.message);
+    assert.equal(after.value.active, false);
+  } finally {
+    await rm(firstRoot, { recursive: true, force: true });
+    await rm(secondRoot, { recursive: true, force: true });
   }
 });
 
@@ -511,6 +559,7 @@ test("resume and retry assign execution IDs to the single active chain", async (
     const initial = new StageCoordinatorService({
       runtime: new FakeAgentAdapter({ now: () => timestamp }),
       now: () => timestamp,
+      lock: new ExecutionLock(),
     });
     const blocked = await initial.start(
       { projectRoot: resumeRoot },
@@ -531,6 +580,7 @@ test("resume and retry assign execution IDs to the single active chain", async (
     const resumedService = new StageCoordinatorService({
       runtime: resumeRuntime,
       now: () => timestamp,
+      lock: new ExecutionLock(),
     });
     const resumed = resumedService.resume({
       projectRoot: resumeRoot,
@@ -556,6 +606,7 @@ test("resume and retry assign execution IDs to the single active chain", async (
     const initial = new StageCoordinatorService({
       runtime: new FakeAgentAdapter({ now: () => timestamp }),
       now: () => timestamp,
+      lock: new ExecutionLock(),
     });
     const blocked = await initial.start(
       { projectRoot: retryRoot },
@@ -566,6 +617,7 @@ test("resume and retry assign execution IDs to the single active chain", async (
     const retryService = new StageCoordinatorService({
       runtime: retryRuntime,
       now: () => timestamp,
+      lock: new ExecutionLock(),
     });
     const retried = retryService.retry({
       projectRoot: retryRoot,
