@@ -8,11 +8,11 @@ report_type: task_verification
 acceptance_state: pending
 task_id: TASK-058
 goal_id: GOAL-012
-revision: 2
+revision: 3
 created_at: 2026-08-17T09:45:00Z
-updated_at: 2026-08-17T10:20:00Z
+updated_at: 2026-08-17T10:50:00Z
 verified_by: implementation_agent
-verified_commit: eaa1e77
+verified_commit: 3e1fb60
 verification_commands:
   - npx tsx --test apps/server/test/stage-coordinator.integration.test.ts
   - npm run verify
@@ -46,3 +46,11 @@ verification_commands:
 ## 状态声明
 
 本报告保持 `pending_acceptance`；实现者未将报告标记为 `accepted`。TASK-058 保持 `in_review`。
+
+## 全局锁修复复核结果
+
+- `StageCoordinatorService` 默认构造函数已恢复使用模块级共享 `ExecutionLock`；producer start、resume、retry 和 reviewer 接管的 `assignExecution` 修复保持不变。
+- 新增跨实例、跨项目回归：两个未注入自定义锁的协调器不能并行启动；第二个返回 `execution_active`，第一个完成后锁才释放。
+- 本次修复实现提交：`3e1fb60`。
+- 本次专项测试：7/7 通过；完整 `npm run verify`：97 单元、136 集成、22 Chromium，格式、Lint、类型检查和 contracts/domain/server/web 构建全部通过。
+- TASK-059、UI、阶段审批门和产物事实隔离均未修改。

@@ -6,9 +6,9 @@ status: in_review
 goal_id: GOAL-012
 role: executor
 dependencies: [TASK-057, TASK-048]
-revision: 4
+revision: 5
 created_at: 2026-08-16T14:00:00Z
-updated_at: 2026-08-17T10:20:00Z
+updated_at: 2026-08-17T10:50:00Z
 target_branch: goal/GOAL-012
 unblocked_by: TASK-057
 verification_report_id: REPORT-064
@@ -47,3 +47,9 @@ verification_report_id: REPORT-064
 
 任务状态保持 `in_review`，等待项目负责人独立验收 REPORT-064；TASK-059 未执行且保持原状态。
 - 修复复核项：producer start、resume、retry 及 reviewer 接管均向当前锁写入真实 executionId；延迟 Runtime 回归确认运行中 `state.active` 为 `true`，并显示当前 executionId。
+
+## 全局锁修复复核记录
+
+- 恢复 `StageCoordinatorService` 默认使用模块级共享 `ExecutionLock`，保留 producer/reviewer 的真实 `executionId` 绑定。
+- 新增两个未注入自定义锁的协调器跨项目回归：第一个执行期间第二个返回 `execution_active`，第一个完成后锁释放。
+- 修复提交：`3e1fb60`；阶段专项测试 7/7 通过；完整 `npm run verify` 通过（97 单元、136 集成、22 Chromium，以及质量检查和构建）。
