@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "manifest_kind": "current",
-  "generated_at": "2026-08-17T01:04:53.033Z",
-  "source_manifest_hash": "de9f569872720f1dd87519152e35eab943c79a9dd902cf18b221f5faccd0e04e",
+  "generated_at": "2026-08-17T01:10:46.900Z",
+  "source_manifest_hash": "f69bfebea934915b4f8fbde4d4441562c4d24fccc23f801b72771234be1af96e",
   "current_source_stage": "03-spec",
   "current_goal_id": "GOAL-012",
-  "current_task_id": "TASK-057",
+  "current_task_id": "TASK-058",
   "source_files": [
     {
       "relativePath": ".personal-workspace/approvals/APPROVAL-001.md",
@@ -1018,14 +1018,14 @@
     {
       "relativePath": ".personal-workspace/reports/REPORT-063.md",
       "kind": "report",
-      "hash": "3acf06064d624b48ddb9ffa9410b97daef511777e8cc5c37bbd639d0feb69c08",
+      "hash": "392957b21e6fded98ee046e1616d0a7fb77cff1d0e93dda5e259b0a61a426585",
       "id": "REPORT-063",
       "title": "TASK-057 阶段产物校验与批准写入验收报告",
-      "status": "pending_acceptance",
+      "status": "accepted",
       "stage": null,
       "goalId": "GOAL-012",
       "generated": false,
-      "revision": 1
+      "revision": 2
     },
     {
       "relativePath": ".personal-workspace/stages/01-idea/01-idea.md",
@@ -1762,26 +1762,26 @@
     {
       "relativePath": ".personal-workspace/tasks/TASK-057.md",
       "kind": "task",
-      "hash": "e015b5f17c8070f61d263a643c4d10caed0a5f4d98d3b650783eade7cbed4b1c",
+      "hash": "7420926111844a50d9eb365b03e3473864f2723cbb36bc931041bb3e33f78625",
       "id": "TASK-057",
       "title": "实现阶段产物校验与批准写入",
-      "status": "in_review",
+      "status": "completed",
       "stage": null,
       "goalId": "GOAL-012",
       "generated": false,
-      "revision": 3
+      "revision": 4
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-058.md",
       "kind": "task",
-      "hash": "4558d68a3f6a4c3e6c1a5130a847f9e285ddb20ccfc020069ac9126e885de44b",
+      "hash": "8a0d300c0d0a1e8550786ed936243633db57480de242d8cdfb835f58baa26ecd",
       "id": "TASK-058",
       "title": "实现 Idea Discovery Spec 阶段协调器",
-      "status": "draft",
+      "status": "ready",
       "stage": null,
       "goalId": "GOAL-012",
       "generated": false,
-      "revision": 1
+      "revision": 2
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-059.md",

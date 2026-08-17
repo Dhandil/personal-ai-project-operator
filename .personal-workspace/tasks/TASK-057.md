@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-057
 title: 实现阶段产物校验与批准写入
-status: in_review
+status: completed
 goal_id: GOAL-012
 role: executor
 dependencies: [TASK-055, TASK-056]
-revision: 3
+revision: 4
 created_at: 2026-08-16T14:00:00Z
-updated_at: 2026-08-17T00:57:08Z
+updated_at: 2026-08-17T09:20:00Z
 target_branch: goal/GOAL-012
 unblocked_by: TASK-056
 verification_report_id: REPORT-063
@@ -34,7 +34,7 @@ verification_report_id: REPORT-063
 
 ## 边界与交接
 
-不生成正式 GOAL/TASK，不运行阶段 Agent。完成后 TASK-058 可申请解锁。
+- 不生成正式 GOAL/TASK，不运行阶段 Agent。REPORT-063 已通过独立验收，TASK-058 已按依赖规则解锁。
 ## 完成证据
 
 - 已实现 Idea、Discovery、Spec 和 planning 阶段产物的结构与 Schema 校验，校验通过后保留未知 YAML 字段。

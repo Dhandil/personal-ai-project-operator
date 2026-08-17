@@ -3,16 +3,18 @@ schema_version: 1
 document_type: report
 id: REPORT-063
 title: TASK-057 阶段产物校验与批准写入验收报告
-status: pending_acceptance
+status: accepted
 report_type: task_verification
-acceptance_state: pending_acceptance
+acceptance_state: accepted
 task_id: TASK-057
 goal_id: GOAL-012
-revision: 1
+revision: 2
 created_at: 2026-08-17T00:57:08Z
-updated_at: 2026-08-17T00:57:08Z
+updated_at: 2026-08-17T09:20:00Z
 verified_by: implementation_agent
 verified_commit: f785927
+accepted_by: project_owner
+accepted_at: 2026-08-17T09:20:00Z
 verification_commands:
   - npx vitest run packages/domain/src/stage-artifact.test.ts packages/domain/src/stage-task-package.test.ts packages/domain/src/stage-run.test.ts --config vitest.config.ts
   - npx tsx --test apps/server/test/stage-artifact.integration.test.ts
@@ -50,3 +52,10 @@ TASK-057 已完成实现和自验证，本报告保持 `pending_acceptance`，�
 1. 检查候选、审核、批准和正式阶段文件是否分离，并确认未批准路径不改变正式阶段事实。
 2. 复跑两组专项测试和 `npm run verify`，核对 revision/hash 冲突与未知 YAML 字段保留。
 3. 验收通过后，由项目负责人将 REPORT-063 标记为 `accepted`，再按治理依赖决定 TASK-058 是否解锁。
+
+## 独立验收结果
+
+- 项目负责人独立检查了阶段 Schema、候选/审核/批准/正式事实隔离、revision/hash 冲突保护和原子写入路径。
+- 独立重跑领域专项：19/19 通过；集成专项：4/4 通过。
+- 独立重跑完整 `npm run verify`：97 个单元测试、129 个集成测试、22 个 Playwright 测试，以及格式、Lint、类型检查和构建全部通过。
+- 验收结论：通过，接受 REPORT-063；TASK-057 可标记为 `completed`，TASK-058 按既定依赖规则解锁。
