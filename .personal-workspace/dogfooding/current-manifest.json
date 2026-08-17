@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "manifest_kind": "current",
-  "generated_at": "2026-08-16T15:12:19.037Z",
-  "source_manifest_hash": "997e5080b6de92653c824fb2ff1275af3d51cd62dae3f68d5d2ac33d4a72254d",
+  "generated_at": "2026-08-17T01:04:53.033Z",
+  "source_manifest_hash": "de9f569872720f1dd87519152e35eab943c79a9dd902cf18b221f5faccd0e04e",
   "current_source_stage": "03-spec",
   "current_goal_id": "GOAL-012",
   "current_task_id": "TASK-057",
@@ -1016,6 +1016,18 @@
       "revision": 2
     },
     {
+      "relativePath": ".personal-workspace/reports/REPORT-063.md",
+      "kind": "report",
+      "hash": "3acf06064d624b48ddb9ffa9410b97daef511777e8cc5c37bbd639d0feb69c08",
+      "id": "REPORT-063",
+      "title": "TASK-057 阶段产物校验与批准写入验收报告",
+      "status": "pending_acceptance",
+      "stage": null,
+      "goalId": "GOAL-012",
+      "generated": false,
+      "revision": 1
+    },
+    {
       "relativePath": ".personal-workspace/stages/01-idea/01-idea.md",
       "kind": "stage",
       "hash": "b5fcb8638dc61127da5f228a1e2a41cf36417fd9f764dafb6dfbb0c172c157e4",
@@ -1750,14 +1762,14 @@
     {
       "relativePath": ".personal-workspace/tasks/TASK-057.md",
       "kind": "task",
-      "hash": "0ec60889f2773fa295541b54ce6670063f1864106282499ca17cd29fbf2af72c",
+      "hash": "e015b5f17c8070f61d263a643c4d10caed0a5f4d98d3b650783eade7cbed4b1c",
       "id": "TASK-057",
       "title": "实现阶段产物校验与批准写入",
-      "status": "ready",
+      "status": "in_review",
       "stage": null,
       "goalId": "GOAL-012",
       "generated": false,
-      "revision": 2
+      "revision": 3
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-058.md",

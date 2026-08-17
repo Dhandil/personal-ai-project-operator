@@ -1,15 +1,15 @@
 ---
 schema_version: 1
 document_type: status_snapshot
-revision: 47
-generated_at: 2026-08-16T15:12:19.037Z
-updated_at: 2026-08-16T15:12:19.037Z
+revision: 48
+generated_at: 2026-08-17T01:04:53.033Z
+updated_at: 2026-08-17T01:04:53.033Z
 source: formal_project_facts
 status: in_progress
 current_stage: 03-spec
 current_goal: GOAL-012
 current_task: TASK-057
-source_manifest_hash: 997e5080b6de92653c824fb2ff1275af3d51cd62dae3f68d5d2ac33d4a72254d
+source_manifest_hash: de9f569872720f1dd87519152e35eab943c79a9dd902cf18b221f5faccd0e04e
 ---
 # 项目状态
 
@@ -80,13 +80,13 @@ source_manifest_hash: 997e5080b6de92653c824fb2ff1275af3d51cd62dae3f68d5d2ac33d4a
 - TASK-056 定义前期角色模板与阶段任务包
 
 ## 当前任务
-- TASK-057 实现阶段产物校验与批准写入 — ready
+- TASK-057 实现阶段产物校验与批准写入 — in_review
 
 ## Blocker、风险和待决策事项
 - 以正式问题、审批和决策记录为准。
 
 ## 上一步
-- 已从 173 个正式文件重建导入清单。
+- 已从 174 个正式文件重建导入清单。
 
 ## 推荐下一步
 - 由项目负责人继续处理 TASK-057。

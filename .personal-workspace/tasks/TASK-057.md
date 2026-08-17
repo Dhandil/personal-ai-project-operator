@@ -2,15 +2,16 @@
 schema_version: 1
 id: TASK-057
 title: 实现阶段产物校验与批准写入
-status: ready
+status: in_review
 goal_id: GOAL-012
 role: executor
 dependencies: [TASK-055, TASK-056]
-revision: 2
+revision: 3
 created_at: 2026-08-16T14:00:00Z
-updated_at: 2026-08-16T15:20:00Z
+updated_at: 2026-08-17T00:57:08Z
 target_branch: goal/GOAL-012
 unblocked_by: TASK-056
+verification_report_id: REPORT-063
 ---
 
 # TASK-057：实现阶段产物校验与批准写入
@@ -34,3 +35,14 @@ unblocked_by: TASK-056
 ## 边界与交接
 
 不生成正式 GOAL/TASK，不运行阶段 Agent。完成后 TASK-058 可申请解锁。
+## 完成证据
+
+- 已实现 Idea、Discovery、Spec 和 planning 阶段产物的结构与 Schema 校验，校验通过后保留未知 YAML 字段。
+- 候选产物、只读审核结果、用户批准记录和正式阶段事实分别存储；未获得用户批准时不会写入正式阶段事实。
+- 接受、要求修改和取消均生成独立批准记录与审计事件；正式写入使用原子写入、revision/hash 冲突保护。
+- 删除生成的 `status.md` 后，正式阶段事实仍可读取并用于恢复；外部修改正式事实时会阻止覆盖。
+- 未启动真实 Agent，未修改 UI，未执行 TASK-058。
+
+## 交接
+
+实现提交：`f785927`。专项测试与完整 `npm run verify` 已通过，当前等待项目负责人独立验收 REPORT-063。
