@@ -2,16 +2,35 @@
 schema_version: 1
 id: TASK-061
 title: 完成 V0.3 项目前期编排验收
-status: ready
+status: in_review
 goal_id: GOAL-012
 role: reviewer
 dependencies: [TASK-055, TASK-056, TASK-057, TASK-058, TASK-059, TASK-060]
-revision: 2
+revision: 3
 created_at: 2026-08-16T14:00:00Z
-updated_at: 2026-08-17T13:10:00Z
+updated_at: 2026-08-17T05:51:00Z
 target_branch: goal/GOAL-012
 unblocked_by: TASK-060
 ---
+
+## Implementation evidence
+
+- Added a temporary-project V0.3 composite acceptance test covering Idea, Discovery, Spec, planning-draft editing, user approval, formal goal/task creation, and first-task `ready` handoff.
+- The composite test verifies that formal goals and tasks do not exist before approval, the three stages require explicit approval in order, and approval creates only the first dependency-free task as `ready`.
+- Reused the existing governed stage coordinator, planning-draft approval path, shared execution lock, revision/hash checks, and recovery/rework tests; no production business semantics were changed.
+- Implementation commit: `b67efa0`.
+
+## Verification evidence
+
+- V0.3 composite temporary-project integration test plus stage/planning regressions: 13/13 passed.
+- Planning console Chromium scenario: 1/1 passed.
+- Real Claude temporary-project acceptance: 7/7 cases passed with Claude Code 2.1.233 and configured model `deepseek-v4-pro`; no personal project was used.
+- Full `npm run verify`: 107 unit tests, 143 integration tests, and 23 Chromium tests passed; formatting, lint, type checks, and all builds passed.
+
+## Handoff
+
+- TASK-061 is `in_review`; REPORT-067 and GOAL-012 checkpoint REPORT-068 remain `pending_acceptance`.
+- No real project was accessed, no GOAL-013 was started, and no later task was executed.
 
 # TASK-061：完成 V0.3 项目前期编排验收
 

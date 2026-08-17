@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "manifest_kind": "current",
-  "generated_at": "2026-08-17T05:06:09.480Z",
-  "source_manifest_hash": "20636590822b33a157435e321b320ccb183e44547dc0a16e938414fc20caf80b",
+  "generated_at": "2026-08-17T05:54:31.929Z",
+  "source_manifest_hash": "ae5fa12f1c6301261294e2c4d0ef52af0756c186315cbfafd10f88e26c018791",
   "current_source_stage": "03-spec",
   "current_goal_id": "GOAL-012",
   "current_task_id": "TASK-061",
@@ -226,14 +226,14 @@
     {
       "relativePath": ".personal-workspace/goals/GOAL-012.md",
       "kind": "goal",
-      "hash": "99b6bc42357ac591985dffe51b696e0ac51cb3b83b8d9603bd633ab042e5c928",
+      "hash": "ca515bc5fb6ac2a5c20d6f88c4022b9606b150d55ba00ff1592472e445e594d4",
       "id": "GOAL-012",
       "title": "V0.3 完成项目前期 Agent 编排",
-      "status": "in_progress",
+      "status": "in_review",
       "stage": null,
       "goalId": null,
       "generated": false,
-      "revision": 2
+      "revision": 3
     },
     {
       "relativePath": ".personal-workspace/goals/GOAL-013.md",
@@ -1064,6 +1064,30 @@
       "revision": 2
     },
     {
+      "relativePath": ".personal-workspace/reports/REPORT-067.md",
+      "kind": "report",
+      "hash": "b7dca2abf6a0f62755912c5657aa8689b48c47783764e7afce2282694f39f90e",
+      "id": "REPORT-067",
+      "title": "TASK-061 V0.3 pre-orchestration acceptance",
+      "status": "pending_acceptance",
+      "stage": null,
+      "goalId": "GOAL-012",
+      "generated": false,
+      "revision": 1
+    },
+    {
+      "relativePath": ".personal-workspace/reports/REPORT-068.md",
+      "kind": "report",
+      "hash": "1e7d6fd8c587f191cc3e45326aa7de382df4b0e4192bc18452bf850db7a918d9",
+      "id": "REPORT-068",
+      "title": "GOAL-012 V0.3 pre-orchestration checkpoint",
+      "status": "pending_acceptance",
+      "stage": null,
+      "goalId": "GOAL-012",
+      "generated": false,
+      "revision": 1
+    },
+    {
       "relativePath": ".personal-workspace/stages/01-idea/01-idea.md",
       "kind": "stage",
       "hash": "b5fcb8638dc61127da5f228a1e2a41cf36417fd9f764dafb6dfbb0c172c157e4",
@@ -1846,14 +1870,14 @@
     {
       "relativePath": ".personal-workspace/tasks/TASK-061.md",
       "kind": "task",
-      "hash": "3b8b61b83c4e0f1fbf571791e7b14a06ba6ecfba540d3adaec66a5520481bbe5",
+      "hash": "551d177e15fe9bab509c445c319515e759d127aa6cb5459260be307632b0aae2",
       "id": "TASK-061",
       "title": "完成 V0.3 项目前期编排验收",
-      "status": "ready",
+      "status": "in_review",
       "stage": null,
       "goalId": "GOAL-012",
       "generated": false,
-      "revision": 2
+      "revision": 3
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-062.md",

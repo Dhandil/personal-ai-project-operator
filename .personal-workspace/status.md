@@ -1,15 +1,15 @@
 ---
 schema_version: 1
 document_type: status_snapshot
-revision: 59
-generated_at: 2026-08-17T05:06:09.480Z
-updated_at: 2026-08-17T05:06:09.480Z
+revision: 60
+generated_at: 2026-08-17T05:54:31.929Z
+updated_at: 2026-08-17T05:54:31.929Z
 source: formal_project_facts
 status: in_progress
 current_stage: 03-spec
 current_goal: GOAL-012
 current_task: TASK-061
-source_manifest_hash: 20636590822b33a157435e321b320ccb183e44547dc0a16e938414fc20caf80b
+source_manifest_hash: ae5fa12f1c6301261294e2c4d0ef52af0756c186315cbfafd10f88e26c018791
 ---
 # 项目状态
 
@@ -84,13 +84,13 @@ source_manifest_hash: 20636590822b33a157435e321b320ccb183e44547dc0a16e938414fc20
 - TASK-060 实现项目前期规划控制台
 
 ## 当前任务
-- TASK-061 完成 V0.3 项目前期编排验收 — ready
+- TASK-061 完成 V0.3 项目前期编排验收 — in_review
 
 ## Blocker、风险和待决策事项
 - 以正式问题、审批和决策记录为准。
 
 ## 上一步
-- 已从 177 个正式文件重建导入清单。
+- 已从 179 个正式文件重建导入清单。
 
 ## 推荐下一步
 - 由项目负责人继续处理 TASK-061。
