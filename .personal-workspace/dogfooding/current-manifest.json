@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "manifest_kind": "current",
-  "generated_at": "2026-08-17T05:54:31.929Z",
-  "source_manifest_hash": "ae5fa12f1c6301261294e2c4d0ef52af0756c186315cbfafd10f88e26c018791",
+  "generated_at": "2026-08-17T06:05:32.821Z",
+  "source_manifest_hash": "36d1f630399517b7d141bfb8273d34ec4a6e926a6ccbf609fb98b35ed6901d5e",
   "current_source_stage": "03-spec",
   "current_goal_id": "GOAL-012",
-  "current_task_id": "TASK-061",
+  "current_task_id": null,
   "source_files": [
     {
       "relativePath": ".personal-workspace/approvals/APPROVAL-001.md",
@@ -1066,14 +1066,14 @@
     {
       "relativePath": ".personal-workspace/reports/REPORT-067.md",
       "kind": "report",
-      "hash": "b7dca2abf6a0f62755912c5657aa8689b48c47783764e7afce2282694f39f90e",
+      "hash": "b5a99c21778f1fca78819b8786ef8c8398aab2e5f145509b97896fb6eb04752f",
       "id": "REPORT-067",
       "title": "TASK-061 V0.3 pre-orchestration acceptance",
-      "status": "pending_acceptance",
+      "status": "accepted",
       "stage": null,
       "goalId": "GOAL-012",
       "generated": false,
-      "revision": 1
+      "revision": 2
     },
     {
       "relativePath": ".personal-workspace/reports/REPORT-068.md",
@@ -1870,14 +1870,14 @@
     {
       "relativePath": ".personal-workspace/tasks/TASK-061.md",
       "kind": "task",
-      "hash": "551d177e15fe9bab509c445c319515e759d127aa6cb5459260be307632b0aae2",
+      "hash": "f32539a879549a24b80c5faa17d04214bb2167dc7c02e4a3147c1a9ba35c4fdd",
       "id": "TASK-061",
       "title": "完成 V0.3 项目前期编排验收",
-      "status": "in_review",
+      "status": "completed",
       "stage": null,
       "goalId": "GOAL-012",
       "generated": false,
-      "revision": 3
+      "revision": 4
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-062.md",

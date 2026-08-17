@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-061
 title: 完成 V0.3 项目前期编排验收
-status: in_review
+status: completed
 goal_id: GOAL-012
 role: reviewer
 dependencies: [TASK-055, TASK-056, TASK-057, TASK-058, TASK-059, TASK-060]
-revision: 3
+revision: 4
 created_at: 2026-08-16T14:00:00Z
-updated_at: 2026-08-17T05:51:00Z
+updated_at: 2026-08-17T14:20:00Z
 target_branch: goal/GOAL-012
 unblocked_by: TASK-060
 ---
@@ -54,3 +54,10 @@ unblocked_by: TASK-060
 ## 边界与交接
 
 不得使用真实个人项目，不得自行接受检查点或启动 GOAL-013。
+
+## 独立验收
+
+- REPORT-067 已由项目负责人独立验收并标记为 `accepted`。
+- V0.3 组合专项 13/13、规划控制台 Chromium 1/1、Claude Code + DeepSeek 临时项目 7/7 通过。
+- 完整 `npm run verify`：107 单元、143 集成、23 Chromium，以及质量检查和构建全部通过。
+- TASK-061 已完成；GOAL-012 检查点 REPORT-068 仍需单独验收。
