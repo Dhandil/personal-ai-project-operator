@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-058
 title: 实现 Idea Discovery Spec 阶段协调器
-status: in_review
+status: completed
 goal_id: GOAL-012
 role: executor
 dependencies: [TASK-057, TASK-048]
-revision: 6
+revision: 7
 created_at: 2026-08-16T14:00:00Z
-updated_at: 2026-08-17T11:05:00Z
+updated_at: 2026-08-17T11:10:00Z
 target_branch: goal/GOAL-012
 unblocked_by: TASK-057
 verification_report_id: REPORT-064
@@ -60,3 +60,10 @@ verification_report_id: REPORT-064
 - 新增高频 `state()` 轮询回归，覆盖执行中阶段文件替换；跨实例全局锁测试保持通过。
 - 修复提交：`4c17786`；阶段专项测试 8/8 通过。
 - 连续两次完整 `npm run verify` 均通过：每次 97 单元、137 集成、22 Chromium，以及格式、Lint、类型检查和构建。
+
+## 独立验收
+
+- REPORT-064 已由项目负责人独立验收并标记为 `accepted`。
+- 独立专项测试 8/8 通过；连续两次完整 `npm run verify` 均通过（97 单元、137 集成、22 Chromium）。
+- Windows 原子替换重试修复未改变阶段审批、事实隔离、全局执行锁和 Agent 权限边界语义。
+- TASK-058 状态更新为 `completed`，TASK-059 解锁为 `ready`。

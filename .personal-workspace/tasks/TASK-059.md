@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-059
 title: 从 Spec 生成目标角色与任务草案
-status: draft
+status: ready
 goal_id: GOAL-012
 role: executor
 dependencies: [TASK-057, TASK-058]
-revision: 1
+revision: 2
 created_at: 2026-08-16T14:00:00Z
-updated_at: 2026-08-16T14:00:00Z
+updated_at: 2026-08-17T11:10:00Z
 target_branch: goal/GOAL-012
 unblocked_by: TASK-058
 ---

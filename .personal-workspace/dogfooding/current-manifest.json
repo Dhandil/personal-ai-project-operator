@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "manifest_kind": "current",
-  "generated_at": "2026-08-17T02:51:51.546Z",
-  "source_manifest_hash": "bd963b368800afb22f84a0089a957a34b78acdaaaabae790dcf2e6316dd93655",
+  "generated_at": "2026-08-17T03:01:31.370Z",
+  "source_manifest_hash": "07824a66ad05facda49ea0bd5107fdbfd666c945573fd52898b2f876248e82b1",
   "current_source_stage": "03-spec",
   "current_goal_id": "GOAL-012",
-  "current_task_id": "TASK-058",
+  "current_task_id": "TASK-059",
   "source_files": [
     {
       "relativePath": ".personal-workspace/approvals/APPROVAL-001.md",
@@ -1030,14 +1030,14 @@
     {
       "relativePath": ".personal-workspace/reports/REPORT-064.md",
       "kind": "report",
-      "hash": "c9cd5d3dda3296a7affefdc5df7aa2c98465ae937c47337fbe50448b248e52d4",
+      "hash": "6ec9d30e245a8af4bb0ee01be10cfcaecb3768ba93779bbe961f91c452b59217",
       "id": "REPORT-064",
       "title": "TASK-058 Idea Discovery Spec 阶段协调器实现验收报告",
-      "status": "pending_acceptance",
+      "status": "accepted",
       "stage": null,
       "goalId": "GOAL-012",
       "generated": false,
-      "revision": 4
+      "revision": 5
     },
     {
       "relativePath": ".personal-workspace/stages/01-idea/01-idea.md",
@@ -1786,26 +1786,26 @@
     {
       "relativePath": ".personal-workspace/tasks/TASK-058.md",
       "kind": "task",
-      "hash": "e238c492c2e238595532882c69bb0f70582aef086ee253f4c0c5208db09f1afa",
+      "hash": "c6d63380eea0d8b2297174d55fd7541bc8bb87db54227707f088c50b8c87e5fa",
       "id": "TASK-058",
       "title": "实现 Idea Discovery Spec 阶段协调器",
-      "status": "in_review",
+      "status": "completed",
       "stage": null,
       "goalId": "GOAL-012",
       "generated": false,
-      "revision": 6
+      "revision": 7
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-059.md",
       "kind": "task",
-      "hash": "649c5633fa745a754ff0f8b693d20056db46f4e618b7db327a4d59a8f8bd4796",
+      "hash": "1ea850e9337cfbd979af712e0de55f24685bf1b5756878477696f96e1b894901",
       "id": "TASK-059",
       "title": "从 Spec 生成目标角色与任务草案",
-      "status": "draft",
+      "status": "ready",
       "stage": null,
       "goalId": "GOAL-012",
       "generated": false,
-      "revision": 1
+      "revision": 2
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-060.md",

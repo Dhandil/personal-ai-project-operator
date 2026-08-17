@@ -1,22 +1,22 @@
 ---
 schema_version: 1
 document_type: status_snapshot
-revision: 53
-generated_at: 2026-08-17T02:51:51.546Z
-updated_at: 2026-08-17T02:51:51.546Z
+revision: 54
+generated_at: 2026-08-17T03:01:31.370Z
+updated_at: 2026-08-17T03:01:31.370Z
 source: formal_project_facts
 status: in_progress
 current_stage: 03-spec
 current_goal: GOAL-012
-current_task: TASK-058
-source_manifest_hash: bd963b368800afb22f84a0089a957a34b78acdaaaabae790dcf2e6316dd93655
+current_task: TASK-059
+source_manifest_hash: 07824a66ad05facda49ea0bd5107fdbfd666c945573fd52898b2f876248e82b1
 ---
 # 项目状态
 
 - 项目：个人 AI 项目运营工具
 - 当前正式源阶段：03-spec
 - 当前目标：GOAL-012
-- 当前任务：TASK-058
+- 当前任务：TASK-059
 - 本文件由正式项目事实自动生成，不是独立事实源。
 
 ## 当前获批短期目标
@@ -79,9 +79,10 @@ source_manifest_hash: bd963b368800afb22f84a0089a957a34b78acdaaaabae790dcf2e6316d
 - TASK-055 定义前期阶段运行与审批状态模型
 - TASK-056 定义前期角色模板与阶段任务包
 - TASK-057 实现阶段产物校验与批准写入
+- TASK-058 实现 Idea Discovery Spec 阶段协调器
 
 ## 当前任务
-- TASK-058 实现 Idea Discovery Spec 阶段协调器 — in_review
+- TASK-059 从 Spec 生成目标角色与任务草案 — ready
 
 ## Blocker、风险和待决策事项
 - 以正式问题、审批和决策记录为准。
@@ -90,7 +91,7 @@ source_manifest_hash: bd963b368800afb22f84a0089a957a34b78acdaaaabae790dcf2e6316d
 - 已从 175 个正式文件重建导入清单。
 
 ## 推荐下一步
-- 由项目负责人继续处理 TASK-058。
+- 由项目负责人继续处理 TASK-059。
 
 ## 用户待办
-- 继续处理 TASK-058。
+- 继续处理 TASK-059。

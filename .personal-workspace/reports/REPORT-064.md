@@ -3,16 +3,18 @@ schema_version: 1
 document_type: report
 id: REPORT-064
 title: TASK-058 Idea Discovery Spec 阶段协调器实现验收报告
-status: pending_acceptance
+status: accepted
 report_type: task_verification
-acceptance_state: pending
+acceptance_state: accepted
 task_id: TASK-058
 goal_id: GOAL-012
-revision: 4
+revision: 5
 created_at: 2026-08-17T09:45:00Z
-updated_at: 2026-08-17T11:05:00Z
+updated_at: 2026-08-17T11:10:00Z
 verified_by: implementation_agent
 verified_commit: 4c17786
+accepted_by: project_owner
+accepted_at: 2026-08-17T11:10:00Z
 verification_commands:
   - npx tsx --test apps/server/test/stage-coordinator.integration.test.ts
   - npm run verify
@@ -31,8 +33,8 @@ verification_commands:
 
 ## 验证结果
 
-- TASK-058 专项集成测试：6/6 通过，新增延迟 Runtime active 状态、resume 和 retry 执行 ID 回归测试。
-- 完整 `npm run verify` 通过：97 个单元测试、135 个集成测试、22 个 Chromium Playwright 测试，以及格式、Lint、类型检查和 contracts/domain/server/web 构建。
+- TASK-058 专项集成测试：8/8 通过，覆盖延迟 Runtime active 状态、resume/retry 执行 ID、跨实例全局锁和高频 state 轮询。
+- 完整 `npm run verify` 通过：97 个单元测试、137 个集成测试、22 个 Chromium Playwright 测试，以及格式、Lint、类型检查和 contracts/domain/server/web 构建。
 - 未启动真实 Agent，未修改 UI，未生成正式 GOAL/TASK，也未执行 TASK-059 或其他后续任务。
 
 ## 独立验收建议
@@ -43,9 +45,17 @@ verification_commands:
 4. 验证 changes_requested 使用原阶段角色返工；验证中断恢复使用持久化 executionId 和精确 sessionId；验证非法输出和 cleanup failure 均保持 blocked 且可恢复。
 5. 确认 TASK-059 未被执行或修改。验收通过后由项目负责人将本报告标记为 `accepted`，再按治理依赖决定是否解锁 TASK-059。
 
+## 独立验收结果
+
+- 独立重跑阶段专项测试：8/8 通过。
+- 独立连续两次运行完整 `npm run verify`：每次均为 97 个单元测试、137 个集成测试、22 个 Chromium Playwright 测试通过，格式、Lint、类型检查和构建全部通过。
+- 两次完整验证均未出现 Windows `EPERM`、`EBUSY` 或 `EACCES` 原子替换失败；高频 `state()` 轮询回归稳定通过。
+- 检查修复范围仅涉及原子替换退避重试和对应回归测试，阶段审批门、事实隔离、全局锁与 Agent 边界语义保持不变；TASK-059 未执行或修改。
+- 验收结论：通过。REPORT-064 标记为 `accepted`，TASK-058 可标记为 `completed`，TASK-059 解锁为 `ready`。
+
 ## 状态声明
 
-本报告保持 `pending_acceptance`；实现者未将报告标记为 `accepted`。TASK-058 保持 `in_review`。
+本报告已由项目负责人独立验收并标记为 `accepted`。TASK-058 已完成，TASK-059 已解锁为 `ready`。
 
 ## 全局锁修复复核结果
 
