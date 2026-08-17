@@ -1,15 +1,15 @@
 ---
 schema_version: 1
 document_type: status_snapshot
-revision: 49
-generated_at: 2026-08-17T01:10:46.900Z
-updated_at: 2026-08-17T01:10:46.900Z
+revision: 50
+generated_at: 2026-08-17T01:44:35.956Z
+updated_at: 2026-08-17T01:44:35.956Z
 source: formal_project_facts
 status: in_progress
 current_stage: 03-spec
 current_goal: GOAL-012
 current_task: TASK-058
-source_manifest_hash: f69bfebea934915b4f8fbde4d4441562c4d24fccc23f801b72771234be1af96e
+source_manifest_hash: 88cb8124493add306a382053779e3b978e7061966b883263577f43a217e8e6bb
 ---
 # 项目状态
 
@@ -81,13 +81,13 @@ source_manifest_hash: f69bfebea934915b4f8fbde4d4441562c4d24fccc23f801b72771234be
 - TASK-057 实现阶段产物校验与批准写入
 
 ## 当前任务
-- TASK-058 实现 Idea Discovery Spec 阶段协调器 — ready
+- TASK-058 实现 Idea Discovery Spec 阶段协调器 — in_review
 
 ## Blocker、风险和待决策事项
 - 以正式问题、审批和决策记录为准。
 
 ## 上一步
-- 已从 174 个正式文件重建导入清单。
+- 已从 175 个正式文件重建导入清单。
 
 ## 推荐下一步
 - 由项目负责人继续处理 TASK-058。

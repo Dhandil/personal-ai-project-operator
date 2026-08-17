@@ -2,15 +2,16 @@
 schema_version: 1
 id: TASK-058
 title: 实现 Idea Discovery Spec 阶段协调器
-status: ready
+status: in_review
 goal_id: GOAL-012
 role: executor
 dependencies: [TASK-057, TASK-048]
-revision: 2
+revision: 3
 created_at: 2026-08-16T14:00:00Z
-updated_at: 2026-08-17T09:20:00Z
+updated_at: 2026-08-17T09:45:00Z
 target_branch: goal/GOAL-012
 unblocked_by: TASK-057
+verification_report_id: REPORT-064
 ---
 
 # TASK-058：实现 Idea Discovery Spec 阶段协调器
@@ -35,3 +36,13 @@ unblocked_by: TASK-057
 ## 边界与交接
 
 不生成开发计划，不自动批准阶段，不实现并行执行。完成后 TASK-059 可申请解锁。
+## 完成证据
+
+- 已实现 Idea、Discovery、Spec 三阶段协调、启动顺序、阶段交接、候选产物与审核结果关联，以及阻塞和恢复流程。
+- 候选产物、审核结果、用户批准记录和正式阶段事实保持分离；只有用户批准才推进下一阶段并写入正式阶段事实。
+- Fake Agent Adapter 专项测试覆盖三阶段顺序、审批门、返工、非法输出、精确 session 恢复和清理失败；未启动真实 Agent，未修改 UI，未生成正式 GOAL/TASK。
+- 代码提交：`eef7363`；专项测试 4/4 通过；完整 `npm run verify` 通过（97 单元、133 集成、22 Chromium，以及质量检查和构建）。
+
+## 交接
+
+任务状态保持 `in_review`，等待项目负责人独立验收 REPORT-064；TASK-059 未执行且保持原状态。
