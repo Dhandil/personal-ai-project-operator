@@ -852,6 +852,224 @@ h2 {
   font-size: 12px;
 }
 
+.planning-console {
+  display: grid;
+  gap: 16px;
+  border-color: #3c777d;
+  background: linear-gradient(145deg, #102c39, #0f1e32 68%);
+}
+
+.planning-console > .description {
+  max-width: 820px;
+  margin: 0;
+}
+
+.planning-summary-grid,
+.planning-stage-grid,
+.planning-draft-columns {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.planning-summary-grid > div,
+.planning-stage-card,
+.planning-draft-panel,
+.planning-decision-panel {
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid #2b5965;
+  border-radius: 12px;
+  background: rgb(15 30 50 / 72%);
+}
+
+.planning-summary-grid > div {
+  display: grid;
+  gap: 6px;
+}
+
+.planning-summary-grid strong {
+  color: #e5f0fa;
+  font-size: 14px;
+}
+
+.planning-stage-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.planning-stage-card {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+}
+
+.planning-stage-card.current {
+  border-color: #65d5d2;
+  box-shadow: 0 0 0 2px rgb(101 213 210 / 12%);
+}
+
+.planning-stage-card p,
+.planning-decision-panel p,
+.planning-empty-state p,
+.planning-status-reason {
+  margin: 0;
+  color: #bfd0df;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.planning-facts {
+  display: grid;
+  gap: 6px;
+  margin: 4px 0 0;
+}
+
+.planning-facts div {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  color: #c6d7e5;
+  font-size: 12px;
+}
+
+.planning-facts dt {
+  color: #7893ac;
+}
+
+.planning-facts dd {
+  margin: 0;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.planning-status-reason {
+  padding: 10px 12px;
+  border-left: 3px solid #f0b18e;
+  background: rgb(80 52 43 / 38%);
+}
+
+.planning-actions {
+  margin: 0;
+}
+
+.planning-decision-panel {
+  display: grid;
+  gap: 10px;
+  border-color: #c3a76e;
+  background: rgb(75 59 35 / 28%);
+}
+
+.planning-handoff {
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+  border: 1px solid #5c9b83;
+  border-radius: 12px;
+  background: rgb(30 78 67 / 32%);
+  color: #d9f2e7;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.planning-handoff .wizard-actions {
+  margin: 0;
+}
+
+.planning-decision-panel h3,
+.planning-draft-panel h3,
+.planning-draft-columns h4 {
+  margin: 0;
+  color: #e7f0f8;
+}
+
+.planning-draft-panel {
+  display: grid;
+  gap: 14px;
+  border-color: #41627e;
+  background: #0b192b;
+}
+
+.planning-draft-panel .panel-heading {
+  margin-bottom: 0;
+}
+
+.planning-draft-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  color: #9bb1c6;
+  font-size: 12px;
+}
+
+.planning-draft-meta span {
+  padding: 5px 8px;
+  border: 1px solid #2a425d;
+  border-radius: 999px;
+}
+
+.planning-edit-field {
+  display: grid;
+  gap: 7px;
+  color: #dce7f3;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.planning-edit-field input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #355170;
+  border-radius: 9px;
+  outline: none;
+  background: #0f1e32;
+  color: #edf5fb;
+}
+
+.planning-edit-field input:focus {
+  border-color: #65d5d2;
+  box-shadow: 0 0 0 3px rgb(101 213 210 / 15%);
+}
+
+.planning-draft-columns {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.planning-draft-columns section {
+  min-width: 0;
+}
+
+.planning-list {
+  display: grid;
+  max-height: 270px;
+  gap: 8px;
+  overflow-y: auto;
+  margin: 9px 0 0;
+  padding: 0 6px 0 0;
+  list-style: none;
+  scrollbar-color: #41627e #0b192b;
+  scrollbar-width: thin;
+}
+
+.planning-list li {
+  display: grid;
+  gap: 4px;
+  padding: 10px;
+  border: 1px solid #2a425d;
+  border-radius: 9px;
+  background: #0f1e32;
+  color: #b9ccdc;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.planning-list strong {
+  color: #e5f0fa;
+}
+
+.planning-list code {
+  color: #9ee1df;
+}
+
 @media (max-width: 680px) {
   .workflow-stage-heading,
   .artifact-link {
@@ -864,8 +1082,16 @@ h2 {
   }
 
   .workflow-onboarding-steps,
-  .current-stage-guide-grid {
+  .current-stage-guide-grid,
+  .planning-summary-grid,
+  .planning-stage-grid,
+  .planning-draft-columns {
     grid-template-columns: 1fr;
+  }
+
+  .planning-summary-grid > div {
+    grid-template-columns: 1fr auto;
+    align-items: center;
   }
 }
 

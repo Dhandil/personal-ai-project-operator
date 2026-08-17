@@ -35,6 +35,12 @@ import {
   type ReworkInput,
 } from "./infrastructure/reviews/review-loop-service.js";
 import { PlanningDraftService } from "./infrastructure/planning/planning-draft-service.js";
+import {
+  StageCoordinatorService,
+  type StageCoordinatorDecisionInput,
+  type StageCoordinatorStartInput,
+  type StageCoordinatorControlInput,
+} from "./infrastructure/stages/stage-coordinator.js";
 
 const SERVICE_NAME = "@personal-ai-operator/server";
 
@@ -63,6 +69,7 @@ export type AppOptions = Readonly<{
   readonly reviewService?: ReviewService;
   readonly reviewLoopService?: ReviewLoopService;
   readonly planningDraftService?: PlanningDraftService;
+  readonly stageCoordinatorService?: StageCoordinatorService;
 }>;
 
 export function buildApp(options: AppOptions = {}): FastifyInstance {
@@ -146,6 +153,8 @@ export function buildApp(options: AppOptions = {}): FastifyInstance {
     });
   const planningDraftService =
     options.planningDraftService ?? new PlanningDraftService();
+  const stageCoordinatorService =
+    options.stageCoordinatorService ?? new StageCoordinatorService();
 
   app.addHook("onClose", async () => {
     await executionCoordinatorService.shutdown();
@@ -313,6 +322,88 @@ export function buildApp(options: AppOptions = {}): FastifyInstance {
     return reply
       .code(
         result.ok ? 200 : result.error.code === "registry_failed" ? 500 : 400,
+      )
+      .send(result);
+  });
+
+  app.get<{ Querystring: { readonly projectKey?: unknown } }>(
+    "/api/projects/stages",
+    async (request, reply) => {
+      const projectKey = request.query?.projectKey;
+      if (typeof projectKey !== "string") {
+        return reply.code(400).send({
+          ok: false,
+          error: {
+            code: "invalid_input",
+            message: "A project key is required.",
+            details: [],
+          },
+        });
+      }
+      const result = await stageCoordinatorService.state({ projectKey });
+      return reply
+        .code(
+          result.ok
+            ? 200
+            : result.error.code === "project_not_found"
+              ? 404
+              : 400,
+        )
+        .send(result);
+    },
+  );
+
+  app.post("/api/projects/stages/start", async (request, reply) => {
+    const result = await stageCoordinatorService.start(
+      request.body as StageCoordinatorStartInput,
+    );
+    return reply
+      .code(
+        result.ok ? 200 : result.error.code === "project_not_found" ? 404 : 400,
+      )
+      .send(result);
+  });
+
+  app.post("/api/projects/stages/resume", async (request, reply) => {
+    const result = await stageCoordinatorService.resume(
+      request.body as StageCoordinatorControlInput,
+    );
+    return reply
+      .code(
+        result.ok ? 200 : result.error.code === "project_not_found" ? 404 : 400,
+      )
+      .send(result);
+  });
+
+  app.post("/api/projects/stages/retry", async (request, reply) => {
+    const result = await stageCoordinatorService.retry(
+      request.body as StageCoordinatorControlInput,
+    );
+    return reply
+      .code(
+        result.ok ? 200 : result.error.code === "project_not_found" ? 404 : 400,
+      )
+      .send(result);
+  });
+
+  app.post("/api/projects/stages/cancel", async (request, reply) => {
+    const result = await stageCoordinatorService.cancel(
+      request.body as StageCoordinatorControlInput,
+    );
+    return reply
+      .code(
+        result.ok ? 200 : result.error.code === "project_not_found" ? 404 : 400,
+      )
+      .send(result);
+  });
+
+  app.post("/api/projects/stages/decision", async (request, reply) => {
+    const result = await stageCoordinatorService.decide(
+      request.body as StageCoordinatorDecisionInput,
+    );
+    return reply
+      .code(
+        result.ok ? 200 : result.error.code === "project_not_found" ? 404 : 400,
       )
       .send(result);
   });

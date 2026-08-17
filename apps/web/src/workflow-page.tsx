@@ -11,6 +11,7 @@ import {
   workflowGuides,
   type WorkflowPayload,
 } from "./workflow";
+import { PlanningConsole } from "./planning-console-page";
 
 type WorkflowPageState =
   | Readonly<{ readonly status: "loading" }>
@@ -288,6 +289,10 @@ export function WorkflowPage(): ReactElement {
           “待开始”表示阶段尚未推进；“已存在”表示系统创建的事实文件已经在项目中。文件不是上传清单，用户无需手工上传。
         </p>
       </section>
+
+      {state.status === "ready" && (
+        <PlanningConsole projectKey={state.value.projectKey} />
+      )}
 
       {state.status === "loading" && (
         <div className="overview-loading" role="status">
