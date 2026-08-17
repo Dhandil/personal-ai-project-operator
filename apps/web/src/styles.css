@@ -413,6 +413,604 @@ h2 {
   }
 }
 
+.health-page {
+  display: grid;
+  gap: 16px;
+}
+
+.health-page-intro h1 {
+  margin: 4px 0 6px;
+  font-size: clamp(30px, 4vw, 46px);
+  letter-spacing: -0.04em;
+}
+
+.health-page-intro .description {
+  margin: 0;
+  color: #a4b1be;
+}
+
+.health-page-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 14px;
+}
+
+.health-card {
+  min-height: 170px;
+  padding: 20px 22px;
+  border: 1px solid #293949;
+  background: #111d2a;
+}
+
+.health-card-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.health-card h2 {
+  margin: 5px 0 20px;
+  font-size: 20px;
+}
+
+.health-pill {
+  padding: 5px 9px;
+  border: 1px solid #385065;
+  border-radius: 999px;
+  color: #b6c4cf;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.health-pill.connected {
+  border-color: #618e86;
+  color: #b8d9d0;
+}
+
+.health-pill.unavailable {
+  border-color: #a16b5f;
+  color: #e0b7aa;
+}
+
+.health-endpoint {
+  display: inline-block;
+  margin: 0 0 14px;
+  padding: 8px 10px;
+  background: #172838;
+  color: #b9d8d1;
+}
+
+.health-card p {
+  margin: 0;
+  color: #94a6b5;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.runtime-diagnostic-card {
+  grid-column: 1 / -1;
+}
+
+.runtime-diagnostic-content {
+  display: grid;
+  gap: 16px;
+}
+
+.runtime-diagnostic-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+}
+
+.runtime-diagnostic-grid > div {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid #293949;
+  background: #172838;
+}
+
+.runtime-diagnostic-grid dt {
+  color: #8195a6;
+  font-size: 11px;
+}
+
+.runtime-diagnostic-grid dd {
+  margin: 6px 0 0;
+  overflow: hidden;
+  color: #e2ecef;
+  font-size: 14px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.runtime-diagnostic-notices {
+  display: grid;
+  gap: 6px;
+}
+
+.runtime-diagnostic-notices p,
+.runtime-diagnostic-note {
+  margin: 0;
+}
+
+.runtime-diagnostic-blocker {
+  color: #e0b7aa !important;
+}
+
+.runtime-diagnostic-recommendation {
+  color: #b8d9d0 !important;
+}
+
+.runtime-diagnostic-note {
+  color: #8195a6 !important;
+  font-size: 12px !important;
+}
+
+.workflow-console-tabs {
+  display: inline-flex;
+  width: fit-content;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid #293949;
+  background: #111d2a;
+}
+
+.workflow-console-tabs button {
+  min-height: 34px;
+  padding: 7px 13px;
+  border: 0;
+  background: transparent;
+  color: #9eacb9;
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.workflow-console-tabs button:hover,
+.workflow-console-tabs button.active {
+  background: #223445;
+  color: #edf1f5;
+}
+
+.planning-console.view-draft .planning-stage-workspace {
+  display: none;
+}
+
+.planning-console.view-stages .planning-draft-panel {
+  display: none;
+}
+
+.planning-console.view-draft .planning-draft-panel {
+  margin-top: 0;
+}
+
+.planning-notice {
+  margin: 0;
+}
+
+@media (max-width: 840px) {
+  .health-page-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .runtime-diagnostic-card {
+    grid-column: auto;
+  }
+
+  .runtime-diagnostic-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .workflow-console-tabs {
+    width: 100%;
+  }
+
+  .workflow-console-tabs button {
+    flex: 1;
+  }
+}
+
+/* Personal operations desk redesign: compact hierarchy, calm surfaces, local density. */
+:root {
+  color: #edf1f5;
+  background: #0b111b;
+}
+
+body {
+  background: #0b111b;
+}
+
+.app-shell {
+  grid-template-columns: 232px minmax(0, 1fr);
+}
+
+.site-sidebar {
+  border-right-color: #263343;
+  background: #0e1723;
+  box-shadow: none;
+}
+
+.site-header {
+  padding: 22px 20px 18px;
+}
+
+.brand-mark {
+  width: 32px;
+  height: 32px;
+  border-color: #7bb7b1;
+  border-radius: 9px;
+  color: #b6d8d2;
+}
+
+.current-project-context {
+  margin: 0 14px 14px;
+  border-color: #2c3d4f;
+  border-radius: 9px;
+  background: #15202c;
+}
+
+.current-project-label,
+.eyebrow {
+  color: #8cc5bb;
+}
+
+.navigation {
+  gap: 3px;
+  padding: 4px 14px 24px;
+}
+
+.navigation a {
+  padding: 10px 12px 10px 14px;
+  border-radius: 7px;
+}
+
+.navigation a:hover,
+.navigation a.active {
+  background: #1a2937;
+}
+
+.navigation a.active::before {
+  background: #8cc5bb;
+}
+
+.main-content {
+  width: min(1240px, calc(100% - 48px));
+  gap: 14px;
+  padding: 22px 0 30px;
+  scrollbar-color: #40576c #0b111b;
+}
+
+.secondary-navigation {
+  gap: 14px;
+  padding-bottom: 9px;
+  border-bottom-color: #263343;
+}
+
+.secondary-navigation a {
+  min-height: 30px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  color: #9eacb9;
+}
+
+.secondary-navigation a.active {
+  background: #223445;
+  color: #edf1f5;
+}
+
+.workspace-home {
+  display: grid;
+  gap: 14px;
+}
+
+.workspace-home-hero,
+.workspace-home-panel,
+.workspace-home-status {
+  border: 1px solid #293949;
+  background: #111d2a;
+}
+
+.workspace-home-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 270px;
+  gap: 24px;
+  align-items: center;
+  padding: 26px 28px;
+}
+
+.workspace-home-hero h1 {
+  max-width: 640px;
+  margin: 4px 0 8px;
+  font-size: clamp(30px, 4vw, 48px);
+  letter-spacing: -0.04em;
+}
+
+.workspace-home-lede {
+  max-width: 700px;
+  margin: 0;
+  color: #a4b1be;
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.workspace-home-current {
+  display: grid;
+  gap: 8px;
+  padding: 15px;
+  border-left: 2px solid #8cc5bb;
+  background: #152535;
+}
+
+.workspace-home-current strong {
+  overflow: hidden;
+  color: #f3f5f7;
+  font-size: 18px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.workspace-home-current .button {
+  justify-content: center;
+  margin-top: 5px;
+}
+
+.workspace-home-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 14px;
+}
+
+.workspace-home-panel {
+  padding: 20px 22px;
+}
+
+.workspace-home-panel .panel-heading {
+  margin-bottom: 14px;
+}
+
+.workspace-home-panel h2,
+.workspace-home-status h2 {
+  margin: 3px 0 0;
+  font-size: 18px;
+}
+
+.workspace-flow-list,
+.workspace-quick-links {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.workspace-flow-list li,
+.workspace-quick-links a {
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid #293949;
+  background: #152333;
+}
+
+.workspace-flow-list li > span {
+  color: #8cc5bb;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 12px;
+}
+
+.workspace-flow-list li div,
+.workspace-quick-links a {
+  flex: 1;
+}
+
+.workspace-flow-list strong,
+.workspace-quick-links strong,
+.workspace-quick-links span {
+  display: block;
+}
+
+.workspace-flow-list small,
+.workspace-quick-links span {
+  margin-top: 3px;
+  color: #93a4b4;
+  font-size: 12px;
+}
+
+.workspace-quick-links a {
+  color: #edf1f5;
+  transition:
+    border-color 140ms ease,
+    background 140ms ease;
+}
+
+.workspace-quick-links a:hover {
+  border-color: #6eaaa2;
+  background: #1a2a39;
+}
+
+.workspace-home-status {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 14px 18px;
+}
+
+.workspace-home-status > div:first-child {
+  margin-right: auto;
+}
+
+.workspace-home-status .health-state {
+  font-size: 13px;
+}
+
+.text-link {
+  color: #a6d1c9;
+  font-size: 13px;
+}
+
+.workflow-help {
+  border: 1px solid #293949;
+  background: #111d2a;
+}
+
+.workflow-help summary {
+  cursor: pointer;
+  padding: 12px 16px;
+  color: #bfd0dd;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.workflow-help summary::marker {
+  color: #8cc5bb;
+}
+
+.workflow-help-content {
+  padding: 0 16px 14px;
+  border-top: 1px solid #293949;
+}
+
+.workflow-help .workflow-onboarding-steps {
+  margin-top: 14px;
+}
+
+.workflow-page-intro {
+  max-width: 920px;
+}
+
+.workflow-page-intro h1 {
+  margin: 4px 0 6px;
+  font-size: clamp(28px, 3vw, 40px);
+  letter-spacing: -0.035em;
+}
+
+.workflow-page-intro .description {
+  max-width: 820px;
+  margin: 0;
+  line-height: 1.55;
+}
+
+.planning-console {
+  gap: 12px;
+  padding: 20px;
+  border-color: #314353;
+  background: #101b28;
+}
+
+.planning-console > .description {
+  max-width: 820px;
+  margin: -4px 0 0;
+  font-size: 13px;
+}
+
+.planning-summary-grid {
+  gap: 8px;
+}
+
+.planning-summary-grid > div {
+  min-height: 66px;
+  padding: 11px 13px;
+  border-color: #2d4152;
+  background: #152535;
+}
+
+.planning-summary-grid strong {
+  margin-top: 4px;
+  font-size: 15px;
+}
+
+.planning-stage-grid {
+  gap: 8px;
+}
+
+.planning-stage-card {
+  min-height: 0;
+  padding: 13px;
+  border-color: #2d4152;
+  background: #152535;
+}
+
+.planning-stage-card.current {
+  border-color: #7ab6ad;
+  box-shadow: inset 3px 0 0 #8cc5bb;
+}
+
+.planning-stage-card p {
+  margin: 5px 0 8px;
+  color: #9eafbd;
+  font-size: 12px;
+}
+
+.planning-facts {
+  gap: 5px;
+  font-size: 11px;
+}
+
+.planning-status-reason {
+  margin: 0;
+  padding: 10px 12px;
+  border-left: 2px solid #d9a76a;
+  background: #2a2523;
+  color: #e8d6c2;
+  font-size: 13px;
+}
+
+.planning-actions {
+  margin-top: 1px;
+}
+
+.planning-draft-panel {
+  margin-top: 2px;
+  padding: 16px;
+  border-color: #2d4152;
+  background: #121f2d;
+}
+
+.planning-draft-meta {
+  gap: 6px;
+  margin: 10px 0;
+}
+
+.planning-draft-meta span {
+  padding: 5px 8px;
+  border-color: #304657;
+  background: #172838;
+  font-size: 11px;
+}
+
+@media (min-width: 841px) {
+  .page-workflow .main-content,
+  .page-overview .main-content {
+    scrollbar-width: none;
+  }
+}
+
+@media (max-width: 840px) {
+  .app-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .workspace-home-hero,
+  .workspace-home-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .workspace-home-status {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .workspace-home-status > div:first-child {
+    flex-basis: 100%;
+  }
+}
+
 @media (max-width: 680px) {
   .status-card {
     align-items: flex-start;
@@ -2525,5 +3123,54 @@ button:disabled {
 
   .directory-picker-button {
     width: 100%;
+  }
+}
+
+/* Final cascade for the compact operations-desk layout. */
+@media (min-width: 841px) {
+  .app-shell {
+    grid-template-columns: 232px minmax(0, 1fr);
+  }
+  .main-content {
+    width: min(1240px, calc(100% - 48px));
+    padding: 22px 0 30px;
+  }
+  .planning-console {
+    gap: 12px;
+    padding: 20px;
+    background: #101b28;
+    border-color: #314353;
+  }
+  .planning-summary-grid {
+    gap: 8px;
+  }
+  .planning-summary-grid > div {
+    min-height: 66px;
+    padding: 11px 13px;
+  }
+  .planning-stage-grid {
+    gap: 8px;
+  }
+  .planning-stage-card {
+    min-height: 0;
+    padding: 13px;
+  }
+  .planning-draft-panel {
+    margin-top: 2px;
+    padding: 16px;
+  }
+}
+
+@media (max-width: 840px) {
+  .workspace-home-hero,
+  .workspace-home-grid {
+    grid-template-columns: 1fr;
+  }
+  .workspace-home-status {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  .workspace-home-status > div:first-child {
+    flex-basis: 100%;
   }
 }

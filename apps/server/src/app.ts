@@ -1,5 +1,9 @@
 import Fastify, { type FastifyInstance } from "fastify";
-import type { ReportId, TaskId } from "@personal-ai-operator/contracts";
+import type {
+  AgentRuntime,
+  ReportId,
+  TaskId,
+} from "@personal-ai-operator/contracts";
 
 import {
   ProjectInitializationPreviewService,
@@ -26,6 +30,8 @@ import { RecoveryService } from "./infrastructure/recovery/recovery-service.js";
 import { ExecutionCoordinatorService } from "./infrastructure/execution/execution-coordinator.js";
 import { TaskPackageService } from "./infrastructure/execution/task-package-service.js";
 import { CodexCliPreflightService } from "./infrastructure/agent-runtime/codex-cli-preflight.js";
+import { createProductionClaudeRuntime } from "./infrastructure/agent-runtime/claude-runtime-service.js";
+import type { ClaudeRuntimeService } from "./infrastructure/agent-runtime/claude-runtime-service.js";
 import {
   ReviewService,
   type ReviewInput,
@@ -66,6 +72,8 @@ export type AppOptions = Readonly<{
   readonly executionCoordinatorService?: ExecutionCoordinatorService;
   readonly taskPackageService?: TaskPackageService;
   readonly codexCliPreflightService?: CodexCliPreflightService;
+  readonly claudeRuntimeService?: ClaudeRuntimeService;
+  readonly agentRuntime?: AgentRuntime;
   readonly reviewService?: ReviewService;
   readonly reviewLoopService?: ReviewLoopService;
   readonly planningDraftService?: PlanningDraftService;
@@ -128,12 +136,16 @@ export function buildApp(options: AppOptions = {}): FastifyInstance {
   const taskService = options.taskService ?? new TaskService();
   const approvalService = options.approvalService ?? new ApprovalService();
   const recoveryService = options.recoveryService ?? new RecoveryService();
+  const claudeRuntimeService =
+    options.claudeRuntimeService ?? createProductionClaudeRuntime();
+  const agentRuntime = options.agentRuntime ?? claudeRuntimeService.runtime;
   const executionCoordinatorService =
     options.executionCoordinatorService ??
     new ExecutionCoordinatorService({
       taskService,
       goalService,
       issueService,
+      runtime: agentRuntime,
     });
   const taskPackageService =
     options.taskPackageService ??
@@ -154,7 +166,8 @@ export function buildApp(options: AppOptions = {}): FastifyInstance {
   const planningDraftService =
     options.planningDraftService ?? new PlanningDraftService();
   const stageCoordinatorService =
-    options.stageCoordinatorService ?? new StageCoordinatorService();
+    options.stageCoordinatorService ??
+    new StageCoordinatorService({ runtime: agentRuntime });
 
   app.addHook("onClose", async () => {
     await executionCoordinatorService.shutdown();
@@ -583,6 +596,11 @@ export function buildApp(options: AppOptions = {}): FastifyInstance {
 
   app.get("/api/runtime/codex/preflight", async (_request, reply) => {
     const report = await codexCliPreflightService.check();
+    return reply.code(200).send({ ok: true, value: report });
+  });
+
+  app.get("/api/runtime/claude/preflight", async (_request, reply) => {
+    const report = await claudeRuntimeService.diagnostics();
     return reply.code(200).send({ ok: true, value: report });
   });
 
