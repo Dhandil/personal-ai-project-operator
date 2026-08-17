@@ -3,15 +3,17 @@ schema_version: 1
 document_type: report
 id: REPORT-068
 title: GOAL-012 V0.3 pre-orchestration checkpoint
-status: pending_acceptance
+status: accepted
 report_type: goal_checkpoint
-acceptance_state: pending_acceptance
+acceptance_state: accepted
 goal_id: GOAL-012
-revision: 1
+revision: 2
 created_at: 2026-08-17T05:51:00Z
-updated_at: 2026-08-17T05:51:00Z
+updated_at: 2026-08-17T14:30:00Z
 verified_by: implementation_agent
 verified_commit: b67efa0
+accepted_by: project_owner
+accepted_at: 2026-08-17T14:30:00Z
 verification_commands:
   - npx tsx --test apps/server/test/v0-3-acceptance.integration.test.ts apps/server/test/stage-coordinator.integration.test.ts apps/server/test/planning-draft.integration.test.ts
   - npm run test:e2e -- --grep "planning console"
@@ -51,4 +53,11 @@ The combined evidence confirms:
 
 ## Status
 
-REPORT-068 remains `pending_acceptance`; GOAL-012 remains `in_review`.
+## Independent checkpoint acceptance
+
+- REPORT-067 is accepted and TASK-061 is completed.
+- The V0.3 temporary-project composite, real Claude Code + DeepSeek acceptance, planning-console browser scenario, and full verification were independently rerun and passed.
+- GOAL-012 remains isolated from GOAL-013 and no main-branch or personal-project operation occurred.
+- Checkpoint conclusion: passed. REPORT-068 is `accepted` and GOAL-012 is `completed`.
+
+REPORT-068 is `accepted` by the project owner. GOAL-012 is `completed`; GOAL-013 remains unstarted.

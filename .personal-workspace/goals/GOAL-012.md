@@ -2,10 +2,10 @@
 schema_version: 1
 id: GOAL-012
 title: V0.3 完成项目前期 Agent 编排
-status: in_review
-revision: 3
+status: completed
+revision: 4
 created_at: 2026-08-16T14:00:00Z
-updated_at: 2026-08-17T05:51:00Z
+updated_at: 2026-08-17T14:30:00Z
 tasks: [TASK-055, TASK-056, TASK-057, TASK-058, TASK-059, TASK-060, TASK-061]
 approval_ids: [APPROVAL-007]
 target_branch: goal/GOAL-012
@@ -16,8 +16,8 @@ first_task_id: TASK-055
 ## Checkpoint handoff
 
 - TASK-055 through TASK-061 have implementation and independent task-level acceptance evidence.
-- The V0.3 temporary-project checkpoint is ready for user acceptance as REPORT-068.
-- GOAL-012 remains `in_review`; GOAL-013 and all later goals remain unstarted.
+- The V0.3 temporary-project checkpoint REPORT-068 has been independently accepted.
+- GOAL-012 is `completed`; GOAL-013 and all later goals remain unstarted.
 
 # GOAL-012：V0.3 完成项目前期 Agent 编排
 
@@ -37,3 +37,9 @@ first_task_id: TASK-055
 - 用户已批准启动本目标；
 - TASK-055 已解锁，后续任务必须遵守依赖、独立验收和既有自动解锁约定；
 - 真实阶段 Agent 的 Runtime 选择、用量与运行边界由后续相关任务定义，TASK-055 不启动真实 Agent。
+
+## 独立检查点验收
+
+- REPORT-068 已由项目负责人独立验收并标记为 `accepted`。
+- GOAL-012 的 V0.3 临时项目闭环已完成，目标状态更新为 `completed`。
+- GOAL-013 未启动，等待后续目标审批。

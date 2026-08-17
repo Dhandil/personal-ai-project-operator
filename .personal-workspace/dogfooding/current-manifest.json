@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "manifest_kind": "current",
-  "generated_at": "2026-08-17T06:05:32.821Z",
-  "source_manifest_hash": "36d1f630399517b7d141bfb8273d34ec4a6e926a6ccbf609fb98b35ed6901d5e",
+  "generated_at": "2026-08-17T06:07:09.365Z",
+  "source_manifest_hash": "592e8af59d8e1c44cea4a65a908bc7d5ba44a03f31c659812fb9706bf8b52001",
   "current_source_stage": "03-spec",
   "current_goal_id": "GOAL-012",
   "current_task_id": null,
@@ -226,14 +226,14 @@
     {
       "relativePath": ".personal-workspace/goals/GOAL-012.md",
       "kind": "goal",
-      "hash": "ca515bc5fb6ac2a5c20d6f88c4022b9606b150d55ba00ff1592472e445e594d4",
+      "hash": "fd3b3da9842c9f6ff84a748779a71e64b952069f22afedf65c3083716614b483",
       "id": "GOAL-012",
       "title": "V0.3 完成项目前期 Agent 编排",
-      "status": "in_review",
+      "status": "completed",
       "stage": null,
       "goalId": null,
       "generated": false,
-      "revision": 3
+      "revision": 4
     },
     {
       "relativePath": ".personal-workspace/goals/GOAL-013.md",
@@ -1078,14 +1078,14 @@
     {
       "relativePath": ".personal-workspace/reports/REPORT-068.md",
       "kind": "report",
-      "hash": "1e7d6fd8c587f191cc3e45326aa7de382df4b0e4192bc18452bf850db7a918d9",
+      "hash": "8dfe5c380515b24084bccd0c9c79c2889aa68f2635dd6c53ebaca77b1099d205",
       "id": "REPORT-068",
       "title": "GOAL-012 V0.3 pre-orchestration checkpoint",
-      "status": "pending_acceptance",
+      "status": "accepted",
       "stage": null,
       "goalId": "GOAL-012",
       "generated": false,
-      "revision": 1
+      "revision": 2
     },
     {
       "relativePath": ".personal-workspace/stages/01-idea/01-idea.md",
