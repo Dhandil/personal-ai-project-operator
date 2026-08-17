@@ -4,7 +4,17 @@ import { join } from "node:path";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 
-import { parseUtcIsoTimestamp } from "@personal-ai-operator/contracts";
+import {
+  parseUtcIsoTimestamp,
+  type AgentControlRequest,
+  type AgentEvent,
+  type AgentOutput,
+  type AgentResult,
+  type AgentResumeRequest,
+  type AgentRuntime,
+  type AgentSession,
+  type ExecutionId,
+} from "@personal-ai-operator/contracts";
 
 import {
   FakeAgentAdapter,
@@ -14,6 +24,122 @@ import { GovernanceRepository } from "../src/infrastructure/files/governance-rep
 import { StageCoordinatorService } from "../src/infrastructure/stages/stage-coordinator.js";
 
 const timestamp = parseUtcIsoTimestamp("2026-08-17T00:00:00Z");
+
+class DelayedRuntime implements AgentRuntime {
+  private producerResolve: ((result: AgentResult) => void) | null = null;
+  private producerId: ExecutionId | null = null;
+  private nextExecution = 1;
+
+  public async start(): Promise<AgentSession> {
+    const executionId =
+      `EXEC-${String(this.nextExecution++).padStart(3, "0")}` as ExecutionId;
+    const sessionId = `delayed-session-${executionId}`;
+    if (this.producerId === null) {
+      let resolveResult: ((result: AgentResult) => void) | undefined;
+      const result = new Promise<AgentResult>((resolve) => {
+        resolveResult = resolve;
+      });
+      this.producerId = executionId;
+      this.producerResolve = resolveResult ?? null;
+      return this.session(executionId, sessionId, result);
+    }
+    const result: AgentResult = {
+      executionId,
+      status: "completed",
+      output: review() as unknown as AgentOutput,
+      error: null,
+      diagnostics: [],
+    };
+    return this.session(executionId, sessionId, Promise.resolve(result));
+  }
+
+  public async resume(request: AgentResumeRequest): Promise<AgentSession> {
+    let resolveResult: ((result: AgentResult) => void) | undefined;
+    const result = new Promise<AgentResult>((resolve) => {
+      resolveResult = resolve;
+    });
+    this.producerId = request.executionId;
+    this.producerResolve = resolveResult ?? null;
+    return this.session(request.executionId, request.sessionId, result);
+  }
+
+  public async cancel(request: AgentControlRequest): Promise<{
+    readonly ok: true;
+    readonly executionId: ExecutionId;
+    readonly status: "interrupted";
+  }> {
+    if (
+      request.executionId !== this.producerId ||
+      this.producerResolve === null
+    ) {
+      return {
+        ok: true,
+        executionId: request.executionId,
+        status: "interrupted",
+      };
+    }
+    this.producerResolve({
+      executionId: request.executionId,
+      status: "interrupted",
+      output: null,
+      error: { code: "interrupted", message: "cancelled" },
+      diagnostics: [],
+    });
+    return {
+      ok: true,
+      executionId: request.executionId,
+      status: "interrupted",
+    };
+  }
+
+  public async cleanup(request: AgentControlRequest) {
+    return {
+      ok: true as const,
+      executionId: request.executionId,
+      status: "cleaned" as const,
+    };
+  }
+
+  public completeProducer(): void {
+    if (this.producerId === null || this.producerResolve === null) return;
+    this.producerResolve({
+      executionId: this.producerId,
+      status: "completed",
+      output: artifact("idea") as unknown as AgentOutput,
+      error: null,
+      diagnostics: [],
+    });
+    this.producerResolve = null;
+  }
+
+  private session(
+    executionId: ExecutionId,
+    sessionId: string,
+    result: Promise<AgentResult>,
+  ): AgentSession {
+    const occurredAt = timestamp;
+    const events = (async function* (): AsyncGenerator<AgentEvent> {
+      yield {
+        executionId,
+        sequence: 1,
+        occurredAt,
+        type: "started",
+        message: "started",
+        data: {},
+      };
+      const completed = await result;
+      yield {
+        executionId,
+        sequence: 2,
+        occurredAt,
+        type: completed.status === "completed" ? "completed" : "interrupted",
+        message: completed.status,
+        data: {},
+      };
+    })();
+    return { executionId, sessionId, events, result };
+  }
+}
 
 function artifact(stage: "idea" | "discovery" | "spec") {
   if (stage === "idea") {
@@ -330,5 +456,130 @@ test("cleanup failure blocks progress and records a recoverable result", async (
     if (state.ok) assert.equal(state.value.currentRun?.status, "blocked");
   } finally {
     await rm(root, { recursive: true, force: true });
+  }
+});
+
+test("reports the assigned execution as active while the producer is still running", async () => {
+  const root = await fixture();
+  try {
+    const runtime = new DelayedRuntime();
+    const service = new StageCoordinatorService({
+      runtime,
+      now: () => timestamp,
+    });
+    const pending = service.start({ projectRoot: root });
+    const state = await waitForActive(service, root);
+    assert.equal(state.ok, true);
+    if (!state.ok) throw new Error(state.error.message);
+    assert.equal(state.value.active, true, JSON.stringify(state.value));
+    assert.equal(state.value.currentRun?.executionId, "EXEC-001");
+    assert.equal(state.value.currentRun?.status, "running");
+
+    runtime.completeProducer();
+    const completed = await pending;
+    assert.equal(completed.ok, true);
+    if (!completed.ok) throw new Error(completed.error.message);
+    const after = await service.state({ projectRoot: root });
+    assert.equal(after.ok, true);
+    if (after.ok) assert.equal(after.value.active, false);
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+async function waitForActive(
+  service: StageCoordinatorService,
+  root: string,
+): Promise<Awaited<ReturnType<StageCoordinatorService["state"]>>> {
+  let state = await service.state({ projectRoot: root });
+  for (
+    let attempt = 0;
+    attempt < 5000 &&
+    state.ok &&
+    (!state.value.active || state.value.currentRun?.executionId === null);
+    attempt += 1
+  ) {
+    await new Promise((resolve) => setTimeout(resolve, 1));
+    state = await service.state({ projectRoot: root });
+  }
+  return state;
+}
+
+test("resume and retry assign execution IDs to the single active chain", async () => {
+  const resumeRoot = await fixture();
+  try {
+    const initial = new StageCoordinatorService({
+      runtime: new FakeAgentAdapter({ now: () => timestamp }),
+      now: () => timestamp,
+    });
+    const blocked = await initial.start(
+      { projectRoot: resumeRoot },
+      successScenario({ schemaVersion: 1, kind: "invalid", stage: "idea" }),
+    );
+    assert.equal(blocked.ok, false);
+    const blockedState = await initial.state({ projectRoot: resumeRoot });
+    assert.equal(blockedState.ok, true);
+    if (!blockedState.ok) throw new Error(blockedState.error.message);
+    const persistedExecutionId = blockedState.value.currentRun?.executionId;
+    assert.equal(persistedExecutionId, "EXEC-001");
+    if (persistedExecutionId === null || persistedExecutionId === undefined)
+      throw new Error(
+        "The blocked execution did not persist its execution ID.",
+      );
+
+    const resumeRuntime = new DelayedRuntime();
+    const resumedService = new StageCoordinatorService({
+      runtime: resumeRuntime,
+      now: () => timestamp,
+    });
+    const resumed = resumedService.resume({
+      projectRoot: resumeRoot,
+      executionId: persistedExecutionId,
+    });
+    const resumedState = await waitForActive(resumedService, resumeRoot);
+    assert.equal(resumedState.ok, true);
+    if (!resumedState.ok) throw new Error(resumedState.error.message);
+    assert.equal(resumedState.value.active, true);
+    assert.equal(
+      resumedState.value.currentRun?.executionId,
+      persistedExecutionId,
+    );
+    resumeRuntime.completeProducer();
+    const resumedResult = await resumed;
+    assert.equal(resumedResult.ok, true);
+  } finally {
+    await rm(resumeRoot, { recursive: true, force: true });
+  }
+
+  const retryRoot = await fixture();
+  try {
+    const initial = new StageCoordinatorService({
+      runtime: new FakeAgentAdapter({ now: () => timestamp }),
+      now: () => timestamp,
+    });
+    const blocked = await initial.start(
+      { projectRoot: retryRoot },
+      successScenario({ schemaVersion: 1, kind: "invalid", stage: "idea" }),
+    );
+    assert.equal(blocked.ok, false);
+    const retryRuntime = new DelayedRuntime();
+    const retryService = new StageCoordinatorService({
+      runtime: retryRuntime,
+      now: () => timestamp,
+    });
+    const retried = retryService.retry({
+      projectRoot: retryRoot,
+      stageRunId: "STAGE-RUN-001",
+    });
+    const retryState = await waitForActive(retryService, retryRoot);
+    assert.equal(retryState.ok, true);
+    if (!retryState.ok) throw new Error(retryState.error.message);
+    assert.equal(retryState.value.active, true);
+    assert.equal(retryState.value.currentRun?.executionId, "EXEC-001");
+    retryRuntime.completeProducer();
+    const retriedResult = await retried;
+    assert.equal(retriedResult.ok, true);
+  } finally {
+    await rm(retryRoot, { recursive: true, force: true });
   }
 });

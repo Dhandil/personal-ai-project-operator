@@ -73,8 +73,6 @@ const RUNTIME_TASK_IDS: Readonly<Record<CoordinatedStage, TaskId>> = {
   discovery: "TASK-902" as TaskId,
   spec: "TASK-903" as TaskId,
 };
-const sharedStageExecutionLock = new ExecutionLock();
-
 type Version = FileVersion | null;
 
 type StoredStageRun = Readonly<{
@@ -579,7 +577,7 @@ export class StageCoordinatorService {
   public constructor(options: StageCoordinatorOptions = {}) {
     this.runtime = options.runtime ?? new FakeAgentAdapter();
     this.now = options.now ?? nowUtc;
-    this.lock = options.lock ?? sharedStageExecutionLock;
+    this.lock = options.lock ?? new ExecutionLock();
     this.registryFactory =
       options.registryFactory ?? (() => new ProjectRegistryRepository());
     this.artifactServiceFactory =
@@ -769,6 +767,7 @@ export class StageCoordinatorService {
     record.executionId = session.executionId;
     record.sessionId = session.sessionId ?? record.sessionId;
     record.phase = record.phase ?? "producer";
+    this.lock.assignExecution(token, session.executionId);
     record.version = await this.save(record);
     const active = this.registerActive(
       record,
@@ -864,6 +863,7 @@ export class StageCoordinatorService {
     }
     record.executionId = session.executionId;
     record.sessionId = session.sessionId;
+    this.lock.assignExecution(token, session.executionId);
     record.version = await this.save(record);
     const active = this.registerActive(
       record,
@@ -1125,6 +1125,7 @@ export class StageCoordinatorService {
     record.executionId = session.executionId;
     record.sessionId = session.sessionId;
     record.phase = "producer";
+    this.lock.assignExecution(token, session.executionId);
     record.version = await this.save(record);
     const active = this.registerActive(
       record,
@@ -1360,13 +1361,13 @@ export class StageCoordinatorService {
     record.executionId = reviewerSession.executionId;
     record.sessionId = reviewerSession.sessionId;
     record.phase = "reviewer";
+    this.lock.assignExecution(active.lockToken, reviewerSession.executionId);
     record.version = await this.save(record);
-    const token = this.lock.snapshot()?.token ?? "";
     const activeReviewer = this.registerActive(
       record,
       reviewerSession,
       reviewerRequest,
-      token,
+      active.lockToken,
       "reviewer",
     );
     const reviewerResult = await activeReviewer.completion;
@@ -1756,7 +1757,10 @@ export class StageCoordinatorService {
       document,
       record.version.revision === 0 ? null : record.version,
     );
-    if (!written.ok) throw new Error(written.error.message);
+    if (!written.ok)
+      throw new Error(
+        `${written.error.message} ${written.error.details.join("; ")}`,
+      );
     record.document = document;
     return written.value.version;
   }
