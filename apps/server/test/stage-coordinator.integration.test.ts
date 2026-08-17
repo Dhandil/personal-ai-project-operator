@@ -495,6 +495,35 @@ test("reports the assigned execution as active while the producer is still runni
   }
 });
 
+test("tolerates frequent state polling while a stage file is being replaced", async () => {
+  const root = await fixture();
+  try {
+    const runtime = new DelayedRuntime();
+    const service = new StageCoordinatorService({
+      runtime,
+      now: () => timestamp,
+      lock: new ExecutionLock(),
+    });
+    const pending = service.start({ projectRoot: root });
+    const polls = Array.from({ length: 128 }, async () => {
+      for (let attempt = 0; attempt < 8; attempt += 1) {
+        const state = await service.state({ projectRoot: root });
+        assert.equal(state.ok, true);
+      }
+    });
+    await Promise.all(polls);
+    const active = await waitForActive(service, root);
+    assert.equal(active.ok, true);
+    if (!active.ok) throw new Error(active.error.message);
+    assert.equal(active.value.active, true);
+    runtime.completeProducer();
+    const completed = await pending;
+    assert.equal(completed.ok, true);
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
 test("shares the global execution lock across default coordinator instances", async () => {
   const firstRoot = await fixture();
   const secondRoot = await fixture();
