@@ -1,15 +1,15 @@
 ---
 schema_version: 1
 document_type: status_snapshot
-revision: 52
-generated_at: 2026-08-17T02:38:15.936Z
-updated_at: 2026-08-17T02:38:15.936Z
+revision: 53
+generated_at: 2026-08-17T02:51:51.546Z
+updated_at: 2026-08-17T02:51:51.546Z
 source: formal_project_facts
 status: in_progress
 current_stage: 03-spec
 current_goal: GOAL-012
 current_task: TASK-058
-source_manifest_hash: 7fa34c8805b212ca2075d9c70c069eff0bb0c1f1e23058d19d81446e998929f1
+source_manifest_hash: bd963b368800afb22f84a0089a957a34b78acdaaaabae790dcf2e6316dd93655
 ---
 # 项目状态
 

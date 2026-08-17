@@ -8,11 +8,11 @@ report_type: task_verification
 acceptance_state: pending
 task_id: TASK-058
 goal_id: GOAL-012
-revision: 3
+revision: 4
 created_at: 2026-08-17T09:45:00Z
-updated_at: 2026-08-17T10:50:00Z
+updated_at: 2026-08-17T11:05:00Z
 verified_by: implementation_agent
-verified_commit: 3e1fb60
+verified_commit: 4c17786
 verification_commands:
   - npx tsx --test apps/server/test/stage-coordinator.integration.test.ts
   - npm run verify
@@ -54,3 +54,11 @@ verification_commands:
 - 本次修复实现提交：`3e1fb60`。
 - 本次专项测试：7/7 通过；完整 `npm run verify`：97 单元、136 集成、22 Chromium，格式、Lint、类型检查和 contracts/domain/server/web 构建全部通过。
 - TASK-059、UI、阶段审批门和产物事实隔离均未修改。
+
+## Windows 原子替换修复复核
+
+- 原子写入器对 Windows 目标替换期间的 `EPERM`、`EBUSY`、`EACCES` 增加有限退避重试，避免执行中频繁 `state()` 读取造成替换失败；未改变临时文件、同步、关闭后替换的原子写入流程。
+- 新增高频 `state()` 轮询阶段集成测试；跨实例、跨项目全局锁回归继续通过。
+- 修复实现提交：`4c17786`；TASK-058 专项测试 8/8 通过。
+- 连续两次完整 `npm run verify` 均通过：每次 97 单元、137 集成、22 Chromium，格式、Lint、类型检查、contracts/domain/server/web 构建全部通过。
+- 两次完整验证均未出现 `EPERM` 或 `EBUSY`；TASK-059 保持 `draft` 且未执行。

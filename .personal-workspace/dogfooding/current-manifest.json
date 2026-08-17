@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "manifest_kind": "current",
-  "generated_at": "2026-08-17T02:38:15.936Z",
-  "source_manifest_hash": "7fa34c8805b212ca2075d9c70c069eff0bb0c1f1e23058d19d81446e998929f1",
+  "generated_at": "2026-08-17T02:51:51.546Z",
+  "source_manifest_hash": "bd963b368800afb22f84a0089a957a34b78acdaaaabae790dcf2e6316dd93655",
   "current_source_stage": "03-spec",
   "current_goal_id": "GOAL-012",
   "current_task_id": "TASK-058",
@@ -1030,14 +1030,14 @@
     {
       "relativePath": ".personal-workspace/reports/REPORT-064.md",
       "kind": "report",
-      "hash": "14c804616314f8459338b143d5a2f38d8096532010dd598751398c4ae367e034",
+      "hash": "c9cd5d3dda3296a7affefdc5df7aa2c98465ae937c47337fbe50448b248e52d4",
       "id": "REPORT-064",
       "title": "TASK-058 Idea Discovery Spec 阶段协调器实现验收报告",
       "status": "pending_acceptance",
       "stage": null,
       "goalId": "GOAL-012",
       "generated": false,
-      "revision": 3
+      "revision": 4
     },
     {
       "relativePath": ".personal-workspace/stages/01-idea/01-idea.md",
@@ -1786,14 +1786,14 @@
     {
       "relativePath": ".personal-workspace/tasks/TASK-058.md",
       "kind": "task",
-      "hash": "01a0ff600cb081b31e1fd930ecaa04def2c67738f1d3851bf6a4238d9c0d05e5",
+      "hash": "e238c492c2e238595532882c69bb0f70582aef086ee253f4c0c5208db09f1afa",
       "id": "TASK-058",
       "title": "实现 Idea Discovery Spec 阶段协调器",
       "status": "in_review",
       "stage": null,
       "goalId": "GOAL-012",
       "generated": false,
-      "revision": 5
+      "revision": 6
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-059.md",

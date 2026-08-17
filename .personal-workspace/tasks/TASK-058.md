@@ -6,9 +6,9 @@ status: in_review
 goal_id: GOAL-012
 role: executor
 dependencies: [TASK-057, TASK-048]
-revision: 5
+revision: 6
 created_at: 2026-08-16T14:00:00Z
-updated_at: 2026-08-17T10:50:00Z
+updated_at: 2026-08-17T11:05:00Z
 target_branch: goal/GOAL-012
 unblocked_by: TASK-057
 verification_report_id: REPORT-064
@@ -53,3 +53,10 @@ verification_report_id: REPORT-064
 - 恢复 `StageCoordinatorService` 默认使用模块级共享 `ExecutionLock`，保留 producer/reviewer 的真实 `executionId` 绑定。
 - 新增两个未注入自定义锁的协调器跨项目回归：第一个执行期间第二个返回 `execution_active`，第一个完成后锁释放。
 - 修复提交：`3e1fb60`；阶段专项测试 7/7 通过；完整 `npm run verify` 通过（97 单元、136 集成、22 Chromium，以及质量检查和构建）。
+
+## Windows 原子替换修复复核记录
+
+- 原子写入器在目标替换遇到 Windows `EPERM`、`EBUSY` 或 `EACCES` 时进行有限退避重试；临时文件写入、同步、关闭后再替换的原子语义保持不变。
+- 新增高频 `state()` 轮询回归，覆盖执行中阶段文件替换；跨实例全局锁测试保持通过。
+- 修复提交：`4c17786`；阶段专项测试 8/8 通过。
+- 连续两次完整 `npm run verify` 均通过：每次 97 单元、137 集成、22 Chromium，以及格式、Lint、类型检查和构建。
