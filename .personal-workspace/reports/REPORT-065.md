@@ -3,16 +3,18 @@ schema_version: 1
 document_type: report
 id: REPORT-065
 title: TASK-059 planning draft generation verification
-status: pending_acceptance
+status: accepted
 report_type: task_verification
-acceptance_state: pending_acceptance
+acceptance_state: accepted
 task_id: TASK-059
 goal_id: GOAL-012
-revision: 1
+revision: 2
 created_at: 2026-08-17T11:40:00Z
-updated_at: 2026-08-17T11:40:00Z
+updated_at: 2026-08-17T11:50:00Z
 verified_by: implementation_agent
 verified_commit: 36bd5e0
+accepted_by: project_owner
+accepted_at: 2026-08-17T11:50:00Z
 verification_commands:
   - npm run test:unit -- --run packages/domain/src/planning-draft.test.ts
   - npx tsx --test apps/server/test/planning-draft.integration.test.ts
@@ -53,4 +55,13 @@ verification_commands:
 
 ## Status
 
-TASK-059 remains `in_review`. This report remains `pending_acceptance` and has not been independently accepted.
+## Independent acceptance
+
+- Planning domain tests: 6/6 passed independently.
+- Planning service/API integration tests: 4/4 passed independently.
+- Full `npm run verify`: 103 unit tests, 141 integration tests, 22 Chromium tests, formatting, lint, type checking, and all builds passed.
+- Candidate/formal-fact separation, user edit and unknown-field preservation, dependency/path/role validation, stale revision/hash rejection, approval atomicity, and first dependency-free task readiness are covered by passing tests.
+- TASK-060 remained untouched during verification.
+- Acceptance conclusion: passed. REPORT-065 is `accepted`; TASK-059 is `completed`; TASK-060 is unlocked as `ready`.
+
+TASK-059 is `completed`. This report has been independently accepted by the project owner.

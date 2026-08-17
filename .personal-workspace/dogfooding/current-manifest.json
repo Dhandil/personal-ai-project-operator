@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "manifest_kind": "current",
-  "generated_at": "2026-08-17T03:40:19.516Z",
-  "source_manifest_hash": "58fd82d9033ef84212e36f916c3f2a8c1fe0c260c5e7ddf9583b6e27d0433cf7",
+  "generated_at": "2026-08-17T03:46:26.013Z",
+  "source_manifest_hash": "87da556f52308c1dbf0504a86e72a95bd1e578bb4815ed172154ad0af9a9557b",
   "current_source_stage": "03-spec",
   "current_goal_id": "GOAL-012",
-  "current_task_id": "TASK-059",
+  "current_task_id": "TASK-060",
   "source_files": [
     {
       "relativePath": ".personal-workspace/approvals/APPROVAL-001.md",
@@ -1042,14 +1042,14 @@
     {
       "relativePath": ".personal-workspace/reports/REPORT-065.md",
       "kind": "report",
-      "hash": "22280c92158d2acb0b819173e9f8031ac9b42bdebc9e297b3f5d09fdfb3f8120",
+      "hash": "5a8f9da1251f32b125680886900cb86b81e119892c1c2e3972167d013dbacf9c",
       "id": "REPORT-065",
       "title": "TASK-059 planning draft generation verification",
-      "status": "pending_acceptance",
+      "status": "accepted",
       "stage": null,
       "goalId": "GOAL-012",
       "generated": false,
-      "revision": 1
+      "revision": 2
     },
     {
       "relativePath": ".personal-workspace/stages/01-idea/01-idea.md",
@@ -1810,26 +1810,26 @@
     {
       "relativePath": ".personal-workspace/tasks/TASK-059.md",
       "kind": "task",
-      "hash": "bede418627986b5c31d38a042c71a2dd03f9ece5bc8d16ea723291478b3532c0",
+      "hash": "ac9631936be5d5f029918e453cf1e15c1c501a98301d415831e853a40563c816",
       "id": "TASK-059",
       "title": "从 Spec 生成目标角色与任务草案",
-      "status": "in_review",
+      "status": "completed",
       "stage": null,
       "goalId": "GOAL-012",
       "generated": false,
-      "revision": 3
+      "revision": 4
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-060.md",
       "kind": "task",
-      "hash": "fadf75a7eff92e36d6b967714578203d4918a49e2077111d8e5b6451ef9d7f34",
+      "hash": "b1b17ceb5bfd154aa16cd9337dc4b6d2bcf93f0c008a03706eb45cce30662f98",
       "id": "TASK-060",
       "title": "实现项目前期规划控制台",
-      "status": "draft",
+      "status": "ready",
       "stage": null,
       "goalId": "GOAL-012",
       "generated": false,
-      "revision": 1
+      "revision": 2
     },
     {
       "relativePath": ".personal-workspace/tasks/TASK-061.md",

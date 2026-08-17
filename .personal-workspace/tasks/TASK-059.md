@@ -2,13 +2,13 @@
 schema_version: 1
 id: TASK-059
 title: 从 Spec 生成目标角色与任务草案
-status: in_review
+status: completed
 goal_id: GOAL-012
 role: executor
 dependencies: [TASK-057, TASK-058]
-revision: 3
+revision: 4
 created_at: 2026-08-16T14:00:00Z
-updated_at: 2026-08-17T11:40:00Z
+updated_at: 2026-08-17T11:50:00Z
 target_branch: goal/GOAL-012
 unblocked_by: TASK-058
 ---
@@ -30,7 +30,12 @@ unblocked_by: TASK-058
 
 ## Handoff
 
-Task remains `in_review`; REPORT-065 remains `pending_acceptance`. Independent acceptance must verify candidate/fact separation, user edit preservation, dependency validation, approval atomicity/recovery behavior, and that TASK-060 is not started.
+REPORT-065 has been independently accepted by the project owner. Candidate/fact separation, user edit preservation, dependency validation, approval atomicity/recovery behavior, and TASK-060 isolation were verified. TASK-059 is `completed`; TASK-060 is unlocked as `ready`.
+
+## Independent acceptance
+
+- Planning domain tests: 6/6; service/API integration tests: 4/4.
+- Full `npm run verify`: 103 unit, 141 integration, and 22 Chromium tests passed, with quality checks and builds passing.
 
 # TASK-059：从 Spec 生成目标角色与任务草案
 
